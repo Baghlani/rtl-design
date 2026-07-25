@@ -79,7 +79,8 @@ flags the cap) — on a huge violation count, fix by rule or directory using `--
 It catches the mechanical violations (Arabic ي/ك, wrong digits, physical CSS/Flutter
 props, letter-spacing on Persian, missing/hardcoded `dir`, missing ZWNJ after می).
 Fix every `error`; review each `warning` in context (some have legit exceptions —
-the finding says which). Then review by judgment what no detector can see: visual
+the finding says which). Legit-by-design lines (e.g. digit/yeh normalization maps)
+get an inline `rtl-ignore` comment, or `rtl-ignore-next` on the line above. Then review by judgment what no detector can see: visual
 hierarchy, icon direction semantics, overflow behavior, recipe quality.
 
 ## Coexistence with other design skills

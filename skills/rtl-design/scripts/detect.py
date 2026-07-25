@@ -28,6 +28,7 @@ SCAN_EXTS = {
     ".css", ".scss", ".sass", ".less", ".styl",
     ".dart", ".arb",
     ".json", ".yaml", ".yml", ".xml", ".md", ".txt", ".strings", ".resx", ".po",
+    ".php",  # Laravel Blade templates and Persian strings in PHP
 }
 PURE_STYLE_EXTS = {".css", ".scss", ".sass", ".less", ".styl"}
 STYLE_EXTS = PURE_STYLE_EXTS | {".vue", ".svelte", ".jsx", ".tsx", ".js", ".ts",
@@ -154,6 +155,8 @@ def check_file(path, sink):
     for i, line in enumerate(lines, 1):
         if len(line) > MAX_LINE_LEN:
             continue  # minified/generated content
+        if "rtl-ignore" in line or (i > 1 and "rtl-ignore-next" in lines[i - 2]):
+            continue  # explicit suppression (normalization code, teaching material)
 
         # R001 — Arabic yeh/kaf
         if RE_ARABIC_YEH_KAF.search(line):
@@ -230,7 +233,7 @@ def check_file(path, sink):
 
     # R009 — <html> without dir in a file containing Arabic-script text
     # (searched on full text: <html … > tags often span multiple lines)
-    if ext in {".html", ".htm"} and ARABIC_SCRIPT.search(text):
+    if ext in {".html", ".htm", ".php"} and ARABIC_SCRIPT.search(text):
         for m in RE_HTML_TAG.finditer(text):
             if not RE_DIR_ATTR.search(m.group(0)):
                 lineno = text.count("\n", 0, m.start()) + 1
