@@ -81,6 +81,10 @@ RE_DART_PHYSICAL = re.compile(
     r"|Positioned\s*\([^)]*\b(left|right)\s*:"
     r"|BorderRadius\.only\s*\([^)]*\b(topLeft|topRight|bottomLeft|bottomRight)\s*:"
     r"|TextAlign\.(left|right)\b")
+# constructors whose physical arguments are often written on following lines
+RE_DART_CTOR_OPEN = re.compile(
+    r"\b(EdgeInsets\.only|Positioned|BorderRadius\.only|Border\.only)\s*\(")
+DART_JOIN_LINES = 6  # lookahead window for a multi-line constructor call
 RE_DIR_LTR = re.compile(r"""dir\s*=\s*["']ltr["']""", re.IGNORECASE)
 # self-declared LTR islands: dir="ltr" on these elements is the documented pattern
 RE_ISLAND_TAG = re.compile(r"<\s*(input|textarea|select|bdi|code|pre|kbd|samp)\b", re.IGNORECASE)
@@ -119,6 +123,19 @@ def ltr_island_content_ok(line, match):
     lt = line.find("<", gt + 1)
     content = line[gt + 1:lt if lt != -1 else len(line)]
     return bool(content.strip()) and not ARABIC_SCRIPT.search(content)
+
+
+def dart_call_window(lines, start):
+    """Join a constructor call that spans lines, from index `start` until its parens
+    balance (bounded by DART_JOIN_LINES). Lets the physical-argument rules see
+    `EdgeInsets.only(` on one line and `left: 8,` on the next."""
+    buf, depth = [], 0
+    for line in lines[start:start + DART_JOIN_LINES]:
+        buf.append(line.strip())
+        depth += line.count("(") - line.count(")")
+        if depth <= 0:
+            break
+    return " ".join(buf)
 
 
 def snippet(line):
@@ -246,7 +263,13 @@ def check_file(path, sink):
                     "zero it in your Persian TextTheme.")
 
         # R006 — Flutter physical APIs
-        if ext == ".dart" and RE_DART_PHYSICAL.search(line):
+        # (a constructor whose parens stay open is re-checked across its full call,
+        # so `EdgeInsets.only(` + `left: 8,` on the next line is still caught)
+        dart_target = line
+        if ext == ".dart" and RE_DART_CTOR_OPEN.search(line) \
+                and line.count("(") > line.count(")"):
+            dart_target = dart_call_window(lines, i - 1)
+        if ext == ".dart" and RE_DART_PHYSICAL.search(dart_target):
             add("R006", "flutter-physical", "warning", i, line,
                 "Use the Directional twin: EdgeInsetsDirectional.only(start:/end:), "
                 "AlignmentDirectional.centerStart, PositionedDirectional, "

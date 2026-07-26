@@ -80,6 +80,17 @@ check("embedded-style: it is the drawer line, not the JS object",
       d["findings"][0]["line"] == 4 and "drawer" in d["findings"][0]["snippet"],
       str(d["findings"][0]))
 
+# 5d. multi-line Dart constructors: physical args on following lines still count
+# (field regression: EdgeInsets.only( … left: 22 … ) spanning lines was invisible)
+rc, d = run(FIX / "multiline.dart")
+rules = Counter(f["rule"] for f in d["findings"])
+check("multiline dart: R006 x2", rules == Counter({"R006": 2}), str(dict(rules)))
+check("multiline dart: reported at the constructor line",
+      sorted(f["line"] for f in d["findings"]) == [3, 9],
+      str([f["line"] for f in d["findings"]]))
+check("multiline dart: Directional twins not flagged",
+      all("Directional" not in f["snippet"] for f in d["findings"]))
+
 # 6. unknown rule id → exit 2
 rc, _ = run(FIX / "clean.html", "--rules", "R999")
 check("unknown rule id: exit 2", rc == 2, f"rc={rc}")
