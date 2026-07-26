@@ -113,6 +113,10 @@ names are LTR islands and will scramble punctuation and ordering if not isolated
 - Box shadows and asymmetric gradients don't auto-flip. Prefer symmetric shadows; if a
   shadow/gradient encodes direction, flip it under `[dir="rtl"]`.
 - Progress bars fill start→end (right-to-left in RTL). Media seek bars stay LTR.
+- Pointer/drag math is direction-blind: `(e.clientX - rect.left) / rect.width`
+  measures from the visual left. For RTL-aware controls compute
+  `isRtl ? 1 - visual : visual` once, in one shared helper, keyed to the control's
+  own resolved direction — and skip the inversion inside LTR islands (seek bars).
 - Charts: keep the time axis LTR (time convention), but RTL-localize labels, legends,
   tooltips, and put the value axis on the visual right. Bar/category charts may fully
   mirror; time series should not.
