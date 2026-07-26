@@ -49,11 +49,9 @@ line-height, one default font everywhere).
 9. Persian body line-height 1.8–2.0 (Latin's 1.5 is cramped); headings 1.4.
 10. **Never letter-spacing on Persian** — it tears the joined script and breaks PDF
     text layers. Zero out design-system defaults (Material 3 has them).
-11. Never a single font at default weights everywhere: pick a pairing recipe
-    (typography.md §4), stack-first with free fallbacks. Hierarchy comes from
-    weight/size — Persian has no uppercase. Headlines that must land need a real
-    display face (Lalezar, Jomhuria, Reem Kufi, Gulzar — typography.md §3), not a
-    UI sans scaled up.
+11. Verify the font actually renders Persian before using it — several popular
+    "Arabic" faces have no پ چ ژ گ at all (typography.md §3). End every stack with
+    a known-good fallback so a missing face degrades instead of showing tofu.
 12. Test every constrained surface with real long Persian strings
     («استانداردسازی زیرساخت‌های بین‌المللی»), not «تست».
 
@@ -63,7 +61,7 @@ line-height, one default font everywhere).
 |---|---|
 | Building/reviewing **web** UI (CSS, React/Next, Tailwind, icons, bidi, forms, motion) | `references/web.md` |
 | **Flutter** project (Directional widgets, icons, Jalali packages, TextField, testing) | `references/flutter.md` |
-| Choosing **fonts**, type scale, pairing recipes, digits/ZWNJ detail, licensing, specimen page | `references/typography.md` |
+| **Fonts** (safety, licensing, pairing), type metrics, digits/ZWNJ detail, specimen page | `references/typography.md` |
 
 ## Audit mode — zero-token detector
 

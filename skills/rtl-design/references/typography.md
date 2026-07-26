@@ -44,32 +44,12 @@ correctness rules and the taste recipes.
   Morabba, IRANYekanX, IRANSans, Yekan Bakh, Peyda) require a paid license from
   fontiran.com. Recommending them by name is fine; bundling or hotlinking files is not.
 
-## 3. Display & expressive faces — where Persian design gets its drama
+## 3. Font safety — does the face actually work for Persian?
 
-Persian has no uppercase and no italic tradition, so **display type carries the visual
-punch that Latin gets from case and slant**. Shipping a neutral UI sans at 3rem is the
-single biggest reason generated Persian pages look flat. All faces below are OFL 1.1,
-on Google Fonts, and were verified glyph-by-glyph for پ چ ژ گ / ی ک / ۰–۹ *and* for
-correct initial/medial/final joining.
-
-| Face | Style | Weights / axes | Use it for | Watch out |
-|---|---|---|---|---|
-| **Lalezar** | Persian titling | 1 static | The default display face — Persian-designed, unmistakable | Single weight: no hierarchy inside the family |
-| **Jomhuria** | Ultra-condensed titling | 1 static | Posters, huge one-word heroes | Font metrics are exactly 1.0em — **clips unless you set line-height ≥1.6** |
-| **Oi** | Ultra-fat display | 1 static | Maximum-impact single words | Counters fill in below ~32px |
-| **Katibeh** / **Rakkas** | Decorative titling | 1 static | Headlines with character | Tight metrics; set leading manually |
-| **Baloo Bhaijaan 2** | Chunky rounded | VF 400–800 | Friendly/informal brands; variable weight also serves sub-heads | Informal register — wrong for finance/gov |
-| **Reem Kufi** | Geometric kufi | VF 400–700 | Formal, architectural, heritage-modern headings | Poor for long text |
-| **Qahiri** | Geometric kufi | 1 static | Striking single-line statements | 548 glyphs only — headline use only |
-| **Noto Kufi Arabic** | Kufi | VF 100–900 | The safe, complete kufi for mixed content | Neutral by design — less voice |
-| **Gulzar** | **Nastaliq** | 1 static | The Persian signature: one hero line, poetry, heritage brands | Needs **line-height ≥2.7**, size ≥24px, never for UI text |
-| **Amiri** | Classical naskh | 4 static + italic | Long-form editorial, literary, formal | Too calligraphic for UI chrome |
-| **Markazi Text** | Persian-first serif | VF 400–700 | Editorial body under a display heading | — |
-| **Scheherazade New** / **Lateef** | Naskh | 4 / 7 static | Traditional documents, Quranic/classical contexts | Scheherazade metrics are tall (2.0) |
-| **Handjet** | Modular / pixel | VF wght + **ELGR** + **ELSH** | Genuinely novel Persian lettering — element grid and shape axes build dot/pixel/geometric type | Display only |
-| **Playpen Sans Arabic** | Handwriting | VF 100–800 | The only credible libre Persian handwriting face | Informal only |
-| **Cairo Play** | Playful sans-display | VF 200–1000 + slnt | Energetic product marketing; slnt adds motion | — |
-| **Lemonada** | Rounded display | VF 300–700 | Soft consumer brands | Default metrics 2.0 — budget vertical space |
+Picking a font that cannot render Persian is a silent, common failure: the page looks
+designed, and half the letters are missing or disconnected. Verify before committing.
+Every claim below comes from parsing the font binary and shaping Persian text — not
+from the foundry's description.
 
 **Verified traps — these will break Persian, and people hit them constantly:**
 
@@ -93,18 +73,6 @@ Stack-first pattern: the first family is the aspirational (often commercial) fac
 fallbacks are free and legal, so the design works for everyone and upgrades instantly
 when a license exists. Never output a single-font stack.
 
-**Display-led recipes — reach for these when the design needs to make an impression:**
-
-| Recipe | Display line | Body | Notes |
-|---|---|---|---|
-| **Poster** | `"Jomhuria"` at 5–9rem, `line-height: 1.6` | `"Vazirmatn"` w400, lh 1.9 | Extreme scale contrast is the whole effect — one short line only |
-| **Heritage Modern** | `"Reem Kufi"` w700, generous tracking-free spacing | `"Noto Naskh Arabic"`, lh 2.0 | Kufi + naskh reads as authoritative and rooted |
-| **Nastaliq Statement** | `"Gulzar"` for exactly one hero line, ≥40px, `line-height: 2.7` | `"Estedad"` w400, lh 1.9 | The most distinctly Persian thing you can do; never let nastaliq touch UI chrome |
-| **Editorial Persian** | `"Amiri"` w700 or `"Markazi Text"` w700 | `"Markazi Text"` 18px, lh 2.0 | Serif-on-serif, Persian-first — the closest thing to a Persian magazine voice |
-| **New Wave** | `"Handjet"` with `"ELGR" 2, "ELSH" 4` | `"Vazirmatn"` w400 | Modular/pixel Persian lettering — almost nobody has seen this |
-
-**Workhorse recipes — product surfaces where legibility outranks drama:**
-
 | Recipe | Mood / use | Headings | Body | Numerals & Latin |
 |---|---|---|---|---|
 | **Product Default** | SaaS, dashboards, apps | `"IRANYekanX", "Estedad", "Vazirmatn", sans-serif` w700 | `"Vazirmatn", "Noto Sans Arabic", sans-serif` w400/500 | Persian digits; Latin islands inherit (Vazirmatn Latin is fine) |
@@ -122,9 +90,6 @@ Recipe mechanics:
   the Google Fonts build dropped the axis. Short display lines only — never body text.
 - One family can carry a whole app (Estedad or Vazirmatn variable) — vary weight/size.
   Two families max; the second earns its place by contrast (naskh vs geometric).
-- Display face + text face **is** that pair — a display face never sets body copy, and a
-  UI sans never carries a hero line. Load the display face at one or two weights only;
-  these are heavy files for a single headline.
 - Fallback discipline still applies to display stacks: end every stack with
   `"Vazirmatn", "Noto Sans Arabic", sans-serif` so a missing display face degrades to
   correct Persian instead of tofu.
@@ -181,8 +146,6 @@ Generated Persian UI has recognizable tells. Ban them:
 4. Arabic ي/ك in Persian strings.
 5. Full spaces or fused forms where ZWNJ belongs («می شود» / «میشود»).
 6. Single default font at default weights everywhere — no pairing, no scale contrast.
-6b. A neutral UI sans (Vazirmatn/Estedad) blown up to 3rem as the "display" type —
-    Persian has no uppercase to carry a headline; use a real display face (§3).
 7. English-length placeholder copy («لورم ایپسوم» counts) — use real Persian strings
    with real lengths.
 8. Gregorian dates or English month names in a Persian-facing UI.
@@ -205,9 +168,8 @@ Generated Persian UI has recognizable tells. Ban them:
 When the user wants to compare directions/recipes, generate a single-file
 `specimen.html` in their project (they open it locally; nothing is published):
 
-- `<html dir="rtl" lang="fa">`, Google Fonts links for the free faces only (OFL —
-  embedding is legal): Vazirmatn + Estedad for text, plus the display faces the chosen
-  recipes call for (§3). Commercial faces appear stack-first
+- `<html dir="rtl" lang="fa">`, Google Fonts links for Vazirmatn + Estedad + Noto Naskh
+  Arabic only (OFL — embedding is legal). Commercial faces appear stack-first
   (`"Dana", "Vazirmatn"…`) so license owners see the real thing and others see the
   fallback — label each block with the active recipe name.
 - Include per recipe: H1/H2/body/caption scale, a stat row with Persian digits, a mixed
