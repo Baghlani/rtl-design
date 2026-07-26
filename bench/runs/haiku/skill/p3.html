@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفحهٔ محصول</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&family=Noto+Naskh+Arabic:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            direction: rtl;
+            font-family: "Vazirmatn", "Noto Sans Arabic", sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        body {
+            padding: 2rem 1rem;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .product-hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            padding: 3rem;
+        }
+
+        .product-image {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .product-details h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+            color: #1a1a1a;
+        }
+
+        .rating-bar {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .stars {
+            display: flex;
+            gap: 0.2rem;
+            font-size: 1.4rem;
+            direction: ltr;
+        }
+
+        .rating-info span {
+            display: inline;
+            margin-inline-end: 0.5rem;
+        }
+
+        .rating-info span:not(:last-child)::after {
+            content: "•";
+            margin-inline-start: 0.5rem;
+        }
+
+        .price-box {
+            background-color: #fafafa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-inline-start: 4px solid #667eea;
+        }
+
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .price-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .price-original {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 1.1rem;
+        }
+
+        .price-final {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #d32f2f;
+        }
+
+        .discount-label {
+            background-color: #d32f2f;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .specs-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+        }
+
+        .specs-table tr {
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .specs-table tr:last-child {
+            border-bottom: none;
+        }
+
+        .specs-table th {
+            background-color: #f9f9f9;
+            padding: 1rem;
+            text-align: start;
+            font-weight: 600;
+            font-size: 0.95rem;
+            width: 35%;
+        }
+
+        .specs-table td {
+            padding: 1rem;
+            text-align: start;
+            color: #555;
+        }
+
+        .delivery-info {
+            background-color: #e8f5e9;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-inline-start: 4px solid #4caf50;
+        }
+
+        .delivery-info h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+            color: #2e7d32;
+        }
+
+        .delivery-info p {
+            color: #555;
+            margin-bottom: 0.5rem;
+        }
+
+        .delivery-info p:last-child {
+            margin-bottom: 0;
+            font-weight: 600;
+            color: #1b5e20;
+        }
+
+        .cart-section {
+            background-color: #f9f9f9;
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .quantity-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .quantity-row label {
+            font-weight: 600;
+            min-width: 70px;
+        }
+
+        .quantity-input {
+            display: flex;
+            align-items: stretch;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+            background-color: white;
+        }
+
+        .quantity-input button {
+            background-color: white;
+            border: none;
+            padding: 0.5rem 0.75rem;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: #667eea;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+
+        .quantity-input button:hover {
+            background-color: #f5f5f5;
+        }
+
+        .quantity-input input {
+            width: 60px;
+            border: none;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .add-cart-btn {
+            background-color: #667eea;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+            line-height: 1.4;
+        }
+
+        .add-cart-btn:hover {
+            background-color: #5568d3;
+        }
+
+        .add-cart-btn:active {
+            background-color: #4755ba;
+        }
+
+        .reviews-section {
+            padding: 3rem;
+            border-top: 1px solid #e5e5e5;
+        }
+
+        .reviews-section h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            line-height: 1.4;
+            color: #1a1a1a;
+        }
+
+        .review-item {
+            padding-bottom: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .review-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .reviewer-name {
+            font-weight: 600;
+            color: #1a1a1a;
+            font-size: 1rem;
+        }
+
+        .review-date {
+            color: #999;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .review-rating {
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+            direction: ltr;
+            color: #667eea;
+        }
+
+        .review-text {
+            color: #555;
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .product-hero {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+
+            .product-image {
+                min-height: 300px;
+            }
+
+            .product-details h1 {
+                font-size: 1.5rem;
+            }
+
+            .price-final {
+                font-size: 1.5rem;
+            }
+
+            .reviews-section {
+                padding: 1.5rem;
+            }
+
+            .specs-table th {
+                width: 40%;
+                padding: 0.75rem;
+                font-size: 0.9rem;
+            }
+
+            .specs-table td {
+                padding: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Product Hero Section -->
+        <div class="product-hero">
+            <div class="product-image">
+                تصویر محصول
+            </div>
+
+            <div class="product-details">
+                <h1>ساعت هوشمند فیتنس Pro</h1>
+
+                <div class="rating-bar">
+                    <div class="stars">★★★★★</div>
+                    <div class="rating-info">
+                        <span>۴٫۸ امتیاز</span>
+                        <span>۱۲۳ نظر</span>
+                    </div>
+                </div>
+
+                <!-- Price Section -->
+                <div class="price-box">
+                    <div class="price-item">
+                        <span class="discount-label">۳۵% تخفیف</span>
+                        <span class="price-original">۲٬۵۰۰٬۰۰۰ تومان</span>
+                    </div>
+                    <div class="price-item" style="font-size: 0.95rem; color: #999;">
+                        <span>قیمت نهایی</span>
+                    </div>
+                    <div class="price-item">
+                        <span class="price-final">۱٬۶۲۵٬۰۰۰ تومان</span>
+                    </div>
+                </div>
+
+                <!-- Technical Specs Table -->
+                <table class="specs-table">
+                    <tr>
+                        <th>صفحه‌نمایش</th>
+                        <td>AMOLED ۱٫۹۶ اینچ، رزولوشن ۴۰۰×۴۸۰</td>
+                    </tr>
+                    <tr>
+                        <th>مقاومت آب</th>
+                        <td>تا عمق ۵۰ متر (ATM ۵)</td>
+                    </tr>
+                    <tr>
+                        <th>باتری</th>
+                        <td>تا ۱۴ روز کار مستمر</td>
+                    </tr>
+                    <tr>
+                        <th>وزن</th>
+                        <td>۳۲ گرم (بدون بند)</td>
+                    </tr>
+                    <tr>
+                        <th>رنگ‌های موجود</th>
+                        <td>سیاه، نقره‌ای، طلایی، صورتی</td>
+                    </tr>
+                </table>
+
+                <!-- Delivery Info -->
+                <div class="delivery-info">
+                    <h3>⏱ بازهٔ زمانی ارسال</h3>
+                    <p>ارسال رایگان برای سفارش‌های بالای ۵۰۰٬۰۰۰ تومان</p>
+                    <p>۲ تا ۳ روز کاری</p>
+                </div>
+
+                <!-- Add to Cart Section -->
+                <div class="cart-section">
+                    <div class="quantity-row">
+                        <label for="qty">تعداد:</label>
+                        <div class="quantity-input">
+                            <button type="button">+</button>
+                            <input type="number" id="qty" value="1" min="1" max="10" readonly>
+                            <button type="button">−</button>
+                        </div>
+                    </div>
+                    <button class="add-cart-btn">افزودن به سبد خریدی</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reviews Section -->
+        <div class="reviews-section">
+            <h2>نظرات کاربران</h2>
+
+            <div class="review-item">
+                <div class="review-header">
+                    <span class="reviewer-name">فاطمه علیزاده</span>
+                    <span class="review-date">۱۵ مرداد ۱۴۰۵</span>
+                </div>
+                <div class="review-rating">★★★★★</div>
+                <p class="review-text">
+                    این ساعت هوشمند واقعاً فوق‌العاده است. کیفیت خوب، صفحه‌نمایش روشن و زیبا، باتری دوام‌دار، و ارسال سریع. نسخهٔ جدید نسبت به نسخه‌های قدیمی بهتر است. توصیه می‌کنم برای هر کسی که دنبال یک ساعت ورزشی کارآمد است.
+                </p>
+            </div>
+
+            <div class="review-item">
+                <div class="review-header">
+                    <span class="reviewer-name">علی محمدی</span>
+                    <span class="review-date">۱۲ مرداد ۱۴۰۵</span>
+                </div>
+                <div class="review-rating">★★★★☆</div>
+                <p class="review-text">
+                    محصول خوب است اما قیمت شاید کمی بیشتر از حد انتظار بود. با این‌حال، با توجه به تخفیف ۳۵ درصد و کیفیت عالی، خریدی درست است. باتری به‌خوبی کار می‌کند و تا ۱۴ روز دوام می‌آورد. ارسال هم سریع بود.
+                </p>
+            </div>
+
+            <div class="review-item">
+                <div class="review-header">
+                    <span class="reviewer-name">مریم حسن‌پور</span>
+                    <span class="review-date">۱۰ مرداد ۱۴۰۵</span>
+                </div>
+                <div class="review-rating">★★★★★</div>
+                <p class="review-text">
+                    بهترین خریدی که تاکنون انجام دادم! طراحی شیک، عملکرد عالی، و تیم پشتیبانی بسیار پاسخگو. مقاومت آب ۵۰ متری خوب کار می‌کند. سنسورهای فیتنس هم دقیق هستند. حتماً دوباره از این فروشگاه خریدم و به دوستانم هم توصیه می‌کنم.
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فرم رزرو نوبت کلینیک</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            max-width: 900px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        input, select, textarea {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .doctor-option {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 10px;
+        }
+
+        .doctor-option:hover {
+            border-color: #667eea;
+            background-color: #f8f9ff;
+        }
+
+        .doctor-option input[type="radio"] {
+            display: none;
+        }
+
+        .doctor-option input[type="radio"]:checked + .doctor-info {
+            color: #667eea;
+        }
+
+        .doctor-option input[type="radio"]:checked ~ .doctor-option {
+            border-color: #667eea;
+            background-color: #f8f9ff;
+        }
+
+        .doctor-info {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .doctor-specialty {
+            font-size: 13px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .time-slot {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 13px;
+        }
+
+        .time-slot:hover {
+            border-color: #667eea;
+        }
+
+        .time-slot input[type="radio"] {
+            display: none;
+        }
+
+        .time-slot input[type="radio"]:checked + .time-label {
+            color: white;
+            background-color: #667eea;
+            border-radius: 4px;
+            padding: 6px;
+            display: block;
+        }
+
+        .time-label {
+            cursor: pointer;
+            display: block;
+            padding: 6px;
+        }
+
+        .time-slot:has(input:checked) {
+            border-color: #667eea;
+            background-color: #f8f9ff;
+        }
+
+        .summary-section {
+            background: #f8f9ff;
+            border-radius: 8px;
+            padding: 20px;
+            border: 2px solid #e0e7ff;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e7ff;
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-label {
+            color: #666;
+            font-size: 13px;
+        }
+
+        .summary-value {
+            font-weight: 600;
+            color: #333;
+            text-align: left;
+        }
+
+        .total-cost {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-top: 2px solid #e0e7ff;
+            margin-top: 15px;
+            font-size: 16px;
+        }
+
+        .total-cost .label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .total-cost .amount {
+            font-weight: 700;
+            color: #667eea;
+            font-size: 20px;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e7ff;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            grid-column: 1 / -1;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-reset {
+            background: #e0e7ff;
+            color: #667eea;
+        }
+
+        .btn-reset:hover {
+            background: #d0dcff;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 12px;
+            display: none;
+            margin-top: 4px;
+        }
+
+        .form-group.error .error-message {
+            display: block;
+        }
+
+        .form-group.error input,
+        .form-group.error select,
+        .form-group.error textarea {
+            border-color: #e74c3c;
+        }
+
+        .success-message {
+            display: none;
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 1px solid #c3e6cb;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        .cost-display {
+            font-size: 12px;
+            color: #666;
+            margin-top: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>رزرو نوبت پزشکی</h1>
+            <p>کلینیک درمان ما - به سرعت و آسانی نوبت خود را رزرو کنید</p>
+        </div>
+
+        <form id="appointmentForm">
+            <div class="content">
+                <!-- Left Column: Form Fields -->
+                <div>
+                    <div class="success-message" id="successMessage">
+                        ✓ نوبت شما با موفقیت ثبت شد!
+                    </div>
+
+                    <!-- Doctor Selection -->
+                    <div class="form-section">
+                        <div class="section-title">انتخاب پزشک</div>
+                        <div class="form-group">
+                            <label><span class="required">*</span> پزشک موردنظر:</label>
+                            <div id="doctorOptions">
+                                <label class="doctor-option">
+                                    <input type="radio" name="doctor" value="1" data-cost="350000">
+                                    <div class="doctor-info">
+                                        دکتر محمد علی هاشمی
+                                        <div class="doctor-specialty">متخصص قلب و عروق</div>
+                                    </div>
+                                </label>
+                                <label class="doctor-option">
+                                    <input type="radio" name="doctor" value="2" data-cost="300000">
+                                    <div class="doctor-info">
+                                        دکتر فاطمه محمودی
+                                        <div class="doctor-specialty">متخصص داخلی</div>
+                                    </div>
+                                </label>
+                                <label class="doctor-option">
+                                    <input type="radio" name="doctor" value="3" data-cost="280000">
+                                    <div class="doctor-info">
+                                        دکتر علی رضایی
+                                        <div class="doctor-specialty">متخصص ارتوپدی</div>
+                                    </div>
+                                </label>
+                                <label class="doctor-option">
+                                    <input type="radio" name="doctor" value="4" data-cost="320000">
+                                    <div class="doctor-info">
+                                        دکتر سارا کریمی
+                                        <div class="doctor-specialty">متخصص چشم پزشکی</div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="error-message">لطفاً یک پزشک را انتخاب کنید</div>
+                        </div>
+                    </div>
+
+                    <!-- Date and Time Selection -->
+                    <div class="form-section">
+                        <div class="section-title">انتخاب تاریخ و زمان</div>
+                        <div class="form-group">
+                            <label><span class="required">*</span> تاریخ ویزیت:</label>
+                            <input type="date" name="date" required>
+                            <div class="error-message">لطفاً تاریخی را انتخاب کنید</div>
+                        </div>
+                        <div class="form-group">
+                            <label><span class="required">*</span> زمان ویزیت:</label>
+                            <div class="time-slots" id="timeSlots">
+                                <label class="time-slot">
+                                    <input type="radio" name="time" value="08:00">
+                                    <span class="time-label">۸:۰۰</span>
+                                </label>
+                                <label class="time-slot">
+                                    <input type="radio" name="time" value="09:00">
+                                    <span class="time-label">۹:۰۰</span>
+                                </label>
+                                <label class="time-slot">
+                                    <input type="radio" name="time" value="10:00">
+                                    <span class="time-label">۱۰:۰۰</span>
+                                </label>
+                                <label class="time-slot">
+                                    <input type="radio" name="time" value="11:00">
+                                    <span class="time-label">۱۱:۰۰</span>
+                                </label>
+                                <label class="time-slot">
+                                    <input type="radio" name="time" value="14:00">
+                                    <span class="time-label">۱۴:۰۰</span>
+                                </label>
+                                <label class="time-slot">
+                                    <input type="radio" name="time" value="15:00">
+                                    <span class="time-label">۱۵:۰۰</span>
+                                </label>
+                                <label class="time-slot">
+                                    <input type="radio" name="time" value="16:00">
+                                    <span class="time-label">۱۶:۰۰</span>
+                                </label>
+                                <label class="time-slot">
+                                    <input type="radio" name="time" value="17:00">
+                                    <span class="time-label">۱۷:۰۰</span>
+                                </label>
+                            </div>
+                            <div class="error-message">لطفاً زمانی را انتخاب کنید</div>
+                        </div>
+                    </div>
+
+                    <!-- Personal Information -->
+                    <div class="form-section">
+                        <div class="section-title">اطلاعات شخصی</div>
+                        <div class="form-group">
+                            <label><span class="required">*</span> نام و نام‌خانوادگی:</label>
+                            <input type="text" name="name" required placeholder="نام کامل خود را وارد کنید">
+                            <div class="error-message">لطفاً نام را وارد کنید</div>
+                        </div>
+                        <div class="form-group">
+                            <label><span class="required">*</span> شماره تماس:</label>
+                            <input type="tel" name="phone" required placeholder="۰۹۱۲۳۴۵۶۷۸۹" pattern="[0-9]{10,11}">
+                            <div class="error-message">لطفاً شماره تماس معتبری وارد کنید</div>
+                        </div>
+                        <div class="form-group">
+                            <label><span class="required">*</span> ایمیل:</label>
+                            <input type="email" name="email" required placeholder="example@email.com">
+                            <div class="error-message">لطفاً ایمیل معتبری وارد کنید</div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Notes -->
+                    <div class="form-section">
+                        <div class="section-title">توضیحات تکمیلی</div>
+                        <div class="form-group">
+                            <label>شرح علائم و مشکلات:</label>
+                            <textarea name="notes" placeholder="لطفاً علائم یا مشکلات خود را توضیح دهید..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Booking Summary -->
+                <div>
+                    <div class="form-section">
+                        <div class="section-title">خلاصهٔ رزرو</div>
+                        <div class="summary-section">
+                            <div class="summary-item">
+                                <span class="summary-label">نام پزشک:</span>
+                                <span class="summary-value" id="summaryDoctor">انتخاب نشده</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">تخصص:</span>
+                                <span class="summary-value" id="summarySpecialty">-</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">تاریخ:</span>
+                                <span class="summary-value" id="summaryDate">انتخاب نشده</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">زمان:</span>
+                                <span class="summary-value" id="summaryTime">انتخاب نشده</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">نام بیمار:</span>
+                                <span class="summary-value" id="summaryPatient">-</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">شماره تماس:</span>
+                                <span class="summary-value" id="summaryPhone">-</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">ایمیل:</span>
+                                <span class="summary-value" id="summaryEmail">-</span>
+                            </div>
+                            <div class="total-cost">
+                                <span class="label">هزینهٔ ویزیت:</span>
+                                <span class="amount" id="totalCost">۰</span>
+                            </div>
+                            <div style="font-size: 12px; color: #666; margin-top: 10px; text-align: center;">
+                                واحد: تومان
+                            </div>
+                        </div>
+
+                        <div class="button-group">
+                            <button type="reset" class="btn-reset">پاکسازی</button>
+                            <button type="submit" class="btn-submit">تأیید و ثبت نوبت</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('appointmentForm');
+        const doctorOptions = document.querySelectorAll('input[name="doctor"]');
+        const dateInput = document.querySelector('input[name="date"]');
+        const timeInputs = document.querySelectorAll('input[name="time"]');
+        const nameInput = document.querySelector('input[name="name"]');
+        const phoneInput = document.querySelector('input[name="phone"]');
+        const emailInput = document.querySelector('input[name="email"]');
+        const successMessage = document.getElementById('successMessage');
+
+        const doctorData = {
+            1: { name: 'دکتر محمد علی هاشمی', specialty: 'متخصص قلب و عروق' },
+            2: { name: 'دکتر فاطمه محمودی', specialty: 'متخصص داخلی' },
+            3: { name: 'دکتر علی رضایی', specialty: 'متخصص ارتوپدی' },
+            4: { name: 'دکتر سارا کریمی', specialty: 'متخصص چشم پزشکی' }
+        };
+
+        function convertToFarsiDigits(num) {
+            const farsiDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+            return String(num).replace(/\d/g, d => farsiDigits[d]);
+        }
+
+        function updateSummary() {
+            const selectedDoctor = document.querySelector('input[name="doctor"]:checked');
+            const selectedDate = dateInput.value;
+            const selectedTime = document.querySelector('input[name="time"]:checked');
+
+            if (selectedDoctor) {
+                const doctorId = selectedDoctor.value;
+                const cost = parseInt(selectedDoctor.dataset.cost);
+                document.getElementById('summaryDoctor').textContent = doctorData[doctorId].name;
+                document.getElementById('summarySpecialty').textContent = doctorData[doctorId].specialty;
+                document.getElementById('totalCost').textContent = convertToFarsiDigits(cost.toLocaleString('fa-IR'));
+            } else {
+                document.getElementById('summaryDoctor').textContent = 'انتخاب نشده';
+                document.getElementById('summarySpecialty').textContent = '-';
+                document.getElementById('totalCost').textContent = '۰';
+            }
+
+            if (selectedDate) {
+                const date = new Date(selectedDate + 'T00:00:00');
+                const farsiDate = date.toLocaleDateString('fa-IR');
+                document.getElementById('summaryDate').textContent = farsiDate;
+            } else {
+                document.getElementById('summaryDate').textContent = 'انتخاب نشده';
+            }
+
+            if (selectedTime) {
+                document.getElementById('summaryTime').textContent = selectedTime.value;
+            } else {
+                document.getElementById('summaryTime').textContent = 'انتخاب نشده';
+            }
+
+            document.getElementById('summaryPatient').textContent = nameInput.value || '-';
+            document.getElementById('summaryPhone').textContent = phoneInput.value || '-';
+            document.getElementById('summaryEmail').textContent = emailInput.value || '-';
+        }
+
+        doctorOptions.forEach(option => {
+            option.addEventListener('change', updateSummary);
+        });
+
+        dateInput.addEventListener('change', updateSummary);
+
+        timeInputs.forEach(input => {
+            input.addEventListener('change', updateSummary);
+        });
+
+        nameInput.addEventListener('input', updateSummary);
+        phoneInput.addEventListener('input', updateSummary);
+        emailInput.addEventListener('input', updateSummary);
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            let isValid = true;
+
+            if (!document.querySelector('input[name="doctor"]:checked')) {
+                document.querySelector('input[name="doctor"]').parentElement.classList.add('error');
+                isValid = false;
+            }
+
+            if (!dateInput.value) {
+                dateInput.parentElement.classList.add('error');
+                isValid = false;
+            }
+
+            if (!document.querySelector('input[name="time"]:checked')) {
+                document.getElementById('timeSlots').parentElement.classList.add('error');
+                isValid = false;
+            }
+
+            if (!nameInput.value.trim()) {
+                nameInput.parentElement.classList.add('error');
+                isValid = false;
+            }
+
+            if (!phoneInput.value.trim() || !/^[0-9]{10,11}$/.test(phoneInput.value)) {
+                phoneInput.parentElement.classList.add('error');
+                isValid = false;
+            }
+
+            if (!emailInput.value.trim() || !emailInput.validity.valid) {
+                emailInput.parentElement.classList.add('error');
+                isValid = false;
+            }
+
+            if (isValid) {
+                successMessage.classList.add('show');
+                setTimeout(() => {
+                    form.reset();
+                    successMessage.classList.remove('show');
+                    updateSummary();
+                }, 3000);
+            }
+        });
+
+        form.addEventListener('reset', function() {
+            document.querySelectorAll('.form-group').forEach(group => {
+                group.classList.remove('error');
+            });
+            updateSummary();
+        });
+
+        // Set minimum date to today
+        const today = new Date();
+        const minDate = today.toISOString().split('T')[0];
+        dateInput.min = minDate;
+
+        updateSummary();
+    </script>
+</body>
+</html>

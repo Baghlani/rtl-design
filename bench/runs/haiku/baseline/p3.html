@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفحه محصول</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Segoe UI Fallback', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            direction: rtl;
+            text-align: right;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .product-image {
+            background-color: #e0e0e0;
+            border-radius: 8px;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #999;
+        }
+
+        .product-details {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .product-title {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1a1a1a;
+        }
+
+        .rating-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-direction: row-reverse;
+        }
+
+        .stars {
+            display: flex;
+            gap: 4px;
+            flex-direction: row-reverse;
+            font-size: 18px;
+            color: #ffc107;
+        }
+
+        .rating-info {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .price-section {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+
+        .price-group {
+            display: flex;
+            align-items: baseline;
+            gap: 16px;
+            margin-bottom: 12px;
+            flex-direction: row-reverse;
+        }
+
+        .current-price {
+            font-size: 32px;
+            font-weight: 700;
+            color: #e74c3c;
+        }
+
+        .original-price {
+            font-size: 20px;
+            color: #999;
+            text-decoration: line-through;
+        }
+
+        .discount-badge {
+            background-color: #e74c3c;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .price-currency {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .delivery-info {
+            background-color: #e8f5e9;
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            color: #2e7d32;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-direction: row-reverse;
+        }
+
+        .delivery-icon {
+            font-size: 16px;
+        }
+
+        .add-to-cart-section {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 32px;
+            flex-direction: row-reverse;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .quantity-btn {
+            background-color: #f5f5f5;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.2s;
+        }
+
+        .quantity-btn:hover {
+            background-color: #e0e0e0;
+        }
+
+        .quantity-input {
+            border: none;
+            width: 50px;
+            text-align: center;
+            font-size: 14px;
+            padding: 8px 4px;
+        }
+
+        .quantity-input:focus {
+            outline: none;
+        }
+
+        .add-to-cart-btn {
+            flex: 1;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .add-to-cart-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .specs-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #1a1a1a;
+        }
+
+        .specs-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .specs-table tr:not(:last-child) {
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .specs-table td {
+            padding: 16px;
+            text-align: right;
+        }
+
+        .specs-table td:first-child {
+            background-color: #f9f9f9;
+            font-weight: 600;
+            color: #333;
+            width: 30%;
+        }
+
+        .specs-table td:last-child {
+            color: #666;
+        }
+
+        .reviews-section {
+            margin-top: 40px;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 40px;
+        }
+
+        .review-item {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            flex-direction: row-reverse;
+        }
+
+        .reviewer-name {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .review-date {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .review-rating {
+            display: flex;
+            gap: 2px;
+            margin-bottom: 8px;
+            flex-direction: row-reverse;
+            font-size: 14px;
+            color: #ffc107;
+        }
+
+        .review-text {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .product-header {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .product-title {
+                font-size: 22px;
+            }
+
+            .current-price {
+                font-size: 26px;
+            }
+
+            .add-to-cart-section {
+                flex-direction: column;
+            }
+
+            .add-to-cart-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Product Header -->
+        <div class="product-header">
+            <!-- Product Image -->
+            <div class="product-image">
+                تصویر محصول
+            </div>
+
+            <!-- Product Details -->
+            <div class="product-details">
+                <h1 class="product-title">گوشی هوشمند ایکس‌پی اس ۱۳</h1>
+
+                <!-- Rating Section -->
+                <div class="rating-section">
+                    <div class="rating-info">
+                        <span>(۲۴۵ نظر)</span>
+                    </div>
+                    <div class="stars">
+                        ★★★★★
+                    </div>
+                    <span>۴٫۶ امتیاز</span>
+                </div>
+
+                <!-- Price Section -->
+                <div class="price-section">
+                    <div class="price-group">
+                        <span class="current-price">۳٫۲۹۰٫۰۰۰</span>
+                        <span class="discount-badge">۲۰٪</span>
+                        <span class="original-price">۴٫۱۱۲٫۵۰۰</span>
+                    </div>
+                    <div class="price-currency">تومان</div>
+                </div>
+
+                <!-- Delivery Info -->
+                <div class="delivery-info">
+                    <span class="delivery-icon">🚚</span>
+                    <span>ارسال رایگان و تحویل در ۲ تا ۳ روز کاری</span>
+                </div>
+
+                <!-- Add to Cart Section -->
+                <div class="add-to-cart-section">
+                    <button class="add-to-cart-btn">افزودن به سبد خریـد</button>
+                    <div class="quantity-selector">
+                        <button class="quantity-btn">−</button>
+                        <input type="number" class="quantity-input" value="1" min="1">
+                        <button class="quantity-btn">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Specifications Section -->
+        <div class="specs-section">
+            <h2 class="section-title">مشخصات فنی</h2>
+            <table class="specs-table">
+                <tr>
+                    <td>صفحه‌نمایش</td>
+                    <td>۶٫۱ اینچ OLED، ۱۲۰ هرتز</td>
+                </tr>
+                <tr>
+                    <td>پردازنده</td>
+                    <td>تراشه‌ای اختصاصی نسل ۸</td>
+                </tr>
+                <tr>
+                    <td>حافظهٔ RAM</td>
+                    <td>۸ گیگابایت</td>
+                </tr>
+                <tr>
+                    <td>حافظهٔ داخلی</td>
+                    <td>۲۵۶ گیگابایت</td>
+                </tr>
+                <tr>
+                    <td>دوربین عقب</td>
+                    <td>۵۰ مگاپیکسل + ۱۲ مگاپیکسل</td>
+                </tr>
+                <tr>
+                    <td>دوربین جلو</td>
+                    <td>۱۲ مگاپیکسل</td>
+                </tr>
+                <tr>
+                    <td>باتری</td>
+                    <td>۴۳۰۰ میلی‌آمپر</td>
+                </tr>
+                <tr>
+                    <td>سیستم‌عامل</td>
+                    <td>اندروید ۱۵</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Reviews Section -->
+        <div class="reviews-section">
+            <h2 class="section-title">نظرات کاربران</h2>
+
+            <!-- Review 1 -->
+            <div class="review-item">
+                <div class="review-header">
+                    <span class="review-date">۱۴۰۴/۰۵/۱۵</span>
+                    <span class="reviewer-name">علی رضایی</span>
+                </div>
+                <div class="review-rating">
+                    ★★★★★
+                </div>
+                <div class="review-text">
+                    محصول بسیار عالی است. کیفیت ساخت بالا، عملکرد فوق‌العاده و دوربین خیلی خوب. قطعاً خریدی به ارزش است.
+                </div>
+            </div>
+
+            <!-- Review 2 -->
+            <div class="review-item">
+                <div class="review-header">
+                    <span class="review-date">۱۴۰۴/۰۵/۱۲</span>
+                    <span class="reviewer-name">فاطمه احمدی</span>
+                </div>
+                <div class="review-rating">
+                    ★★★★☆
+                </div>
+                <div class="review-text">
+                    خوب است اما قیمت تا حدودی بالاست. باتری خوب است و صفحه‌نمایش بسیار روشن و شفاف. تنها نکتهٔ منفی گرمای اندکی است.
+                </div>
+            </div>
+
+            <!-- Review 3 -->
+            <div class="review-item">
+                <div class="review-header">
+                    <span class="review-date">۱۴۰۴/۰۵/۰۸</span>
+                    <span class="reviewer-name">محمد حسنی</span>
+                </div>
+                <div class="review-rating">
+                    ★★★★★
+                </div>
+                <div class="review-text">
+                    بهترین تلفن هوشمندی است که تا‌کنون خریده‌ام. سرعت پردازش بسیار خوب و دوربین عالی است. تحویل سریع و بسته‌بندی خوب.
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
