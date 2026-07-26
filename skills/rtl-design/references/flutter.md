@@ -140,3 +140,31 @@ Persian labels outgrow English mockups. Defensive defaults:
   the RTL variant; most direction bugs are visible in one golden.
 - Manual pass: switch device locale to fa-IR; check chevrons, back gestures, drawer side,
   slider direction, TabBar order, `ListTile` leading/trailing.
+
+## 10. Gesture & drag math — where logical APIs can't save you
+
+Directional widgets fix layout; raw pointer math is direction-blind. No static rule
+can catch these — reason about them explicitly:
+
+- `details.localPosition.dx / width` measures from the **visual left** — under RTL
+  that's the *end* of your track. Resolve once, at the gesture site, from the
+  ambient direction:
+
+```dart
+final visual = details.localPosition.dx / box.size.width;
+final progress =
+    Directionality.of(context) == TextDirection.rtl ? 1 - visual : visual;
+```
+
+- Key the inversion to `Directionality.of(context)` — **never a global "app is
+  RTL" flag**. Inside an LTR island (a `Directionality(TextDirection.ltr)` subtree,
+  e.g. a media player), a globally-keyed `1 - dx` correction silently
+  double-inverts. This nested-island trap survives every audit that only greps.
+- Centralize the conversion in one helper; scattered `1 - x` fixes are how double
+  inversions are born.
+- Media seek bars stay LTR (core rule): wrap the whole bar in
+  `Directionality(textDirection: TextDirection.ltr, …)` and keep its math plain —
+  cleaner than inverting under RTL.
+- Widgets that already resolve direction (`PageView`, `Dismissible`,
+  `ReorderableListView`, `TabBarView`) need **no** manual inversion — adding one
+  flips them back.

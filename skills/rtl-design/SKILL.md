@@ -80,7 +80,9 @@ It catches the mechanical violations (Arabic ي/ك, wrong digits, physical CSS/F
 props, letter-spacing on Persian, missing/hardcoded `dir`, missing ZWNJ after می).
 Fix every `error`; review each `warning` in context (some have legit exceptions —
 the finding says which). Legit-by-design lines (e.g. digit/yeh normalization maps)
-get an inline `rtl-ignore` comment, or `rtl-ignore-next` on the line above. Then review by judgment what no detector can see: visual
+get an inline `rtl-ignore` comment, or `rtl-ignore-next` on the line above. The
+detector is a floor, not coverage — always also review what no regex can see:
+gesture/drag math and nested direction islands (flutter.md §10, web.md §6), visual
 hierarchy, icon direction semantics, overflow behavior, recipe quality.
 
 ## Coexistence with other design skills
