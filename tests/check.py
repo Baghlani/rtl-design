@@ -64,6 +64,13 @@ check("suppress: single unmarked finding survives",
       len(d["findings"]) == 1 and d["findings"][0]["rule"] == "R001",
       str(d["findings"]))
 
+# 5b. legit LTR islands and direction-scoped CSS → zero findings
+# (field regression: detector must not bark at the exact patterns web.md §5 teaches)
+rc, d = run(FIX / "legit-islands.html")
+check("islands: exit 0", rc == 0, f"rc={rc}")
+check("islands: zero findings on taught patterns",
+      d["counts"] == {"error": 0, "warning": 0}, str(d["findings"]))
+
 # 6. unknown rule id → exit 2
 rc, _ = run(FIX / "clean.html", "--rules", "R999")
 check("unknown rule id: exit 2", rc == 2, f"rc={rc}")
