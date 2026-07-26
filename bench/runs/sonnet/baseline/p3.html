@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>هدفون بی‌سیم نویز‌کنسل سونیک ایکس۵ | فروشگاه</title>
+<style>
+  :root {
+    --bg: #f6f7f9;
+    --surface: #ffffff;
+    --border: #e4e7ec;
+    --text-primary: #1c2129;
+    --text-secondary: #5b6472;
+    --text-muted: #8a92a0;
+    --brand: #d1462f;
+    --brand-dark: #b23a25;
+    --success: #1f8a4c;
+    --success-bg: #eaf7ef;
+    --star: #f5a623;
+    --radius-lg: 16px;
+    --radius-md: 10px;
+    --radius-sm: 6px;
+    --shadow: 0 1px 3px rgba(20, 24, 30, 0.06), 0 1px 2px rgba(20, 24, 30, 0.04);
+    --shadow-md: 0 4px 14px rgba(20, 24, 30, 0.08);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: "Vazirmatn", "IRANSans", Tahoma, "Segoe UI", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.9;
+  }
+
+  body {
+    direction: rtl;
+    text-align: right;
+  }
+
+  img, svg { max-width: 100%; display: block; }
+
+  a { color: inherit; }
+
+  .container {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* ===== Header / breadcrumb ===== */
+  .top-bar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 0;
+  }
+
+  .breadcrumb {
+    font-size: 13px;
+    color: var(--text-muted);
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .breadcrumb a { color: var(--text-secondary); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--brand); }
+  .breadcrumb span.current { color: var(--text-primary); font-weight: 500; }
+
+  main { padding: 28px 0 60px; }
+
+  /* ===== Product top section ===== */
+  .product-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr 0.85fr;
+    gap: 28px;
+    align-items: start;
+  }
+
+  @media (max-width: 980px) {
+    .product-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Gallery */
+  .gallery {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    box-shadow: var(--shadow);
+  }
+
+  .gallery-main {
+    aspect-ratio: 1 / 1;
+    border-radius: var(--radius-md);
+    background: linear-gradient(145deg, #2b2f38, #14171d);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .gallery-main .badge-discount {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: var(--brand);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 999px;
+  }
+
+  .gallery-main svg { width: 46%; opacity: 0.92; }
+
+  .thumbs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .thumb {
+    aspect-ratio: 1 / 1;
+    border-radius: var(--radius-sm);
+    background: #eef0f3;
+    border: 2px solid transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .thumb.active { border-color: var(--brand); background: #fdece8; }
+  .thumb svg { width: 55%; opacity: 0.6; }
+
+  /* Info column */
+  .product-info h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 8px;
+    line-height: 1.6;
+  }
+
+  .brand-line {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+  }
+
+  .brand-line strong { color: var(--brand); font-weight: 600; }
+
+  .rating-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .stars { display: inline-flex; gap: 2px; }
+  .stars svg { width: 18px; height: 18px; }
+  .star-filled { fill: var(--star); }
+  .star-empty { fill: #dde1e7; }
+
+  .rating-score { font-weight: 700; font-size: 15px; }
+
+  .review-count {
+    font-size: 14px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--text-muted);
+  }
+
+  .divider-dot::before {
+    content: "·";
+    color: var(--text-muted);
+    margin: 0 2px;
+  }
+
+  .sold-count { font-size: 14px; color: var(--text-secondary); }
+
+  .price-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 16px 18px;
+    margin-bottom: 20px;
+  }
+
+  .price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .price-old {
+    font-size: 15px;
+    color: var(--text-muted);
+    text-decoration: line-through;
+  }
+
+  .price-discount-badge {
+    background: var(--success-bg);
+    color: var(--success);
+    font-size: 13px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
+  }
+
+  .price-new {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-top: 6px;
+  }
+
+  .price-new .unit {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-right: 4px;
+  }
+
+  .price-note {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+
+  .highlights {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .highlights li {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+
+  .highlights li svg { width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; fill: var(--success); }
+
+  /* Buy box */
+  .buy-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-md);
+    position: sticky;
+    top: 20px;
+  }
+
+  .stock-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--success);
+    margin-bottom: 14px;
+  }
+
+  .stock-status::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--success);
+    display: inline-block;
+  }
+
+  .shipping-box {
+    background: #f4f8ff;
+    border: 1px solid #dce7fb;
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .shipping-box svg { width: 20px; height: 20px; flex-shrink: 0; fill: #2f6fed; margin-top: 2px; }
+
+  .shipping-box .shipping-text { font-size: 13.5px; color: var(--text-secondary); }
+  .shipping-box .shipping-text strong {
+    display: block;
+    color: var(--text-primary);
+    font-size: 14.5px;
+    margin-bottom: 2px;
+  }
+
+  .qty-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .qty-label { font-size: 14px; color: var(--text-secondary); }
+
+  .qty-control {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+
+  .qty-control button {
+    width: 34px;
+    height: 34px;
+    border: none;
+    background: #f5f6f8;
+    font-size: 18px;
+    cursor: pointer;
+    color: var(--text-primary);
+  }
+
+  .qty-control button:hover { background: #eceef1; }
+
+  .qty-control input {
+    width: 42px;
+    height: 34px;
+    border: none;
+    border-inline: 1px solid var(--border);
+    text-align: center;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--text-primary);
+  }
+
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 13px 16px;
+    border-radius: var(--radius-md);
+    font-size: 15px;
+    font-weight: 700;
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.05s ease;
+  }
+
+  .btn:active { transform: scale(0.99); }
+
+  .btn-primary {
+    background: var(--brand);
+    color: #fff;
+    margin-bottom: 10px;
+  }
+
+  .btn-primary:hover { background: var(--brand-dark); }
+
+  .btn-secondary {
+    background: #fff;
+    color: var(--text-primary);
+    border: 1.5px solid var(--border);
+  }
+
+  .btn-secondary:hover { border-color: var(--text-muted); }
+
+  .btn svg { width: 18px; height: 18px; fill: currentColor; }
+
+  .buy-box-footer {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .buy-box-footer .row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+
+  .buy-box-footer svg { width: 16px; height: 16px; fill: var(--text-muted); flex-shrink: 0; }
+
+  /* ===== Specs table ===== */
+  section.block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    margin-top: 24px;
+    box-shadow: var(--shadow);
+  }
+
+  section.block h2 {
+    font-size: 19px;
+    font-weight: 700;
+    margin: 0 0 18px;
+  }
+
+  .specs-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14.5px;
+  }
+
+  .specs-table tr { border-bottom: 1px solid var(--border); }
+  .specs-table tr:last-child { border-bottom: none; }
+
+  .specs-table th, .specs-table td {
+    padding: 12px 8px;
+    text-align: right;
+    vertical-align: top;
+  }
+
+  .specs-table th {
+    width: 34%;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  .specs-table td { color: var(--text-primary); font-weight: 500; }
+
+  .specs-table tr:nth-child(even) { background: #fafbfc; }
+
+  /* ===== Reviews ===== */
+  .reviews-summary {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+
+  .reviews-score {
+    text-align: center;
+    min-width: 110px;
+  }
+
+  .reviews-score .num {
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .reviews-score .stars { justify-content: center; margin: 8px 0 6px; }
+  .reviews-score .count { font-size: 13px; color: var(--text-muted); }
+
+  .reviews-bars { flex: 1; min-width: 220px; display: flex; flex-direction: column; gap: 6px; }
+
+  .bar-row { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--text-secondary); }
+  .bar-row .label { width: 40px; flex-shrink: 0; }
+  .bar-track { flex: 1; height: 7px; border-radius: 999px; background: #edeff2; overflow: hidden; }
+  .bar-fill { height: 100%; background: var(--star); border-radius: 999px; }
+  .bar-row .pct { width: 34px; flex-shrink: 0; text-align: left; }
+
+  .review-card {
+    padding: 18px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .review-card:last-child { border-bottom: none; padding-bottom: 0; }
+
+  .review-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+
+  .reviewer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #eef0f3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--text-secondary);
+    flex-shrink: 0;
+  }
+
+  .reviewer-name { font-size: 14.5px; font-weight: 700; }
+  .reviewer-meta { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; }
+
+  .review-date { font-size: 13px; color: var(--text-muted); white-space: nowrap; }
+
+  .review-stars { margin: 4px 0 10px; }
+  .review-stars svg { width: 15px; height: 15px; }
+
+  .review-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0 0 6px;
+  }
+
+  .review-body {
+    font-size: 14.5px;
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.9;
+  }
+
+  .verified-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: var(--success);
+    background: var(--success-bg);
+    padding: 2px 8px;
+    border-radius: 999px;
+    margin-top: 4px;
+  }
+
+  .verified-badge svg { width: 12px; height: 12px; fill: var(--success); }
+
+  .review-helpful {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .review-helpful button {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 5px 10px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .review-helpful button svg { width: 14px; height: 14px; fill: var(--text-muted); }
+  .review-helpful button:hover { border-color: var(--text-muted); }
+
+  .see-more-wrap { text-align: center; margin-top: 20px; }
+
+  .btn-outline-link {
+    display: inline-block;
+    padding: 10px 26px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    background: #fff;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .btn-outline-link:hover { border-color: var(--brand); color: var(--brand); }
+
+  @media (max-width: 600px) {
+    .reviews-summary { flex-direction: column; align-items: stretch; }
+    .review-head { align-items: flex-start; flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="مسیر صفحه">
+      <a href="#">خانه</a>
+      <span>›</span>
+      <a href="#">صوتی و تصویری</a>
+      <span>›</span>
+      <a href="#">هدفون</a>
+      <span>›</span>
+      <span class="current">هدفون بی‌سیم نویزکنسل سونیک ایکس۵</span>
+    </nav>
+  </div>
+</div>
+
+<main>
+  <div class="container">
+
+    <div class="product-grid">
+
+      <!-- Gallery -->
+      <div class="gallery">
+        <div class="gallery-main">
+          <span class="badge-discount">٪۳۵ تخفیف</span>
+          <svg viewBox="0 0 24 24"><path fill="#c7cbd1" d="M12 3a5 5 0 0 0-5 5v2H5.5A2.5 2.5 0 0 0 3 12.5v6A2.5 2.5 0 0 0 5.5 21h13a2.5 2.5 0 0 0 2.5-2.5v-6a2.5 2.5 0 0 0-2.5-2.5H17V8a5 5 0 0 0-5-5zm-3 7V8a3 3 0 0 1 6 0v2z"/></svg>
+        </div>
+        <div class="thumbs">
+          <div class="thumb active"><svg viewBox="0 0 24 24"><path fill="#9aa1ac" d="M12 3a5 5 0 0 0-5 5v2H5.5A2.5 2.5 0 0 0 3 12.5v6A2.5 2.5 0 0 0 5.5 21h13a2.5 2.5 0 0 0 2.5-2.5v-6a2.5 2.5 0 0 0-2.5-2.5H17V8a5 5 0 0 0-5-5z"/></svg></div>
+          <div class="thumb"><svg viewBox="0 0 24 24"><path fill="#9aa1ac" d="M4 5h16v14H4z"/></svg></div>
+          <div class="thumb"><svg viewBox="0 0 24 24"><path fill="#9aa1ac" d="M4 5h16v14H4z"/></svg></div>
+          <div class="thumb"><svg viewBox="0 0 24 24"><path fill="#9aa1ac" d="M4 5h16v14H4z"/></svg></div>
+        </div>
+      </div>
+
+      <!-- Info -->
+      <div class="product-info">
+        <h1>هدفون بی‌سیم نویزکنسل سونیک ایکس۵</h1>
+        <div class="brand-line">برند: <strong>سونیک آدیو</strong> · کد محصول: SNX۵-BLK</div>
+
+        <div class="rating-row">
+          <span class="stars" aria-label="امتیاز ۴.۵ از ۵">
+            <svg viewBox="0 0 20 20" class="star-filled"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6z"/></svg>
+            <svg viewBox="0 0 20 20" class="star-filled"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6z"/></svg>
+            <svg viewBox="0 0 20 20" class="star-filled"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6z"/></svg>
+            <svg viewBox="0 0 20 20" class="star-filled"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6z"/></svg>
+            <svg viewBox="0 0 20 20" class="star-empty"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6z"/></svg>
+          </span>
+          <span class="rating-score">۴.۵</span>
+          <a href="#reviews" class="review-count">(۲۸۴ نظر)</a>
+          <span class="sold-count divider-dot">۱٬۲۰۰+ فروش</span>
+        </div>
+
+        <div class="price-block">
+          <div class="price-row">
+            <span class="price-old">۴٬۲۹۰٬۰۰۰ تومان</span>
+            <span class="price-discount-badge">٪۳۵ تخفیف</span>
+          </div>
+          <div class="price-new">۲٬۷۸۸٬۵۰۰ <span class="unit">تومان</span></div>
+          <div class="price-note">قیمت شامل مالیات بر ارزش افزوده است</div>
+        </div>
+
+        <ul class="highlights">
+          <li>
+            <svg viewBox="0 0 20 20"><path d="M8 14.5l-4-4 1.4-1.4L8 11.7l6.6-6.6L16 6.5z"/></svg>
+            حذف نویز فعال تا ۳۵ دسی‌بل
+          </li>
+          <li>
+            <svg viewBox="0 0 20 20"><path d="M8 14.5l-4-4 1.4-1.4L8 11.7l6.6-6.6L16 6.5z"/></svg>
+            دوام باتری تا ۳۰ ساعت با یک بار شارژ
+          </li>
+          <li>
+            <svg viewBox="0 0 20 20"><path d="M8 14.5l-4-4 1.4-1.4L8 11.7l6.6-6.6L16 6.5z"/></svg>
+            ۱۸ ماه گارانتی شرکتی و ۷ روز ضمانت بازگشت کالا
+          </li>
+        </ul>
+      </div>
+
+      <!-- Buy box -->
+      <div class="buy-box">
+        <div class="stock-status">موجود در انبار</div>
+
+        <div class="shipping-box">
+          <svg viewBox="0 0 24 24"><path d="M20 8h-3V4H3a2 2 0 0 0-2 2v11h2a3 3 0 1 0 6 0h6a3 3 0 1 0 6 0h2v-6zM6.5 18.5A1.5 1.5 0 1 1 8 17a1.5 1.5 0 0 1-1.5 1.5zm11-8L20 13h-3zm-2 8A1.5 1.5 0 1 1 17 17a1.5 1.5 0 0 1-1.5 1.5z"/></svg>
+          <div class="shipping-text">
+            <strong>ارسال طی ۲ تا ۴ روز کاری</strong>
+            تحویل اکسپرس (۲۴ ساعته) در تهران با هزینهٔ جداگانه موجود است
+          </div>
+        </div>
+
+        <div class="qty-row">
+          <span class="qty-label">تعداد</span>
+          <div class="qty-control">
+            <button type="button" aria-label="افزایش تعداد">+</button>
+            <input type="text" value="۱" inputmode="numeric" aria-label="تعداد">
+            <button type="button" aria-label="کاهش تعداد">−</button>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-primary">
+          <svg viewBox="0 0 24 24"><path d="M7 4h-2l-1 2H2v2h2l3.6 7.59-1.35 2.44A2 2 0 0 0 8 21h11v-2H8l1.1-2h7.45a2 2 0 0 0 1.79-1.11L21.6 8H6.42L5.6 6H2V4h5zM7 22a1.5 1.5 0 1 0 1.5-1.5A1.5 1.5 0 0 0 7 22zm10 0a1.5 1.5 0 1 0 1.5-1.5A1.5 1.5 0 0 0 17 22z"/></svg>
+          افزودن به سبد خرید
+        </button>
+        <button type="button" class="btn btn-secondary">خرید سریع (پرداخت آنی)</button>
+
+        <div class="buy-box-footer">
+          <div class="row">
+            <svg viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5z"/></svg>
+            پرداخت امن و ضمانت اصالت کالا
+          </div>
+          <div class="row">
+            <svg viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5z"/></svg>
+            امکان بازگشت کالا تا ۷ روز پس از تحویل
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Specs -->
+    <section class="block">
+      <h2>مشخصات فنی</h2>
+      <table class="specs-table">
+        <tbody>
+          <tr><th scope="row">نوع اتصال</th><td>بلوتوث نسخهٔ ۵.۳ / ورودی سیمی ۳.۵ میلی‌متری</td></tr>
+          <tr><th scope="row">حذف نویز فعال (ANC)</th><td>دارد، تا ۳۵ دسی‌بل کاهش نویز محیط</td></tr>
+          <tr><th scope="row">دوام باتری</th><td>۳۰ ساعت (ANC خاموش) / ۲۲ ساعت (ANC روشن)</td></tr>
+          <tr><th scope="row">زمان شارژ کامل</th><td>حدود ۱ ساعت و ۳۰ دقیقه</td></tr>
+          <tr><th scope="row">شارژ سریع</th><td>۱۰ دقیقه شارژ برابر با ۴ ساعت پخش</td></tr>
+          <tr><th scope="row">وزن</th><td>۲۵۴ گرم</td></tr>
+          <tr><th scope="row">درایور</th><td>۴۰ میلی‌متری، دینامیک</td></tr>
+          <tr><th scope="row">میکروفون</th><td>دو میکروفون با فیلتر نویز مکالمه</td></tr>
+          <tr><th scope="row">مقاومت در برابر آب و عرق</th><td>استاندارد IPX۴</td></tr>
+          <tr><th scope="row">رنگ‌بندی</th><td>مشکی، خاکستری دودی، کرم</td></tr>
+          <tr><th scope="row">محتویات جعبه</th><td>هدفون، کابل شارژ USB-C، کابل صوتی ۳.۵ میلی‌متری، کیف نگهداری</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Reviews -->
+    <section class="block" id="reviews">
+      <h2>نظرات کاربران</h2>
+
+      <div class="reviews-summary">
+        <div class="reviews-score">
+          <div class="num">۴.۵</div>
+          <div class="stars" aria-hidden="true">
+            <svg viewBox="0 0 20 20" class="star-filled"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6z"/></svg>
+            <svg viewBox="0 0 20 20" class="star-filled"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6z"/></svg>
+            <svg viewBox="0 0 20 20" class="star-filled"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6z"/></svg>
+            <svg viewBox="0 0 20 20" class="star-filled"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6z"/></svg>
+            <svg viewBox="0 0 20 20" class="star-empty"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6z"/></svg>
+          </div>
+          <div class="count">از ۲۸۴ نظر</div>
+        </div>
+        <div class="reviews-bars">
+          <div class="bar-row"><span class="label">۵ ستاره</span><div class="bar-track"><div class="bar-fill" style="width:68%"></div></div><span class="pct">٪۶۸</span></div>
+          <div class="bar-row"><span class="label">۴ ستاره</span><div class="bar-track"><div class="bar-fill" style="width:20%"></div></div><span class="pct">٪۲۰</span></div>
+          <div class="bar-row"><span class="label">۳ ستاره</span><div class="bar-track"><div class="bar-fill" style="width:7%"></div></div><span class="pct">٪۷</span></div>
+          <div class="bar-row"><span class="label">۲ ستاره</span><div class="bar-track"><div class="bar-fill" style="width:3%"></div></div><span class="pct">٪۳</span></div>
+          <div class="bar-row"><span class="label">۱ ستاره</span><div class="bar-track"><div class="bar-fill" style="width:2%"></div></div><span class="pct">٪۲</span></div>
+        </div>
+      </div>
+
+      <!-- Review 1 -->
+      <article class="review-card">
+        <div class="review-head">
+          <div class="reviewer">
+            <div class="avatar">ن.م</div>
+            <div>
+              <div class="reviewer-name">نیلوفر محمدی</div>
+              <div class="reviewer-meta">خریدار محصول</div>
+            </div>
+          </div>
+          <span class="review-date">۱۲ تیر ۱۴۰۳</span>
+        </div>
+        <div class="review-stars" aria-label="امتیاز ۵ از ۵">
+          <svg viewBox="0 0 20 20" class="star-filled" style="display:inline"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6z"/></svg>
+          <svg viewBox="0 0 20 20" class="star-filled" style="display:inline"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6z"/></svg>
+          <svg viewBox="0 0 20 20" class="star-filled" style="display:inline"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6z"/></svg>
+          <svg viewBox="0 0 20 20" class="star-filled" style="display:inline"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6z"/></svg>
+          <svg viewBox="0 0 20 20" class="star-filled" style="display:inline"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6z"/></svg>
+        </div>
+        <h3 class="review-title">کیفیت صدا فوق‌العاده‌ست</h3>
+        <p class="review-body">
+          حذف نویزش واقعاً کار می‌کنه، توی مترو و محیط شلوغ صدای اطراف تقریباً صفر می‌شه.
+          باتری هم به همون ۳۰ ساعتی که نوشته بودن نزدیکه. فقط جعبه‌ش کمی دیر رسید ولی
+          ارزش صبر کردن رو داشت.
+        </p>
+        <span class="verified-badge">
+          <svg viewBox="0 0 20 20"><path d="M8 14.5l-4-4 1.4-1.4L8 11.7l6.6-6.6L16 6.5z"/></svg>
+          خرید تأیید شده
+        </span>
+        <div class="review-helpful">
+          <button type="button">
+            <svg viewBox="0 0 24 24"><path d="M2 21h2V9H2zm19.83-9.59c.11-.25.17-.52.17-.8V9c0-1.1-.9-2-2-2h-5.34l.8-3.83.03-.32c0-.41-.17-.79-.44-1.06L13.17 1 7.59 6.59C7.22 6.95 7 7.45 7 8v10c0 1.1.9 2 2 2h8c.83 0 1.54-.5 1.84-1.22z"/></svg>
+            مفید بود (۱۸)
+          </button>
+        </div>
+      </article>
+
+      <!-- Review 2 -->
+      <article class="review-card">
+        <div class="review-head">
+          <div class="reviewer">
+            <div class="avatar">آ.ک</div>
+            <div>
+              <div class="reviewer-name">آرمان کریمی</div>
+              <div class="reviewer-meta">خریدار محصول</div>
+            </div>
+          </div>
+          <span class="review-date">۳۰ خرداد ۱۴۰۳</span>
+        </div>
+        <div class="review-stars" aria-label="امتیاز ۴ از ۵">
+          <svg viewBox="0 0 20 20" class="star-filled" style="display:inline"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6z"/></svg>
+          <svg viewBox="0 0 20 20" class="star-filled" style="display:inline"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6z"/></svg>
+          <svg viewBox="0 0 20 20" class="star-filled" style="display:inline"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6z"/></svg>
+          <svg viewBox="0 0 20 20" class="star-filled" style="display:inline"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6z"/></svg>
+          <svg viewBox="0 0 20 20" class="star-empty" style="display:inline"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6z"/></svg>
+        </div>
+        <h3 class="review-title">راحت و سبک، فقط اپلیکیشنش ضعیفه</h3>
+        <p class="review-body">
+          از نظر راحتی روی سر و کیفیت ساخت نمرهٔ کامل می‌دم. تنظیمات اپلیکیشنش یه‌کم
+          کند بود و گاهی کانکت شدنش با گوشی طول می‌کشید. در کل با این قیمت خرید خوبی بود.
+        </p>
+        <span class="verified-badge">
+          <svg viewBox="0 0 20 20"><path d="M8 14.5l-4-4 1.4-1.4L8 11.7l6.6-6.6L16 6.5z"/></svg>
+          خرید تأیید شده
+        </span>
+        <div class="review-helpful">
+          <button type="button">
+            <svg viewBox="0 0 24 24"><path d="M2 21h2V9H2zm19.83-9.59c.11-.25.17-.52.17-.8V9c0-1.1-.9-2-2-2h-5.34l.8-3.83.03-.32c0-.41-.17-.79-.44-1.06L13.17 1 7.59 6.59C7.22 6.95 7 7.45 7 8v10c0 1.1.9 2 2 2h8c.83 0 1.54-.5 1.84-1.22z"/></svg>
+            مفید بود (۹)
+          </button>
+        </div>
+      </article>
+
+      <!-- Review 3 -->
+      <article class="review-card">
+        <div class="review-head">
+          <div class="reviewer">
+            <div class="avatar">س.ح</div>
+            <div>
+              <div class="reviewer-name">سارا حسینی</div>
+              <div class="reviewer-meta">خریدار محصول</div>
+            </div>
+          </div>
+          <span class="review-date">۵ خرداد ۱۴۰۳</span>
+        </div>
+        <div class="review-stars" aria-label="امتیاز ۵ از ۵">
+          <svg viewBox="0 0 20 20" class="star-filled" style="display:inline"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6z"/></svg>
+          <svg viewBox="0 0 20 20" class="star-filled" style="display:inline"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6z"/></svg>
+          <svg viewBox="0 0 20 20" class="star-filled" style="display:inline"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6z"/></svg>
+          <svg viewBox="0 0 20 20" class="star-filled" style="display:inline"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6z"/></svg>
+          <svg viewBox="0 0 20 20" class="star-filled" style="display:inline"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2L10 14.9 4.4 18l1.4-6.2L1 7.5l6.4-.6z"/></svg>
+        </div>
+        <h3 class="review-title">نسبت به قیمتش عالیه</h3>
+        <p class="review-body">
+          برای سفر کاری خریدم و توی هواپیما و مترو محشره. بسته‌بندی مرتب بود و ارسال هم
+          دقیقاً توی همون بازهٔ زمانی اعلام‌شده رسید. پشتیبانی فروشگاه هم برای ثبت گارانتی
+          خیلی سریع جواب داد.
+        </p>
+        <span class="verified-badge">
+          <svg viewBox="0 0 20 20"><path d="M8 14.5l-4-4 1.4-1.4L8 11.7l6.6-6.6L16 6.5z"/></svg>
+          خرید تأیید شده
+        </span>
+        <div class="review-helpful">
+          <button type="button">
+            <svg viewBox="0 0 24 24"><path d="M2 21h2V9H2zm19.83-9.59c.11-.25.17-.52.17-.8V9c0-1.1-.9-2-2-2h-5.34l.8-3.83.03-.32c0-.41-.17-.79-.44-1.06L13.17 1 7.59 6.59C7.22 6.95 7 7.45 7 8v10c0 1.1.9 2 2 2h8c.83 0 1.54-.5 1.84-1.22z"/></svg>
+            مفید بود (۲۴)
+          </button>
+        </div>
+      </article>
+
+      <div class="see-more-wrap">
+        <button type="button" class="btn-outline-link">مشاهدهٔ همهٔ ۲۸۴ نظر</button>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+</body>
+</html>

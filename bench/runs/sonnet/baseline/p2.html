@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>داشبورد فروش</title>
+<style>
+  :root {
+    --bg: #f5f6fa;
+    --surface: #ffffff;
+    --border: #e4e7ee;
+    --text-primary: #1c1e26;
+    --text-secondary: #6b7080;
+    --text-muted: #9498a3;
+    --brand: #3452eb;
+    --brand-soft: #eaeeff;
+    --success: #1c8a5b;
+    --success-soft: #e5f6ee;
+    --warning: #b9740b;
+    --warning-soft: #fbf0dc;
+    --danger: #c93f3f;
+    --danger-soft: #fbe9e9;
+    --radius-lg: 16px;
+    --radius-md: 12px;
+    --radius-sm: 8px;
+    --shadow: 0 1px 2px rgba(20, 24, 40, 0.04), 0 1px 8px rgba(20, 24, 40, 0.05);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: "Vazirmatn", "IRANSans", "Tahoma", system-ui, sans-serif;
+    font-feature-settings: "ss01" on;
+    line-height: 1.6;
+  }
+
+  .page {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 32px 24px 64px;
+  }
+
+  /* ---------- Header ---------- */
+  header.top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+
+  header.top h1 {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 4px;
+  }
+
+  header.top p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 14px;
+  }
+
+  .store-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 8px 14px;
+    box-shadow: var(--shadow);
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+
+  .store-badge .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--success);
+    flex-shrink: 0;
+  }
+
+  /* ---------- Stat cards ---------- */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-card .icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    margin-bottom: 14px;
+  }
+
+  .stat-card.sales .icon { background: var(--brand-soft); color: var(--brand); }
+  .stat-card.orders .icon { background: var(--success-soft); color: var(--success); }
+  .stat-card.customers .icon { background: var(--warning-soft); color: var(--warning); }
+  .stat-card.returns .icon { background: var(--danger-soft); color: var(--danger); }
+
+  .stat-card .label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+  }
+
+  .stat-card .value {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stat-card .delta {
+    font-size: 12.5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-weight: 600;
+  }
+
+  .delta.up { color: var(--success); background: var(--success-soft); }
+  .delta.down { color: var(--danger); background: var(--danger-soft); }
+  .delta.flat { color: var(--text-secondary); background: #eef0f4; }
+
+  /* ---------- Filter section ---------- */
+  .filter-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    padding: 18px 20px;
+    margin-bottom: 24px;
+  }
+
+  .filter-panel .filter-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .filter-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .filter-group label {
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+
+  .filter-group select,
+  .filter-group input[type="date"] {
+    font-family: inherit;
+    font-size: 13.5px;
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: #fbfbfd;
+    color: var(--text-primary);
+    min-width: 150px;
+  }
+
+  .filter-group select:focus,
+  .filter-group input[type="date"]:focus {
+    outline: 2px solid var(--brand);
+    outline-offset: 1px;
+    border-color: var(--brand);
+  }
+
+  .preset-chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .chip {
+    border: 1px solid var(--border);
+    background: #fbfbfd;
+    color: var(--text-secondary);
+    font-size: 12.5px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 600;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+
+  .chip.active {
+    background: var(--brand);
+    border-color: var(--brand);
+    color: #fff;
+  }
+
+  .chip:hover:not(.active) {
+    background: var(--brand-soft);
+    color: var(--brand);
+    border-color: var(--brand-soft);
+  }
+
+  .filter-actions {
+    margin-inline-start: auto;
+    display: flex;
+    gap: 10px;
+  }
+
+  .btn {
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 700;
+    padding: 9px 18px;
+    border-radius: var(--radius-sm);
+    border: 1px solid transparent;
+    cursor: pointer;
+  }
+
+  .btn.primary {
+    background: var(--brand);
+    color: #fff;
+  }
+
+  .btn.ghost {
+    background: transparent;
+    border-color: var(--border);
+    color: var(--text-secondary);
+  }
+
+  /* ---------- Orders table ---------- */
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .panel-head h2 {
+    font-size: 15.5px;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .panel-head .see-all {
+    font-size: 13px;
+    color: var(--brand);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+
+  thead th {
+    text-align: right;
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 12.5px;
+    padding: 12px 20px;
+    background: #fafafc;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+
+  thead th.num-col,
+  tbody td.num-col {
+    text-align: left;
+  }
+
+  tbody td {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-primary);
+  }
+
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  tbody tr:hover {
+    background: #fafbff;
+  }
+
+  .order-id {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .order-date {
+    color: var(--text-secondary);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .order-amount {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  .status::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  .status.delivered { background: var(--success-soft); color: var(--success); }
+  .status.delivered::before { background: var(--success); }
+
+  .status.processing { background: var(--warning-soft); color: var(--warning); }
+  .status.processing::before { background: var(--warning); }
+
+  .status.cancelled { background: var(--danger-soft); color: var(--danger); }
+  .status.cancelled::before { background: var(--danger); }
+
+  .status.shipped { background: var(--brand-soft); color: var(--brand); }
+  .status.shipped::before { background: var(--brand); }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 880px) {
+    .stats { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 640px) {
+    .stats { grid-template-columns: 1fr; }
+    .filter-actions { margin-inline-start: 0; width: 100%; }
+    .filter-actions .btn { flex: 1; }
+    table, thead, tbody, th, td, tr { display: block; }
+    thead { display: none; }
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      padding: 12px 16px;
+    }
+    tbody td {
+      border-bottom: none;
+      padding: 6px 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    tbody td.num-col { text-align: right; }
+    tbody td::before {
+      content: attr(data-label);
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14151b;
+      --surface: #1c1e27;
+      --border: #2a2c38;
+      --text-primary: #eef0f6;
+      --text-secondary: #a2a6b5;
+      --text-muted: #6f7383;
+      --brand-soft: #232a52;
+      --success-soft: #16302a;
+      --warning-soft: #362a13;
+      --danger-soft: #3a1f22;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 1px 8px rgba(0,0,0,0.25);
+    }
+    thead th { background: #20222d; }
+    .filter-group select, .filter-group input[type="date"], .chip { background: #20222d; color: var(--text-primary); }
+    tbody tr:hover { background: #20222d; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="top">
+    <div>
+      <h1>داشبورد فروش</h1>
+      <p>خلاصهٔ عملکرد فروشگاه — امروز ۶ مرداد ۱۴۰۴</p>
+    </div>
+    <div class="store-badge">
+      <span class="dot"></span>
+      فروشگاه مرکزی · آنلاین
+    </div>
+  </header>
+
+  <section class="stats">
+    <div class="stat-card sales">
+      <div class="icon">﷼</div>
+      <div class="label">فروش امروز</div>
+      <div class="value">۴۲٬۸۵۰٬۰۰۰ تومان</div>
+      <span class="delta up">↑ ۱۲٫۴٪ نسبت به دیروز</span>
+    </div>
+
+    <div class="stat-card orders">
+      <div class="icon">📦</div>
+      <div class="label">تعداد سفارش</div>
+      <div class="value">۱۸۶</div>
+      <span class="delta up">↑ ۸ سفارش بیشتر</span>
+    </div>
+
+    <div class="stat-card customers">
+      <div class="icon">👤</div>
+      <div class="label">مشتری جدید</div>
+      <div class="value">۳۴</div>
+      <span class="delta flat">بدون تغییر</span>
+    </div>
+
+    <div class="stat-card returns">
+      <div class="icon">↩</div>
+      <div class="label">نرخ بازگشت</div>
+      <div class="value">۲٫۱٪</div>
+      <span class="delta down">↓ ۰٫۴٪ بهبود</span>
+    </div>
+  </section>
+
+  <section class="filter-panel">
+    <h3 class="filter-title">🗓 محدودهٔ زمانی گزارش</h3>
+    <div class="filter-row">
+      <div class="preset-chips" role="group" aria-label="بازه‌های آماده">
+        <button type="button" class="chip active">امروز</button>
+        <button type="button" class="chip">هفتهٔ جاری</button>
+        <button type="button" class="chip">ماه جاری</button>
+        <button type="button" class="chip">سه‌ماههٔ اخیر</button>
+      </div>
+
+      <div class="filter-group">
+        <label for="from-date">از تاریخ</label>
+        <input type="date" id="from-date" value="2026-07-20">
+      </div>
+
+      <div class="filter-group">
+        <label for="to-date">تا تاریخ</label>
+        <input type="date" id="to-date" value="2026-07-27">
+      </div>
+
+      <div class="filter-group">
+        <label for="branch">شعبه</label>
+        <select id="branch">
+          <option>همهٔ شعب</option>
+          <option>فروشگاه مرکزی</option>
+          <option>شعبهٔ شمال</option>
+          <option>فروشگاه آنلاین</option>
+        </select>
+      </div>
+
+      <div class="filter-actions">
+        <button type="button" class="btn ghost">پاک‌کردن</button>
+        <button type="button" class="btn primary">اعمال فیلتر</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>۶ سفارش آخر</h2>
+      <a href="#" class="see-all">مشاهدهٔ همه ←</a>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>شمارهٔ سفارش</th>
+          <th>تاریخ</th>
+          <th class="num-col">مبلغ</th>
+          <th>وضعیت</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="order-id" data-label="شماره">#۱۰۴۵۸</td>
+          <td class="order-date" data-label="تاریخ">۱۴۰۴/۰۵/۰۶ — ۱۴:۲۲</td>
+          <td class="order-amount num-col" data-label="مبلغ">۱٬۲۵۰٬۰۰۰ تومان</td>
+          <td data-label="وضعیت"><span class="status delivered">تحویل‌شده</span></td>
+        </tr>
+        <tr>
+          <td class="order-id" data-label="شماره">#۱۰۴۵۷</td>
+          <td class="order-date" data-label="تاریخ">۱۴۰۴/۰۵/۰۶ — ۱۳:۵۰</td>
+          <td class="order-amount num-col" data-label="مبلغ">۸۴۰٬۰۰۰ تومان</td>
+          <td data-label="وضعیت"><span class="status processing">در حال پردازش</span></td>
+        </tr>
+        <tr>
+          <td class="order-id" data-label="شماره">#۱۰۴۵۶</td>
+          <td class="order-date" data-label="تاریخ">۱۴۰۴/۰۵/۰۶ — ۱۱:۰۵</td>
+          <td class="order-amount num-col" data-label="مبلغ">۳٬۴۲۰٬۰۰۰ تومان</td>
+          <td data-label="وضعیت"><span class="status shipped">ارسال‌شده</span></td>
+        </tr>
+        <tr>
+          <td class="order-id" data-label="شماره">#۱۰۴۵۵</td>
+          <td class="order-date" data-label="تاریخ">۱۴۰۴/۰۵/۰۵ — ۱۸:۴۰</td>
+          <td class="order-amount num-col" data-label="مبلغ">۶۲۰٬۰۰۰ تومان</td>
+          <td data-label="وضعیت"><span class="status cancelled">لغوشده</span></td>
+        </tr>
+        <tr>
+          <td class="order-id" data-label="شماره">#۱۰۴۵۴</td>
+          <td class="order-date" data-label="تاریخ">۱۴۰۴/۰۵/۰۵ — ۱۶:۱۵</td>
+          <td class="order-amount num-col" data-label="مبلغ">۱٬۹۸۰٬۰۰۰ تومان</td>
+          <td data-label="وضعیت"><span class="status delivered">تحویل‌شده</span></td>
+        </tr>
+        <tr>
+          <td class="order-id" data-label="شماره">#۱۰۴۵۳</td>
+          <td class="order-date" data-label="تاریخ">۱۴۰۴/۰۵/۰۵ — ۰۹:۳۰</td>
+          <td class="order-amount num-col" data-label="مبلغ">۴۷۵٬۰۰۰ تومان</td>
+          <td data-label="وضعیت"><span class="status processing">در حال پردازش</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+</div>
+</body>
+</html>

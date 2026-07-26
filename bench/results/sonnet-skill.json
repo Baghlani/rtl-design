@@ -1,0 +1,487 @@
+[
+  {
+    "file": "bench/runs/sonnet/skill/p1.html",
+    "defects": 0,
+    "checked": 18,
+    "results": {
+      "01": {
+        "label": "Arabic ي/ك in Persian text",
+        "present": false,
+        "evidence": ""
+      },
+      "02": {
+        "label": "Latin digits in Persian text",
+        "present": false,
+        "evidence": ""
+      },
+      "03": {
+        "label": "Arabic-Indic digits ٠-٩",
+        "present": false,
+        "evidence": ""
+      },
+      "04": {
+        "label": "Missing ZWNJ",
+        "present": false,
+        "evidence": ""
+      },
+      "05": {
+        "label": "Gregorian date shown to Persian users",
+        "present": false,
+        "evidence": ""
+      },
+      "06": {
+        "label": "Grouped number not isolated (reverses)",
+        "present": false,
+        "evidence": ""
+      },
+      "07": {
+        "label": "Currency sign prefix not isolated",
+        "present": false,
+        "evidence": ""
+      },
+      "08": {
+        "label": "ASCII ? ; , in Persian sentence",
+        "present": false,
+        "evidence": ""
+      },
+      "09": {
+        "label": "ASCII decimal/thousands separator",
+        "present": false,
+        "evidence": ""
+      },
+      "10": {
+        "label": "<html> without dir=rtl",
+        "present": false,
+        "evidence": ""
+      },
+      "11": {
+        "label": "Physical CSS instead of logical",
+        "present": false,
+        "evidence": ""
+      },
+      "14": {
+        "label": "Drawer anchored to a physical side",
+        "present": false,
+        "evidence": ""
+      },
+      "15": {
+        "label": "Latin-data input without dir=ltr",
+        "present": false,
+        "evidence": ""
+      },
+      "16": {
+        "label": "Pointer math without direction handling",
+        "present": false,
+        "evidence": ""
+      },
+      "17": {
+        "label": "letter-spacing on Persian",
+        "present": false,
+        "evidence": ""
+      },
+      "18": {
+        "label": "Latin line-height on Persian body",
+        "present": false,
+        "evidence": ""
+      },
+      "19": {
+        "label": "Font with no Persian coverage",
+        "present": false,
+        "evidence": ""
+      },
+      "20": {
+        "label": "Commercial font shipped as a file",
+        "present": false,
+        "evidence": ""
+      }
+    }
+  },
+  {
+    "file": "bench/runs/sonnet/skill/p2.html",
+    "defects": 0,
+    "checked": 18,
+    "results": {
+      "01": {
+        "label": "Arabic ي/ك in Persian text",
+        "present": false,
+        "evidence": ""
+      },
+      "02": {
+        "label": "Latin digits in Persian text",
+        "present": false,
+        "evidence": ""
+      },
+      "03": {
+        "label": "Arabic-Indic digits ٠-٩",
+        "present": false,
+        "evidence": ""
+      },
+      "04": {
+        "label": "Missing ZWNJ",
+        "present": false,
+        "evidence": ""
+      },
+      "05": {
+        "label": "Gregorian date shown to Persian users",
+        "present": false,
+        "evidence": ""
+      },
+      "06": {
+        "label": "Grouped number not isolated (reverses)",
+        "present": false,
+        "evidence": ""
+      },
+      "07": {
+        "label": "Currency sign prefix not isolated",
+        "present": false,
+        "evidence": ""
+      },
+      "08": {
+        "label": "ASCII ? ; , in Persian sentence",
+        "present": false,
+        "evidence": ""
+      },
+      "09": {
+        "label": "ASCII decimal/thousands separator",
+        "present": false,
+        "evidence": ""
+      },
+      "10": {
+        "label": "<html> without dir=rtl",
+        "present": false,
+        "evidence": ""
+      },
+      "11": {
+        "label": "Physical CSS instead of logical",
+        "present": false,
+        "evidence": ""
+      },
+      "14": {
+        "label": "Drawer anchored to a physical side",
+        "present": false,
+        "evidence": ""
+      },
+      "15": {
+        "label": "Latin-data input without dir=ltr",
+        "present": false,
+        "evidence": ""
+      },
+      "16": {
+        "label": "Pointer math without direction handling",
+        "present": false,
+        "evidence": ""
+      },
+      "17": {
+        "label": "letter-spacing on Persian",
+        "present": false,
+        "evidence": ""
+      },
+      "18": {
+        "label": "Latin line-height on Persian body",
+        "present": false,
+        "evidence": ""
+      },
+      "19": {
+        "label": "Font with no Persian coverage",
+        "present": false,
+        "evidence": ""
+      },
+      "20": {
+        "label": "Commercial font shipped as a file",
+        "present": false,
+        "evidence": ""
+      }
+    }
+  },
+  {
+    "file": "bench/runs/sonnet/skill/p3.html",
+    "defects": 0,
+    "checked": 18,
+    "results": {
+      "01": {
+        "label": "Arabic ي/ك in Persian text",
+        "present": false,
+        "evidence": ""
+      },
+      "02": {
+        "label": "Latin digits in Persian text",
+        "present": false,
+        "evidence": ""
+      },
+      "03": {
+        "label": "Arabic-Indic digits ٠-٩",
+        "present": false,
+        "evidence": ""
+      },
+      "04": {
+        "label": "Missing ZWNJ",
+        "present": false,
+        "evidence": ""
+      },
+      "05": {
+        "label": "Gregorian date shown to Persian users",
+        "present": false,
+        "evidence": ""
+      },
+      "06": {
+        "label": "Grouped number not isolated (reverses)",
+        "present": false,
+        "evidence": ""
+      },
+      "07": {
+        "label": "Currency sign prefix not isolated",
+        "present": false,
+        "evidence": ""
+      },
+      "08": {
+        "label": "ASCII ? ; , in Persian sentence",
+        "present": false,
+        "evidence": ""
+      },
+      "09": {
+        "label": "ASCII decimal/thousands separator",
+        "present": false,
+        "evidence": ""
+      },
+      "10": {
+        "label": "<html> without dir=rtl",
+        "present": false,
+        "evidence": ""
+      },
+      "11": {
+        "label": "Physical CSS instead of logical",
+        "present": false,
+        "evidence": ""
+      },
+      "14": {
+        "label": "Drawer anchored to a physical side",
+        "present": false,
+        "evidence": ""
+      },
+      "15": {
+        "label": "Latin-data input without dir=ltr",
+        "present": false,
+        "evidence": ""
+      },
+      "16": {
+        "label": "Pointer math without direction handling",
+        "present": false,
+        "evidence": ""
+      },
+      "17": {
+        "label": "letter-spacing on Persian",
+        "present": false,
+        "evidence": ""
+      },
+      "18": {
+        "label": "Latin line-height on Persian body",
+        "present": false,
+        "evidence": ""
+      },
+      "19": {
+        "label": "Font with no Persian coverage",
+        "present": false,
+        "evidence": ""
+      },
+      "20": {
+        "label": "Commercial font shipped as a file",
+        "present": false,
+        "evidence": ""
+      }
+    }
+  },
+  {
+    "file": "bench/runs/sonnet/skill/p4.html",
+    "defects": 0,
+    "checked": 18,
+    "results": {
+      "01": {
+        "label": "Arabic ي/ك in Persian text",
+        "present": false,
+        "evidence": ""
+      },
+      "02": {
+        "label": "Latin digits in Persian text",
+        "present": false,
+        "evidence": ""
+      },
+      "03": {
+        "label": "Arabic-Indic digits ٠-٩",
+        "present": false,
+        "evidence": ""
+      },
+      "04": {
+        "label": "Missing ZWNJ",
+        "present": false,
+        "evidence": ""
+      },
+      "05": {
+        "label": "Gregorian date shown to Persian users",
+        "present": false,
+        "evidence": ""
+      },
+      "06": {
+        "label": "Grouped number not isolated (reverses)",
+        "present": false,
+        "evidence": ""
+      },
+      "07": {
+        "label": "Currency sign prefix not isolated",
+        "present": false,
+        "evidence": ""
+      },
+      "08": {
+        "label": "ASCII ? ; , in Persian sentence",
+        "present": false,
+        "evidence": ""
+      },
+      "09": {
+        "label": "ASCII decimal/thousands separator",
+        "present": false,
+        "evidence": ""
+      },
+      "10": {
+        "label": "<html> without dir=rtl",
+        "present": false,
+        "evidence": ""
+      },
+      "11": {
+        "label": "Physical CSS instead of logical",
+        "present": false,
+        "evidence": ""
+      },
+      "14": {
+        "label": "Drawer anchored to a physical side",
+        "present": false,
+        "evidence": ""
+      },
+      "15": {
+        "label": "Latin-data input without dir=ltr",
+        "present": false,
+        "evidence": ""
+      },
+      "16": {
+        "label": "Pointer math without direction handling",
+        "present": false,
+        "evidence": ""
+      },
+      "17": {
+        "label": "letter-spacing on Persian",
+        "present": false,
+        "evidence": ""
+      },
+      "18": {
+        "label": "Latin line-height on Persian body",
+        "present": false,
+        "evidence": ""
+      },
+      "19": {
+        "label": "Font with no Persian coverage",
+        "present": false,
+        "evidence": ""
+      },
+      "20": {
+        "label": "Commercial font shipped as a file",
+        "present": false,
+        "evidence": ""
+      }
+    }
+  },
+  {
+    "file": "bench/runs/sonnet/skill/p5.html",
+    "defects": 0,
+    "checked": 18,
+    "results": {
+      "01": {
+        "label": "Arabic ي/ك in Persian text",
+        "present": false,
+        "evidence": ""
+      },
+      "02": {
+        "label": "Latin digits in Persian text",
+        "present": false,
+        "evidence": ""
+      },
+      "03": {
+        "label": "Arabic-Indic digits ٠-٩",
+        "present": false,
+        "evidence": ""
+      },
+      "04": {
+        "label": "Missing ZWNJ",
+        "present": false,
+        "evidence": ""
+      },
+      "05": {
+        "label": "Gregorian date shown to Persian users",
+        "present": false,
+        "evidence": ""
+      },
+      "06": {
+        "label": "Grouped number not isolated (reverses)",
+        "present": false,
+        "evidence": ""
+      },
+      "07": {
+        "label": "Currency sign prefix not isolated",
+        "present": false,
+        "evidence": ""
+      },
+      "08": {
+        "label": "ASCII ? ; , in Persian sentence",
+        "present": false,
+        "evidence": ""
+      },
+      "09": {
+        "label": "ASCII decimal/thousands separator",
+        "present": false,
+        "evidence": ""
+      },
+      "10": {
+        "label": "<html> without dir=rtl",
+        "present": false,
+        "evidence": ""
+      },
+      "11": {
+        "label": "Physical CSS instead of logical",
+        "present": false,
+        "evidence": ""
+      },
+      "14": {
+        "label": "Drawer anchored to a physical side",
+        "present": false,
+        "evidence": ""
+      },
+      "15": {
+        "label": "Latin-data input without dir=ltr",
+        "present": false,
+        "evidence": ""
+      },
+      "16": {
+        "label": "Pointer math without direction handling",
+        "present": false,
+        "evidence": ""
+      },
+      "17": {
+        "label": "letter-spacing on Persian",
+        "present": false,
+        "evidence": ""
+      },
+      "18": {
+        "label": "Latin line-height on Persian body",
+        "present": false,
+        "evidence": ""
+      },
+      "19": {
+        "label": "Font with no Persian coverage",
+        "present": false,
+        "evidence": ""
+      },
+      "20": {
+        "label": "Commercial font shipped as a file",
+        "present": false,
+        "evidence": ""
+      }
+    }
+  }
+]

@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پروفایل کاربری</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Estedad:wght@400;500;700;900&family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --color-bg: #f4f5f7;
+    --color-surface: #ffffff;
+    --color-border: #e5e7eb;
+    --color-text: #1f2430;
+    --color-text-muted: #6b7280;
+    --color-primary: #2f6f5e;
+    --color-primary-dark: #234f42;
+    --color-primary-tint: #e7f2ef;
+    --color-gold: #a9772f;
+    --color-gold-tint: #fbf3e6;
+    --color-gold-deep: #7c561f;
+    --color-success: #1c8a56;
+    --color-success-tint: #e7f6ee;
+    --radius-lg: 18px;
+    --radius-md: 12px;
+    --radius-sm: 8px;
+    --shadow-card: 0 1px 2px rgba(20, 20, 30, 0.04), 0 8px 24px rgba(20, 20, 30, 0.06);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: "Vazirmatn", "Noto Sans Arabic", sans-serif;
+    font-weight: 400;
+    line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+    padding-block: 32px;
+    padding-inline: 16px;
+  }
+
+  h1, h2, h3, .heading-font {
+    font-family: "Estedad", "Vazirmatn", "Noto Sans Arabic", sans-serif;
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: normal; /* never track Persian type */
+    margin: 0;
+  }
+
+  .page {
+    max-width: 760px;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* ---------- top bar ---------- */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    font-size: 14px;
+    padding: 8px 4px;
+  }
+
+  .back-link:hover {
+    color: var(--color-text);
+  }
+
+  .back-link svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  .page-title {
+    font-size: 15px;
+    color: var(--color-text-muted);
+    font-weight: 500;
+  }
+
+  /* ---------- generic card ---------- */
+  .card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: 24px;
+  }
+
+  .card-title {
+    font-size: 17px;
+    margin-block-end: 4px;
+  }
+
+  .card-subtitle {
+    color: var(--color-text-muted);
+    font-size: 13.5px;
+    margin-block-end: 20px;
+  }
+
+  /* ---------- profile header card ---------- */
+  .profile-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .avatar-wrap {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .avatar {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    background: linear-gradient(155deg, var(--color-primary), var(--color-primary-dark));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Estedad", sans-serif;
+    font-weight: 700;
+    font-size: 30px;
+    border: 3px solid var(--color-surface);
+    box-shadow: 0 0 0 1px var(--color-border);
+  }
+
+  .avatar-camera-btn {
+    position: absolute;
+    inset-block-end: -2px;
+    inset-inline-end: -2px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-primary);
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+
+  .avatar-camera-btn svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .profile-main {
+    flex: 1;
+    min-width: 220px;
+  }
+
+  .profile-name-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .profile-name {
+    font-size: 21px;
+  }
+
+  .verified-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    background: var(--color-primary-tint);
+    color: var(--color-primary-dark);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 999px;
+  }
+
+  .verified-badge svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  .profile-meta {
+    margin-block-start: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--color-text-muted);
+    font-size: 13.5px;
+  }
+
+  .profile-meta svg {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+  }
+
+  /* ---------- contact info rows ---------- */
+  .contact-list {
+    margin-block-start: 18px;
+    padding-block-start: 18px;
+    border-block-start: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .contact-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14.5px;
+  }
+
+  .contact-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: var(--radius-sm);
+    background: var(--color-primary-tint);
+    color: var(--color-primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .contact-icon svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  .contact-label {
+    color: var(--color-text-muted);
+    font-size: 12.5px;
+    display: block;
+    margin-block-end: 2px;
+  }
+
+  .contact-value {
+    font-weight: 500;
+  }
+
+  /* LTR islands: phone numbers, emails */
+  .ltr-island {
+    unicode-bidi: isolate;
+    direction: ltr;
+    text-align: end; /* sits visually on the right inside this RTL form */
+    display: inline-block;
+    font-family: "Vazirmatn", "Noto Sans Arabic", sans-serif;
+  }
+
+  /* ---------- form ---------- */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 18px;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .field.full {
+    grid-column: 1 / -1;
+  }
+
+  .field label {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--color-text);
+  }
+
+  .field .hint {
+    font-size: 12px;
+    color: var(--color-text-muted);
+  }
+
+  .field input,
+  .field textarea {
+    font-family: inherit;
+    font-size: 14.5px;
+    color: var(--color-text);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    text-align: start;
+    width: 100%;
+    line-height: 1.8;
+  }
+
+  .field input:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    background: var(--color-surface);
+    box-shadow: 0 0 0 3px var(--color-primary-tint);
+  }
+
+  /* inherently LTR data: phone / email inputs sit inside an RTL form, so their
+     text is deliberately pinned to the visual right, not logical `end` */
+  .field input[dir="ltr"] {
+    text-align: right; /* rtl-ignore: LTR-island input, visual-right by design (web.md §5) */
+  }
+
+  .field input[dir="ltr"]::placeholder {
+    direction: ltr;
+    text-align: right; /* rtl-ignore: LTR-island input, visual-right by design (web.md §5) */
+  }
+
+  .field textarea {
+    resize: vertical;
+    min-height: 84px;
+  }
+
+  .field-note {
+    grid-column: 1 / -1;
+    font-size: 12.5px;
+    color: var(--color-text-muted);
+    margin-block-start: -4px;
+  }
+
+  .form-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-block-start: 6px;
+  }
+
+  .btn {
+    font-family: inherit;
+    font-size: 14.5px;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    padding: 11px 22px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn-primary {
+    background: var(--color-primary);
+    color: #fff;
+  }
+
+  .btn-primary:hover {
+    background: var(--color-primary-dark);
+  }
+
+  .btn-secondary {
+    background: var(--color-surface);
+    color: var(--color-text);
+    border-color: var(--color-border);
+  }
+
+  .btn-secondary:hover {
+    background: var(--color-bg);
+  }
+
+  .btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  @media (max-width: 560px) {
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ---------- subscription card ---------- */
+  .sub-card {
+    background: linear-gradient(160deg, var(--color-gold-tint), var(--color-surface) 55%);
+    border: 1px solid #ecd9b8;
+  }
+
+  .sub-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .sub-plan-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .sub-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: var(--radius-md);
+    background: var(--color-gold-deep);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .sub-icon svg {
+    width: 21px;
+    height: 21px;
+  }
+
+  .sub-plan-name {
+    font-size: 17.5px;
+  }
+
+  .sub-plan-sub {
+    font-size: 12.5px;
+    color: var(--color-text-muted);
+    margin-block-start: 2px;
+  }
+
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--color-success-tint);
+    color: var(--color-success);
+    font-size: 12.5px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 999px;
+  }
+
+  .status-pill .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--color-success);
+  }
+
+  .sub-details {
+    margin-block-start: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .sub-detail-box {
+    background: rgba(255,255,255,0.6);
+    border: 1px solid #ecd9b8;
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+  }
+
+  .sub-detail-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    color: var(--color-text-muted);
+    margin-block-end: 6px;
+  }
+
+  .sub-detail-label svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .sub-detail-value {
+    font-size: 16px;
+    font-weight: 700;
+    font-family: "Estedad", "Vazirmatn", sans-serif;
+  }
+
+  .sub-detail-value .toman {
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    margin-inline-start: 4px;
+  }
+
+  .sub-actions {
+    margin-block-start: 18px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 560px) {
+    .sub-details {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="topbar">
+    <a class="back-link" href="#" onclick="return false;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+      بازگشت به داشبورد
+    </a>
+    <span class="page-title">حساب کاربری</span>
+  </div>
+
+  <!-- ============ Profile header ============ -->
+  <section class="card profile-card" aria-labelledby="profile-name">
+    <div class="avatar-wrap">
+      <div class="avatar" role="img" aria-label="تصویر پروفایل مریم احمدی">م‌ا</div>
+      <button type="button" class="avatar-camera-btn" title="تغییر عکس پروفایل" aria-label="تغییر عکس پروفایل">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l1.6-2h6.8L17 8h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Z"/><circle cx="12" cy="13.5" r="3.3"/></svg>
+      </button>
+    </div>
+
+    <div class="profile-main">
+      <div class="profile-name-row">
+        <h1 class="profile-name" id="profile-name">مریم احمدی</h1>
+        <span class="verified-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          حساب تأیید شده
+        </span>
+      </div>
+      <div class="profile-meta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>
+        <span>تاریخ عضویت: ۱۲ دی ۱۴۰۲</span>
+      </div>
+
+      <div class="contact-list">
+        <div class="contact-row">
+          <span class="contact-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1.1.4 2.2.8 3.2a2 2 0 0 1-.5 2.1L8 10.5a16 16 0 0 0 6 6l1.5-1.5a2 2 0 0 1 2.1-.5c1 .4 2.1.7 3.2.8a2 2 0 0 1 1.7 2Z"/></svg>
+          </span>
+          <div>
+            <span class="contact-label">شماره موبایل</span>
+            <bdi class="contact-value ltr-island" dir="ltr">‎+98 912 345 6789</bdi>
+          </div>
+        </div>
+        <div class="contact-row">
+          <span class="contact-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg>
+          </span>
+          <div>
+            <span class="contact-label">ایمیل</span>
+            <bdi class="contact-value ltr-island" dir="ltr">maryam.ahmadi@example.com</bdi>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Edit form ============ -->
+  <section class="card" aria-labelledby="edit-title">
+    <h2 class="card-title" id="edit-title">ویرایش اطلاعات</h2>
+    <p class="card-subtitle">اطلاعات پروفایل خود را به‌روز کنید؛ تغییرات شما بلافاصله ذخیره می‌شود.</p>
+
+    <form class="form-grid" onsubmit="return false;">
+      <div class="field">
+        <label for="fname">نام</label>
+        <input id="fname" name="fname" type="text" value="مریم" autocomplete="given-name">
+      </div>
+      <div class="field">
+        <label for="lname">نام خانوادگی</label>
+        <input id="lname" name="lname" type="text" value="احمدی" autocomplete="family-name">
+      </div>
+
+      <div class="field">
+        <label for="phone">شماره موبایل</label>
+        <input id="phone" name="phone" type="text" dir="ltr" inputmode="numeric" value="+98 912 345 6789" autocomplete="tel">
+        <span class="hint">برای دریافت پیامک تأیید، شماره صحیح را وارد کنید.</span>
+      </div>
+      <div class="field">
+        <label for="email">ایمیل</label>
+        <input id="email" name="email" type="email" dir="ltr" value="maryam.ahmadi@example.com" autocomplete="email">
+      </div>
+
+      <div class="field full">
+        <label for="bio">درباره من</label>
+        <textarea id="bio" name="bio">علاقه‌مند به طراحی رابط کاربری و توسعهٔ محصولات دیجیتال فارسی‌زبان هستم.</textarea>
+      </div>
+
+      <p class="field-note">شمارهٔ موبایل و ایمیل برای ورود به حساب و اطلاع‌رسانی‌ها استفاده می‌شوند و در اختیار دیگران قرار نمی‌گیرند.</p>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          ذخیره تغییرات
+        </button>
+        <button type="reset" class="btn btn-secondary">انصراف</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- ============ Subscription card ============ -->
+  <section class="card sub-card" aria-labelledby="sub-title">
+    <div class="sub-top">
+      <div class="sub-plan-row">
+        <span class="sub-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 9.3 8.6 2 9.3l5.5 4.8L5.8 21 12 17.3 18.2 21l-1.7-6.9 5.5-4.8-7.3-.7Z"/></svg>
+        </span>
+        <div>
+          <h2 class="sub-plan-name heading-font" id="sub-title">اشتراک طلایی</h2>
+          <p class="sub-plan-sub">پلن سالانه — تمدید خودکار غیرفعال</p>
+        </div>
+      </div>
+      <span class="status-pill"><span class="dot"></span>فعال</span>
+    </div>
+
+    <div class="sub-details">
+      <div class="sub-detail-box">
+        <div class="sub-detail-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>
+          تاریخ انقضا
+        </div>
+        <div class="sub-detail-value">۳۰ آبان ۱۴۰۵</div>
+      </div>
+      <div class="sub-detail-box">
+        <div class="sub-detail-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20"/></svg>
+          مبلغ پرداختی
+        </div>
+        <div class="sub-detail-value">۲٬۹۰۰٬۰۰۰<span class="toman">تومان</span></div>
+      </div>
+    </div>
+
+    <div class="sub-actions">
+      <button type="button" class="btn btn-primary">تمدید اشتراک</button>
+      <button type="button" class="btn btn-secondary">مشاهدهٔ تاریخچهٔ پرداخت‌ها</button>
+    </div>
+  </section>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تنظیمات حساب کاربری</title>
+<style>
+  :root {
+    --bg: #f4f5f7;
+    --surface: #ffffff;
+    --border: #e2e4e9;
+    --text-primary: #1e2430;
+    --text-secondary: #667085;
+    --accent: #2f6feb;
+    --accent-soft: #eaf1ff;
+    --danger: #e0442f;
+    --success: #1a9e5c;
+    --radius: 12px;
+    font-family: "Vazirmatn", "IRANSans", "Tahoma", sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: inherit;
+    line-height: 1.9;
+  }
+
+  .layout {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ---------- Sidebar ---------- */
+  .sidebar {
+    width: 260px;
+    flex-shrink: 0;
+    background: var(--surface);
+    border-inline-start: 1px solid var(--border);
+    padding: 24px 0;
+  }
+
+  .sidebar-header {
+    padding: 0 24px 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+
+  .sidebar-header .user-name {
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+
+  .sidebar-header .user-email {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin-top: 4px;
+    direction: ltr;
+    text-align: right;
+    unicode-bidi: isolate;
+  }
+
+  nav.sidebar-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  nav.sidebar-nav li a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.95rem;
+    border-inline-start: 3px solid transparent;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  nav.sidebar-nav li a:hover {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+
+  nav.sidebar-nav li a.active {
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-inline-start-color: var(--accent);
+    font-weight: 600;
+  }
+
+  nav.sidebar-nav li a .icon {
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+  }
+
+  /* ---------- Main content ---------- */
+  .content {
+    flex: 1;
+    padding: 32px 40px;
+    max-width: 880px;
+  }
+
+  .content h1 {
+    font-size: 1.5rem;
+    margin: 0 0 6px;
+  }
+
+  .content > .subtitle {
+    color: var(--text-secondary);
+    margin: 0 0 28px;
+    font-size: 0.95rem;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .card-header h2 {
+    font-size: 1.1rem;
+    margin: 0;
+  }
+
+  .card-header .card-desc {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin: 4px 0 0;
+  }
+
+  /* Forms */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .field.full {
+    grid-column: 1 / -1;
+  }
+
+  .field label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+
+  .field input {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    background: #fafbfc;
+    color: var(--text-primary);
+    text-align: right;
+  }
+
+  .field input:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: #fff;
+  }
+
+  .field.ltr-field input {
+    direction: ltr;
+    text-align: right;
+  }
+
+  .field .hint {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+  }
+
+  /* Notification toggles */
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .toggle-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .toggle-row:first-child {
+    padding-top: 0;
+  }
+
+  .toggle-text .title {
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .toggle-text .desc {
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    margin-top: 2px;
+  }
+
+  .switch {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .switch .slider {
+    position: absolute;
+    inset: 0;
+    background: #ccd0d9;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .switch .slider::before {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    top: 3px;
+    inset-inline-end: 3px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  }
+
+  .switch input:checked + .slider {
+    background: var(--accent);
+  }
+
+  .switch input:checked + .slider::before {
+    transform: translateX(-20px);
+  }
+
+  /* Security section */
+  .security-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .security-item:last-child {
+    border-bottom: none;
+  }
+
+  .security-item .title {
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .security-item .meta {
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    margin-top: 2px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+  }
+
+  .badge.success {
+    background: #e6f7ee;
+    color: var(--success);
+  }
+
+  .badge.success::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--success);
+  }
+
+  /* Billing section */
+  .billing-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--accent-soft);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin-bottom: 16px;
+  }
+
+  .billing-summary .plan-name {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--accent);
+  }
+
+  .billing-summary .plan-desc {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin-top: 4px;
+  }
+
+  .billing-summary .plan-price {
+    font-weight: 700;
+    font-size: 1.3rem;
+    text-align: left;
+  }
+
+  .billing-summary .plan-price small {
+    display: block;
+    font-weight: 400;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-align: left;
+  }
+
+  .billing-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+  }
+
+  .billing-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .billing-row .label {
+    color: var(--text-secondary);
+  }
+
+  .billing-row .value {
+    font-weight: 600;
+  }
+
+  /* Buttons */
+  .actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-start;
+    margin-top: 8px;
+  }
+
+  .btn {
+    padding: 10px 22px;
+    border-radius: 8px;
+    border: none;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .btn-secondary {
+    background: #fff;
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+  }
+
+  .btn-danger-outline {
+    background: #fff;
+    color: var(--danger);
+    border: 1px solid #f3c9c2;
+  }
+
+  /* Persian digit / number alignment note handled via tabular figures */
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (max-width: 860px) {
+    .layout { flex-direction: column; }
+    .sidebar {
+      width: 100%;
+      border-inline-start: none;
+      border-bottom: 1px solid var(--border);
+    }
+    .form-grid { grid-template-columns: 1fr; }
+    .content { padding: 24px 20px; }
+    .billing-summary { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .billing-summary .plan-price { text-align: right; }
+    .billing-summary .plan-price small { text-align: right; }
+  }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="user-name">مریم احمدی</div>
+      <div class="user-email">maryam.ahmadi@example.com</div>
+    </div>
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a href="#profile" class="active"><span class="icon">👤</span>اطلاعات شخصی</a></li>
+        <li><a href="#notifications"><span class="icon">🔔</span>تنظیمات اعلان‌ها</a></li>
+        <li><a href="#security"><span class="icon">🔒</span>امنیت</a></li>
+        <li><a href="#billing"><span class="icon">💳</span>صورتحساب</a></li>
+        <li><a href="#preferences"><span class="icon">⚙️</span>ترجیحات</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <h1>تنظیمات حساب کاربری</h1>
+    <p class="subtitle">اطلاعات حساب، اعلان‌ها، امنیت و صورتحساب خود را از این‌جا مدیریت کنید.</p>
+
+    <!-- اطلاعات شخصی -->
+    <section class="card" id="profile">
+      <div class="card-header">
+        <div>
+          <h2>اطلاعات شخصی</h2>
+          <p class="card-desc">این اطلاعات در پروفایل و رسیدهای شما نمایش داده می‌شود.</p>
+        </div>
+      </div>
+      <form class="form-grid">
+        <div class="field">
+          <label for="first-name">نام</label>
+          <input type="text" id="first-name" value="مریم">
+        </div>
+        <div class="field">
+          <label for="last-name">نام خانوادگی</label>
+          <input type="text" id="last-name" value="احمدی">
+        </div>
+        <div class="field ltr-field">
+          <label for="mobile">شماره موبایل</label>
+          <input type="tel" id="mobile" value="۰۹۱۲ ۳۴۵ ۶۷۸۹" inputmode="numeric">
+          <span class="hint">برای دریافت پیامک تأیید و اعلان‌های امنیتی استفاده می‌شود.</span>
+        </div>
+        <div class="field ltr-field">
+          <label for="email">ایمیل</label>
+          <input type="email" id="email" value="maryam.ahmadi@example.com">
+          <span class="hint">آدرس ایمیل برای ورود و ارسال فاکتورها استفاده می‌شود.</span>
+        </div>
+        <div class="field full">
+          <label for="bio">درباره من</label>
+          <input type="text" id="bio" value="طراح محصول در تیم تجربه‌ی کاربری">
+        </div>
+      </form>
+      <div class="actions">
+        <button type="button" class="btn btn-primary">ذخیره تغییرات</button>
+        <button type="button" class="btn btn-secondary">انصراف</button>
+      </div>
+    </section>
+
+    <!-- تنظیمات اعلان‌ها -->
+    <section class="card" id="notifications">
+      <div class="card-header">
+        <div>
+          <h2>تنظیمات اعلان‌ها</h2>
+          <p class="card-desc">مشخص کنید چه زمانی و از چه طریقی به شما اطلاع‌رسانی شود.</p>
+        </div>
+      </div>
+
+      <div class="toggle-row">
+        <div class="toggle-text">
+          <div class="title">اعلان‌های ایمیلی</div>
+          <div class="desc">دریافت خلاصه فعالیت‌های حساب از طریق ایمیل</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="toggle-row">
+        <div class="toggle-text">
+          <div class="title">اعلان‌های پیامکی</div>
+          <div class="desc">دریافت کدهای تأیید و هشدارهای مهم با پیامک</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="toggle-row">
+        <div class="toggle-text">
+          <div class="title">اعلان‌های بازاریابی</div>
+          <div class="desc">اطلاع از تخفیف‌ها و ویژگی‌های جدید محصول</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="toggle-row">
+        <div class="toggle-text">
+          <div class="title">اعلان‌های درون‌برنامه‌ای</div>
+          <div class="desc">نمایش اعلان‌ها هنگام استفاده از داشبورد</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+    </section>
+
+    <!-- امنیت -->
+    <section class="card" id="security">
+      <div class="card-header">
+        <div>
+          <h2>امنیت</h2>
+          <p class="card-desc">وضعیت ورود و دسترسی به حساب خود را بررسی کنید.</p>
+        </div>
+      </div>
+
+      <div class="security-item">
+        <div>
+          <div class="title">رمز عبور</div>
+          <div class="meta">آخرین تغییر: <span class="num">۱۴۰۴/۰۲/۱۵</span></div>
+        </div>
+        <button type="button" class="btn btn-secondary">تغییر رمز عبور</button>
+      </div>
+
+      <div class="security-item">
+        <div>
+          <div class="title">آخرین ورود به حساب</div>
+          <div class="meta">امروز، ساعت <span class="num">۰۹:۴۲</span> — از تهران، ایران</div>
+        </div>
+        <span class="badge success">فعال</span>
+      </div>
+
+      <div class="security-item">
+        <div>
+          <div class="title">تأیید دومرحله‌ای</div>
+          <div class="meta">لایه امنیتی اضافه برای ورود به حساب</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+    </section>
+
+    <!-- صورتحساب -->
+    <section class="card" id="billing">
+      <div class="card-header">
+        <div>
+          <h2>صورتحساب</h2>
+          <p class="card-desc">اشتراک فعلی و سابقه پرداخت‌های خود را مشاهده کنید.</p>
+        </div>
+      </div>
+
+      <div class="billing-summary">
+        <div>
+          <div class="plan-name">اشتراک حرفه‌ای</div>
+          <div class="plan-desc">تمدید بعدی: <span class="num">۱۴۰۴/۰۵/۱۰</span></div>
+        </div>
+        <div class="plan-price">
+          <span class="num">۴۹۰,۰۰۰</span> تومان
+          <small>ماهانه</small>
+        </div>
+      </div>
+
+      <div class="billing-row">
+        <span class="label">روش پرداخت</span>
+        <span class="value">کارت بانکی به شماره ۱۲۳۴••••</span>
+      </div>
+      <div class="billing-row">
+        <span class="label">آخرین پرداخت</span>
+        <span class="value num">۱۴۰۴/۰۴/۱۰ — ۴۹۰,۰۰۰ تومان</span>
+      </div>
+      <div class="billing-row">
+        <span class="label">وضعیت صورتحساب</span>
+        <span class="badge success">پرداخت‌شده</span>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn btn-secondary">مشاهده سابقه فاکتورها</button>
+        <button type="button" class="btn btn-danger-outline">لغو اشتراک</button>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,715 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>هدفون بی‌سیم آریا X1 | فروشگاه سان‌کالا</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Estedad:wght@400;500;700;900&family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --color-bg: #f6f4f0;
+    --color-surface: #ffffff;
+    --color-text: #23262b;
+    --color-muted: #6b7280;
+    --color-border: #e6e1d8;
+    --color-accent: #0f766e;
+    --color-accent-dark: #0b5c56;
+    --color-accent-soft: #e6f3f1;
+    --color-discount: #d9264a;
+    --color-discount-soft: #fce9ed;
+    --color-star: #f5a623;
+    --radius-lg: 16px;
+    --radius-md: 10px;
+    --radius-sm: 6px;
+    --shadow-card: 0 4px 22px rgba(30, 24, 10, 0.06);
+    --font-body: "Vazirmatn", "Noto Sans Arabic", sans-serif;
+    --font-heading: "Estedad", "Vazirmatn", "Noto Sans Arabic", sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.9;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    line-height: 1.45;
+    letter-spacing: 0;
+    margin: 0;
+  }
+
+  p { margin: 0; }
+
+  a { color: inherit; }
+
+  .ltr-island {
+    display: inline-block;
+    unicode-bidi: isolate;
+    direction: ltr;
+  }
+
+  /* directional icon: mirrors under RTL — mechanism, not a duplicate asset */
+  .icon-directional {
+    display: inline-block;
+    transform: scaleX(-1);
+  }
+
+  .container {
+    max-width: 1180px;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+
+  /* ---------- header ---------- */
+  .site-header {
+    background: var(--color-surface);
+    border-block-end: 1px solid var(--color-border);
+  }
+
+  .site-header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 1rem;
+  }
+
+  .brand {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--color-accent-dark);
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    color: var(--color-muted);
+    font-size: 0.9rem;
+  }
+
+  .breadcrumb {
+    padding-block: 0.9rem;
+    font-size: 0.85rem;
+    color: var(--color-muted);
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .breadcrumb a { color: var(--color-muted); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--color-accent-dark); }
+  .breadcrumb .current { color: var(--color-text); font-weight: 500; }
+
+  .crumb-sep {
+    color: #b9b2a4;
+    font-size: 0.8rem;
+  }
+
+  /* ---------- layout ---------- */
+  .product-layout {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 1.75rem;
+    align-items: start;
+    padding-block-end: 3rem;
+  }
+
+  @media (max-width: 860px) {
+    .product-layout { grid-template-columns: 1fr; }
+  }
+
+  .card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+  }
+
+  /* ---------- gallery ---------- */
+  .gallery-card {
+    padding: 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1;
+    max-height: 380px;
+  }
+
+  .gallery-card svg { width: 100%; height: 100%; max-width: 320px; }
+
+  /* ---------- title & rating ---------- */
+  .product-title-block { padding-block: 1.5rem 1rem; }
+
+  .product-title {
+    font-size: clamp(1.4rem, 2vw + 1rem, 1.9rem);
+    overflow-wrap: anywhere;
+  }
+
+  .product-subtitle {
+    color: var(--color-muted);
+    font-size: 0.95rem;
+    margin-block-start: 0.4rem;
+  }
+
+  .rating-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-block-start: 0.9rem;
+    flex-wrap: wrap;
+  }
+
+  .stars {
+    position: relative;
+    display: inline-block;
+    font-size: 1.1rem;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .stars .stars-bg { color: #ddd8cc; letter-spacing: 0; }
+
+  .stars .stars-fg {
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: 0;
+    inline-size: var(--fill, 0%);
+    overflow: hidden;
+    color: var(--color-star);
+    letter-spacing: 0;
+  }
+
+  .rating-value {
+    font-weight: 700;
+    font-size: 1rem;
+  }
+
+  .rating-count {
+    color: var(--color-muted);
+    font-size: 0.9rem;
+    text-decoration: none;
+    border-block-end: 1px dashed var(--color-muted);
+  }
+
+  /* ---------- specs table ---------- */
+  .section-block { padding-block-start: 1.75rem; }
+
+  .section-heading {
+    font-size: 1.1rem;
+    margin-block-end: 0.9rem;
+  }
+
+  .specs-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    font-size: 0.92rem;
+  }
+
+  .specs-table tr:not(:last-child) th,
+  .specs-table tr:not(:last-child) td {
+    border-block-end: 1px solid var(--color-border);
+  }
+
+  .specs-table th, .specs-table td {
+    text-align: start;
+    padding: 0.75rem 1rem;
+    vertical-align: top;
+  }
+
+  .specs-table th {
+    color: var(--color-muted);
+    font-weight: 500;
+    width: 38%;
+    background: #fbfaf7;
+  }
+
+  .specs-table td { font-weight: 500; }
+
+  /* ---------- buy box ---------- */
+  .buy-box {
+    padding: 1.5rem;
+    position: sticky;
+    inset-block-start: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+
+  .price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  .price-current {
+    font-size: 1.55rem;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .price-original {
+    font-size: 0.95rem;
+    color: var(--color-muted);
+    text-decoration: line-through;
+  }
+
+  .discount-badge {
+    display: inline-block;
+    background: var(--color-discount-soft);
+    color: var(--color-discount);
+    font-weight: 700;
+    font-size: 0.82rem;
+    padding: 0.15rem 0.55rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .price-note {
+    color: var(--color-muted);
+    font-size: 0.82rem;
+  }
+
+  .stock-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .stock-dot {
+    inline-size: 8px;
+    block-size: 8px;
+    border-radius: 50%;
+    background: #1f9d55;
+    flex: none;
+  }
+
+  .shipping-row {
+    display: flex;
+    gap: 0.7rem;
+    background: var(--color-accent-soft);
+    border-radius: var(--radius-md);
+    padding: 0.85rem 0.9rem;
+    align-items: flex-start;
+  }
+
+  .shipping-row svg {
+    inline-size: 20px;
+    block-size: 20px;
+    flex: none;
+    color: var(--color-accent-dark);
+    margin-block-start: 0.15rem;
+  }
+
+  .shipping-text strong {
+    display: block;
+    font-size: 0.9rem;
+    margin-block-end: 0.15rem;
+  }
+
+  .shipping-text span {
+    color: var(--color-muted);
+    font-size: 0.85rem;
+  }
+
+  .qty-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .qty-label { font-size: 0.9rem; color: var(--color-muted); }
+
+  .qty-stepper {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .qty-stepper button {
+    inline-size: 34px;
+    block-size: 34px;
+    border: none;
+    background: #fbfaf7;
+    font-size: 1.1rem;
+    cursor: pointer;
+    color: var(--color-text);
+  }
+
+  .qty-stepper button:hover { background: var(--color-accent-soft); }
+
+  .qty-stepper .qty-value {
+    inline-size: 40px;
+    text-align: center;
+    font-weight: 600;
+    font-variant-numeric: normal;
+  }
+
+  .btn-row { display: flex; gap: 0.6rem; }
+
+  .btn-add-cart {
+    flex: 1;
+    background: var(--color-accent);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 0.85rem 1rem;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .btn-add-cart:hover { background: var(--color-accent-dark); }
+
+  .btn-wishlist {
+    inline-size: 48px;
+    block-size: 48px;
+    flex: none;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--color-discount);
+  }
+
+  .buy-box-footnote {
+    font-size: 0.8rem;
+    color: var(--color-muted);
+    text-align: center;
+  }
+
+  /* ---------- reviews ---------- */
+  .reviews-section { padding-block: 2rem 4rem; }
+
+  .reviews-heading-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    margin-block-end: 1.25rem;
+  }
+
+  .reviews-heading-row h2 { font-size: 1.25rem; }
+
+  .reviews-heading-row .muted { color: var(--color-muted); font-size: 0.95rem; }
+
+  .review-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .review-card {
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .review-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .review-user {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .review-avatar {
+    inline-size: 38px;
+    block-size: 38px;
+    border-radius: 50%;
+    background: var(--color-accent-soft);
+    color: var(--color-accent-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-family: var(--font-heading);
+    flex: none;
+  }
+
+  .review-name { font-weight: 600; font-size: 0.95rem; }
+  .review-meta { display: flex; align-items: center; gap: 0.5rem; }
+
+  .review-date {
+    color: var(--color-muted);
+    font-size: 0.82rem;
+  }
+
+  .review-stars { font-size: 0.9rem; }
+
+  .review-body {
+    font-size: 0.95rem;
+    line-height: 1.9;
+    color: #3a3d42;
+    overflow-wrap: anywhere;
+  }
+
+  .verified-badge {
+    font-size: 0.75rem;
+    color: var(--color-accent-dark);
+    background: var(--color-accent-soft);
+    padding: 0.1rem 0.5rem;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+  }
+
+  footer.site-footer {
+    text-align: center;
+    color: var(--color-muted);
+    font-size: 0.85rem;
+    padding-block: 2rem;
+    border-block-start: 1px solid var(--color-border);
+  }
+</style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <div class="brand">فروشگاه سان‌کالا</div>
+      <div class="header-actions">
+        <span>حساب کاربری</span>
+        <span>سبد خرید</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <nav class="breadcrumb" aria-label="مسیر صفحه">
+      <a href="#">خانه</a>
+      <span class="crumb-sep icon-directional">›</span>
+      <a href="#">کالای دیجیتال</a>
+      <span class="crumb-sep icon-directional">›</span>
+      <a href="#">هدفون و هندزفری</a>
+      <span class="crumb-sep icon-directional">›</span>
+      <span class="current">هدفون بی‌سیم آریا <bdi class="ltr-island">X1</bdi></span>
+    </nav>
+
+    <div class="product-layout">
+      <!-- main column -->
+      <main>
+        <div class="card gallery-card">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" fill="none">
+            <path d="M40 100 a60 60 0 0 1 120 0" stroke="#0f766e" stroke-width="10" stroke-linecap="round"/>
+            <rect x="26" y="92" width="26" height="46" rx="13" fill="#0f766e"/>
+            <rect x="148" y="92" width="26" height="46" rx="13" fill="#0f766e"/>
+            <rect x="30" y="98" width="18" height="34" rx="9" fill="#e6f3f1"/>
+            <rect x="152" y="98" width="18" height="34" rx="9" fill="#e6f3f1"/>
+          </svg>
+        </div>
+
+        <div class="product-title-block">
+          <h1 class="product-title">هدفون بی‌سیم حذف نویز آریا <bdi class="ltr-island">X1</bdi></h1>
+          <p class="product-subtitle">رنگ: مشکی مات — بلوتوث <bdi class="ltr-island">5.3</bdi> — حذف نویز فعال</p>
+
+          <div class="rating-row">
+            <span class="stars" style="--fill: 94%" aria-hidden="true">
+              <span class="stars-bg">★★★★★</span>
+              <span class="stars-fg">★★★★★</span>
+            </span>
+            <span class="rating-value">۴٫۷ از ۵</span>
+            <a href="#reviews" class="rating-count">(۲۸۴ نظر)</a>
+          </div>
+        </div>
+
+        <div class="section-block">
+          <h2 class="section-heading">مشخصات فنی</h2>
+          <table class="specs-table">
+            <tbody>
+              <tr>
+                <th scope="row">برند</th>
+                <td>سان‌کالا</td>
+              </tr>
+              <tr>
+                <th scope="row">مدل</th>
+                <td><bdi class="ltr-island">Aria X1</bdi></td>
+              </tr>
+              <tr>
+                <th scope="row">نوع اتصال</th>
+                <td>بلوتوث نسخهٔ <bdi class="ltr-island">5.3</bdi>، پشتیبانی از اتصال هم‌زمان به دو دستگاه</td>
+              </tr>
+              <tr>
+                <th scope="row">حذف نویز</th>
+                <td>فعال، با سه سطح قابل‌تنظیم از طریق اپلیکیشن</td>
+              </tr>
+              <tr>
+                <th scope="row">مدت پخش با شارژ کامل</th>
+                <td>تا ۳۰ ساعت (با حذف نویز خاموش)</td>
+              </tr>
+              <tr>
+                <th scope="row">زمان شارژ کامل</th>
+                <td>حدود ۲ ساعت با شارژر سریع</td>
+              </tr>
+              <tr>
+                <th scope="row">وزن</th>
+                <td>۲۵۰ گرم</td>
+              </tr>
+              <tr>
+                <th scope="row">گارانتی</th>
+                <td>۱۸ ماه گارانتی شرکتی و خدمات پس از فروش</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+
+      <!-- buy box -->
+      <aside class="card buy-box">
+        <div>
+          <div class="price-row">
+            <span class="price-current">۲٬۴۰۰٬۰۰۰ تومان</span>
+            <span class="discount-badge">۲۵٪ تخفیف</span>
+          </div>
+          <div class="price-row" style="margin-block-start:0.3rem">
+            <span class="price-original">۳٬۲۰۰٬۰۰۰ تومان</span>
+            <span class="price-note">قیمت پیش از تخفیف</span>
+          </div>
+        </div>
+
+        <div class="stock-row">
+          <span class="stock-dot"></span>
+          <span>موجود در انبار — ارسال فوری</span>
+        </div>
+
+        <div class="shipping-row">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="1" y="7" width="14" height="10"></rect>
+            <path d="M15 10h4l3 3v4h-7z"></path>
+            <circle cx="6" cy="19" r="1.6"></circle>
+            <circle cx="17.5" cy="19" r="1.6"></circle>
+          </svg>
+          <div class="shipping-text">
+            <strong>ارسال به سراسر کشور</strong>
+            <span>تحویل طی ۲ تا ۴ روز کاری — ارسال رایگان برای خرید بالای ۲٬۰۰۰٬۰۰۰ تومان</span>
+          </div>
+        </div>
+
+        <div class="qty-row">
+          <span class="qty-label">تعداد</span>
+          <div class="qty-stepper">
+            <button type="button" aria-label="کم کردن تعداد">−</button>
+            <span class="qty-value">۱</span>
+            <button type="button" aria-label="افزودن تعداد">+</button>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button type="button" class="btn-add-cart">افزودن به سبد خرید</button>
+          <button type="button" class="btn-wishlist" aria-label="افزودن به علاقه‌مندی‌ها">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path d="M12 21s-7.5-4.6-10.2-9.1C.2 9 1 5.7 3.8 4.4c2.3-1 4.7-.2 6.2 1.6 1.5-1.8 3.9-2.6 6.2-1.6 2.8 1.3 3.6 4.6 2 7.5C19.5 16.4 12 21 12 21z"/>
+            </svg>
+          </button>
+        </div>
+
+        <p class="buy-box-footnote">۷ روز ضمانت بازگشت کالا، بدون پرسش</p>
+      </aside>
+    </div>
+
+    <section class="reviews-section" id="reviews">
+      <div class="reviews-heading-row">
+        <h2>نظرات کاربران</h2>
+        <span class="muted">(۲۸۴ نظر — میانگین ۴٫۷ از ۵)</span>
+      </div>
+
+      <div class="review-list">
+        <article class="card review-card">
+          <div class="review-top">
+            <div class="review-user">
+              <span class="review-avatar">س‌م</span>
+              <div>
+                <div class="review-name">سارا مرادی</div>
+                <div class="review-meta">
+                  <span class="stars review-stars" style="--fill: 100%" aria-hidden="true">
+                    <span class="stars-bg">★★★★★</span>
+                    <span class="stars-fg">★★★★★</span>
+                  </span>
+                  <span class="verified-badge">خرید تأییدشده</span>
+                </div>
+              </div>
+            </div>
+            <span class="review-date">۲۸ تیر ۱۴۰۵</span>
+          </div>
+          <p class="review-body" dir="auto">کیفیت صدا فوق‌العاده است و حذف نویز واقعاً کار می‌کند؛ حتی در مترو صدای اطراف تقریباً شنیده نمی‌شود. باتری هم طبق ادعای فروشنده حدود یک هفته استفادهٔ روزانه دوام آورد. تنها نکتهٔ منفی، جعبهٔ شارژ کمی بزرگ‌تر از چیزی است که انتظار داشتم.</p>
+        </article>
+
+        <article class="card review-card">
+          <div class="review-top">
+            <div class="review-user">
+              <span class="review-avatar">ا‌ح</span>
+              <div>
+                <div class="review-name">امیر حسینی</div>
+                <div class="review-meta">
+                  <span class="stars review-stars" style="--fill: 80%" aria-hidden="true">
+                    <span class="stars-bg">★★★★★</span>
+                    <span class="stars-fg">★★★★★</span>
+                  </span>
+                  <span class="verified-badge">خرید تأییدشده</span>
+                </div>
+              </div>
+            </div>
+            <span class="review-date">۱۵ تیر ۱۴۰۵</span>
+          </div>
+          <p class="review-body" dir="auto">برای کار روزانه و تماس‌های طولانی عالیه. راحتیش هم خوبه، بعد از دو سه ساعت هم اذیت نمی‌کنه. فقط اپلیکیشنش برای تنظیم اکولایزر گاهی هنگ می‌کنه و به نظرم نیاز به به‌روزرسانی داره.</p>
+        </article>
+
+        <article class="card review-card">
+          <div class="review-top">
+            <div class="review-user">
+              <span class="review-avatar">ن‌ک</span>
+              <div>
+                <div class="review-name">نگین کریمی</div>
+                <div class="review-meta">
+                  <span class="stars review-stars" style="--fill: 100%" aria-hidden="true">
+                    <span class="stars-bg">★★★★★</span>
+                    <span class="stars-fg">★★★★★</span>
+                  </span>
+                  <span class="verified-badge">خرید تأییدشده</span>
+                </div>
+              </div>
+            </div>
+            <span class="review-date">۱ مرداد ۱۴۰۵</span>
+          </div>
+          <p class="review-body" dir="auto">نسبت به قیمتش واقعاً ارزش خرید داره. جفت‌شدنش با گوشی به سرعت انجام می‌شود و کیفیت میکروفون برای تماس‌های ویدیویی خیلی خوبه. بسته‌بندی هم شیک و مرتب بود و ارسالش زودتر از بازهٔ اعلام‌شده رسید.</p>
+        </article>
+      </div>
+    </section>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">© ۱۴۰۵ فروشگاه سان‌کالا — تمامی حقوق محفوظ است.</div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>داشبورد فروش</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&family=Estedad:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  /* ---------- Tokens ---------- */
+  :root {
+    --bg: #f3f4f8;
+    --surface: #ffffff;
+    --surface-tint: #f8f8fc;
+    --border: #e6e7ee;
+    --text: #1f2233;
+    --text-muted: #6b7183;
+    --primary: #4a3aff;
+    --primary-tint: #efedff;
+    --green: #16a34a;
+    --green-tint: #e9f8ee;
+    --red: #dc2626;
+    --red-tint: #fdecec;
+    --blue: #2563eb;
+    --blue-tint: #eaf1fe;
+    --amber: #d97706;
+    --amber-tint: #fdf3e3;
+    --teal: #0d9488;
+    --teal-tint: #e6f6f4;
+    --radius-lg: 18px;
+    --radius-md: 12px;
+    --radius-sm: 8px;
+    --shadow: 0 1px 2px rgba(20, 22, 40, 0.04), 0 8px 24px rgba(20, 22, 40, 0.06);
+  }
+
+  /* ---------- Reset ---------- */
+  * { box-sizing: border-box; }
+  body, h1, h2, h3, p, ul, table { margin: 0; padding: 0; }
+  button { font: inherit; cursor: pointer; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Vazirmatn", "Noto Sans Arabic", sans-serif;
+    font-size: 16px;
+    line-height: 1.9; /* Persian body needs 1.8-2.0, Latin 1.5 is cramped here */
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 {
+    font-family: "Estedad", "Vazirmatn", "Noto Sans Arabic", sans-serif;
+    font-weight: 800;
+    line-height: 1.4;
+    letter-spacing: normal; /* never track Persian type — tears the joined script */
+  }
+
+  .dashboard {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 28px 20px 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  /* ---------- Topbar ---------- */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .topbar h1 { font-size: 1.55rem; }
+
+  .topbar .subtitle {
+    margin-top: 4px;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+  }
+
+  .topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .btn {
+    border-radius: var(--radius-sm);
+    padding: 10px 18px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-weight: 600;
+    font-size: 0.92rem;
+    transition: background .15s ease, border-color .15s ease;
+  }
+  .btn:hover { background: var(--surface-tint); }
+
+  .btn-primary {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+  }
+  .btn-primary:hover { background: #3d2fe0; }
+
+  .user-chip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 6px 14px 6px 6px;
+    box-shadow: var(--shadow);
+  }
+
+  .user-chip .avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--primary-tint);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+  }
+
+  .user-chip .role {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  /* ---------- Stat cards ---------- */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 16px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    padding: 20px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .stat-icon {
+    flex: 0 0 auto;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .stat-icon svg { width: 22px; height: 22px; }
+  .stat-icon.sales   { background: var(--primary-tint); color: var(--primary); }
+  .stat-icon.orders  { background: var(--blue-tint);    color: var(--blue); }
+  .stat-icon.customers { background: var(--teal-tint);  color: var(--teal); }
+  .stat-icon.returns { background: var(--amber-tint);   color: var(--amber); }
+
+  .stat-body { flex: 1 1 auto; min-width: 0; }
+
+  .stat-label {
+    display: block;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+
+  .stat-value {
+    display: block;
+    font-family: "Estedad", "Vazirmatn", sans-serif;
+    font-weight: 800;
+    font-size: 1.5rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-value small {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+
+  .stat-trend {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 999px;
+  }
+  .stat-trend.good { color: var(--green); background: var(--green-tint); }
+  .stat-trend.bad  { color: var(--red);   background: var(--red-tint); }
+  .stat-trend svg { width: 11px; height: 11px; }
+  .stat-trend .arrow-down { transform: rotate(180deg); }
+  .stat-trend .compare {
+    font-weight: 400;
+    color: inherit;
+    opacity: 0.75;
+    margin-inline-start: 2px;
+  }
+
+  /* ---------- Panels (shared) ---------- */
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    padding: 22px;
+  }
+
+  .panel-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .panel-head h2 { font-size: 1.1rem; }
+  .panel-head .panel-desc {
+    margin-top: 4px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+
+  .link-more {
+    color: var(--primary);
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .link-more:hover { text-decoration: underline; }
+
+  /* ---------- Time range filter ---------- */
+  .preset-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .preset {
+    border: 1px solid var(--border);
+    background: var(--surface-tint);
+    color: var(--text);
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-size: 0.87rem;
+    font-weight: 600;
+  }
+  .preset:hover { background: var(--primary-tint); }
+  .preset.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+  }
+
+  .custom-range {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--border);
+  }
+  .custom-range[hidden] { display: none; }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .field input {
+    font: inherit;
+    font-family: "Vazirmatn", sans-serif;
+    direction: rtl;
+    text-align: start;
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 9px 12px;
+    min-width: 160px;
+    background: var(--surface-tint);
+  }
+  .field input:focus {
+    outline: 2px solid var(--primary);
+    outline-offset: 1px;
+    background: var(--surface);
+  }
+
+  .filter-actions {
+    margin-top: 18px;
+    display: flex;
+    justify-content: flex-end; /* respects dir: lands on the visual left in RTL */
+  }
+
+  /* ---------- Orders table ---------- */
+  .table-scroll {
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 560px;
+  }
+
+  thead th {
+    text-align: start;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+
+  tbody td {
+    padding: 14px 12px;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.92rem;
+    vertical-align: middle;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: var(--surface-tint); }
+
+  .order-no {
+    font-family: "Vazirmatn", monospace;
+    font-weight: 700;
+    color: var(--text);
+    unicode-bidi: isolate;
+  }
+
+  .amount { font-variant-numeric: tabular-nums; font-weight: 600; }
+
+  .badge {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .badge.delivered { background: var(--green-tint); color: var(--green); }
+  .badge.paid      { background: var(--teal-tint);  color: var(--teal); }
+  .badge.shipping  { background: var(--blue-tint);  color: var(--blue); }
+  .badge.pending   { background: var(--amber-tint); color: var(--amber); }
+  .badge.cancelled { background: var(--red-tint);   color: var(--red); }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 640px) {
+    .dashboard { padding: 18px 14px 40px; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .panel { padding: 16px; }
+    .stat-card { padding: 16px; }
+  }
+  @media (max-width: 420px) {
+    .stats-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="dashboard">
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <div>
+      <h1>داشبورد فروش</h1>
+      <p class="subtitle">فروشگاه «آفتاب» · آخرین به‌روزرسانی: امروز، ساعت ۱۴:۳۲</p>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn">دانلود گزارش</button>
+      <div class="user-chip">
+        <div class="avatar">ر.ص</div>
+        <div>
+          <div style="font-weight:600; font-size:0.85rem;">رضا صادقی</div>
+          <div class="role">مدیر فروشگاه</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Stat cards -->
+  <section class="stats-grid" aria-label="آمار کلی فروش">
+
+    <article class="stat-card">
+      <div class="stat-icon sales">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="6" width="20" height="13" rx="2"></rect>
+          <path d="M2 10h20"></path>
+          <circle cx="17" cy="14.5" r="1.5"></circle>
+        </svg>
+      </div>
+      <div class="stat-body">
+        <span class="stat-label">فروش امروز</span>
+        <strong class="stat-value">۴۲٬۵۰۰٬۰۰۰ <small>تومان</small></strong>
+        <span class="stat-trend good">
+          <svg class="arrow-up" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l8 10h-6v6h-4v-6H4z"/></svg>
+          ۱۲٫۳٪<span class="compare">نسبت به دیروز</span>
+        </span>
+      </div>
+    </article>
+
+    <article class="stat-card">
+      <div class="stat-icon orders">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2l1.5 4M18 2l-1.5 4"></path>
+          <path d="M3.5 6h17l-1.8 11.5a2 2 0 0 1-2 1.7H7.3a2 2 0 0 1-2-1.7L3.5 6z"></path>
+          <path d="M8 10v4M16 10v4"></path>
+        </svg>
+      </div>
+      <div class="stat-body">
+        <span class="stat-label">تعداد سفارش</span>
+        <strong class="stat-value">۸۶ <small>سفارش</small></strong>
+        <span class="stat-trend good">
+          <svg class="arrow-up" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l8 10h-6v6h-4v-6H4z"/></svg>
+          ۸٪<span class="compare">نسبت به دیروز</span>
+        </span>
+      </div>
+    </article>
+
+    <article class="stat-card">
+      <div class="stat-icon customers">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="9" cy="8" r="3.2"></circle>
+          <path d="M3.5 19c0-3.3 2.5-5.5 5.5-5.5s5.5 2.2 5.5 5.5"></path>
+          <path d="M18 8v5M20.5 10.5H15.5"></path>
+        </svg>
+      </div>
+      <div class="stat-body">
+        <span class="stat-label">مشتری جدید</span>
+        <strong class="stat-value">۱۸ <small>نفر</small></strong>
+        <span class="stat-trend bad">
+          <svg class="arrow-down" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l8 10h-6v6h-4v-6H4z"/></svg>
+          ۳٪<span class="compare">نسبت به دیروز</span>
+        </span>
+      </div>
+    </article>
+
+    <article class="stat-card">
+      <div class="stat-icon returns">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12a9 9 0 1 1 3 6.7"></path>
+          <path d="M3 21v-5h5"></path>
+        </svg>
+      </div>
+      <div class="stat-body">
+        <span class="stat-label">نرخ بازگشت</span>
+        <strong class="stat-value">۳٫۲٪</strong>
+        <span class="stat-trend good">
+          <svg class="arrow-down" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l8 10h-6v6h-4v-6H4z"/></svg>
+          ۰٫۴٪<span class="compare">نسبت به دیروز</span>
+        </span>
+      </div>
+    </article>
+
+  </section>
+
+  <!-- Time range filter -->
+  <section class="panel" aria-label="فیلتر محدودهٔ زمانی">
+    <div class="panel-head">
+      <div>
+        <h2>محدودهٔ زمانی</h2>
+        <p class="panel-desc">بازهٔ گزارش را برای آمار و جدول سفارش‌ها انتخاب کنید</p>
+      </div>
+    </div>
+
+    <div class="preset-group" role="group" aria-label="بازه‌های آماده">
+      <button type="button" class="preset active" data-range="today">امروز</button>
+      <button type="button" class="preset" data-range="week">۷ روز اخیر</button>
+      <button type="button" class="preset" data-range="month">این ماه</button>
+      <button type="button" class="preset" data-range="custom">بازهٔ دلخواه</button>
+    </div>
+
+    <div class="custom-range" id="customRange" hidden>
+      <label class="field">
+        از تاریخ
+        <input type="text" inputmode="numeric" value="۰۱ مرداد ۱۴۰۵" aria-label="از تاریخ">
+      </label>
+      <label class="field">
+        تا تاریخ
+        <input type="text" inputmode="numeric" value="۰۵ مرداد ۱۴۰۵" aria-label="تا تاریخ">
+      </label>
+    </div>
+
+    <div class="filter-actions">
+      <button type="button" class="btn btn-primary">اعمال فیلتر</button>
+    </div>
+  </section>
+
+  <!-- Recent orders -->
+  <section class="panel" aria-label="۶ سفارش آخر">
+    <div class="panel-head">
+      <h2>۶ سفارش آخر</h2>
+      <a href="#" class="link-more">مشاهدهٔ همه ‹</a>
+    </div>
+
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>شماره سفارش</th>
+            <th>تاریخ</th>
+            <th>مبلغ</th>
+            <th>وضعیت</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><bdi class="order-no" dir="ltr">SO-1082</bdi></td>
+            <td>۵ مرداد ۱۴۰۵</td>
+            <td class="amount">۱٬۲۵۰٬۰۰۰ تومان</td>
+            <td><span class="badge delivered">تحویل‌شده</span></td>
+          </tr>
+          <tr>
+            <td><bdi class="order-no" dir="ltr">SO-1081</bdi></td>
+            <td>۵ مرداد ۱۴۰۵</td>
+            <td class="amount">۸۹۰٬۰۰۰ تومان</td>
+            <td><span class="badge shipping">در حال ارسال</span></td>
+          </tr>
+          <tr>
+            <td><bdi class="order-no" dir="ltr">SO-1080</bdi></td>
+            <td>۴ مرداد ۱۴۰۵</td>
+            <td class="amount">۲٬۱۴۰٬۰۰۰ تومان</td>
+            <td><span class="badge paid">پرداخت‌شده</span></td>
+          </tr>
+          <tr>
+            <td><bdi class="order-no" dir="ltr">SO-1079</bdi></td>
+            <td>۴ مرداد ۱۴۰۵</td>
+            <td class="amount">۴۵۰٬۰۰۰ تومان</td>
+            <td><span class="badge pending">در انتظار پرداخت</span></td>
+          </tr>
+          <tr>
+            <td><bdi class="order-no" dir="ltr">SO-1078</bdi></td>
+            <td>۳ مرداد ۱۴۰۵</td>
+            <td class="amount">۳٬۲۰۰٬۰۰۰ تومان</td>
+            <td><span class="badge delivered">تحویل‌شده</span></td>
+          </tr>
+          <tr>
+            <td><bdi class="order-no" dir="ltr">SO-1077</bdi></td>
+            <td>۲ مرداد ۱۴۰۵</td>
+            <td class="amount">۶۷۰٬۰۰۰ تومان</td>
+            <td><span class="badge cancelled">لغو‌شده</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // Toggle time-range presets and reveal the custom date fields only when needed.
+  (function () {
+    var presets = document.querySelectorAll('.preset');
+    var customRange = document.getElementById('customRange');
+
+    presets.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        presets.forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        customRange.hidden = btn.dataset.range !== 'custom';
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>
