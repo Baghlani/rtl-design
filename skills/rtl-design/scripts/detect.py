@@ -80,6 +80,8 @@ RE_DART_PHYSICAL = re.compile(
     r"|BorderRadius\.only\s*\([^)]*\b(topLeft|topRight|bottomLeft|bottomRight)\s*:"
     r"|TextAlign\.(left|right)\b")
 RE_DIR_LTR = re.compile(r"""dir\s*=\s*["']ltr["']""", re.IGNORECASE)
+# self-declared LTR islands: dir="ltr" on these elements is the documented pattern
+RE_ISLAND_TAG = re.compile(r"<\s*(input|textarea|select|bdi|code|pre|kbd|samp)\b", re.IGNORECASE)
 RE_HTML_TAG = re.compile(r"<html\b[^>]*?>", re.IGNORECASE | re.DOTALL)
 RE_DIR_ATTR = re.compile(r"""\bdir\s*=""", re.IGNORECASE)
 # می / نمی followed by an ordinary space then a Persian letter → ZWNJ candidate
@@ -179,7 +181,9 @@ def check_file(path, sink):
                 "OTP/codes, card/technical IDs — keep those Latin and LTR-isolated.")
 
         # R004 — physical CSS properties
-        if ext in STYLE_EXTS:
+        # (skipped when the line is direction-scoped — [dir=…]/:dir(…) rules use
+        # physical values deliberately, e.g. manual icon flips and island styling)
+        if ext in STYLE_EXTS and "[dir=" not in line and ":dir(" not in line:
             m = RE_PHYSICAL_PROPS.search(line)
             if m:
                 key = m.group(1) if m.group(1) else f"{m.group(2)}: {m.group(3)}"
@@ -220,7 +224,11 @@ def check_file(path, sink):
                 "BorderRadiusDirectional, TextAlign.start/end.")
 
         # R007 — hardcoded dir="ltr" alongside Persian/Arabic content
-        if RE_DIR_LTR.search(line) and file_has_persian:
+        # (not flagged on self-declared islands — inputs/bdi/code — nor on CSS
+        # attribute selectors like input[dir="ltr"], which style rather than wrap)
+        m7 = RE_DIR_LTR.search(line) if file_has_persian else None
+        if m7 and not (m7.start() > 0 and line[m7.start() - 1] == "[") \
+                and not RE_ISLAND_TAG.search(line):
             add("R007", "hardcoded-ltr", "warning", i, line,
                 "dir=\"ltr\" in a Persian file — correct only for LTR islands (phone/email/code "
                 "inputs, code blocks); a bug if it wraps Persian content.")
