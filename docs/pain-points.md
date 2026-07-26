@@ -17,8 +17,8 @@ exist without a row.
 | 3 | `٣ محصول` — Arabic-Indic digits | `۳ محصول` (U+06F3) | ۴/٤ and ۶/٦ are visibly different glyphs; a Persian reader sees Arabic | `auto` R002 |
 | 4 | `می شود`, `میشود`, `کتاب ها` | `می‌شود`, `کتاب‌ها` (ZWNJ U+200C) | The single clearest marker of amateur Persian text | `auto` R008 |
 | 5 | `27 July 2026`, `2026/07/27` | `۵ مرداد ۱۴۰۵` | Persian users do not read Gregorian dates; wrong calendar makes a product feel foreign | `judgment` |
-| 6 | `سلام dear!` renders as `!سلام dear` | Wrap the Latin run in `<bdi>` / `dir="ltr"` | Punctuation jumps to the wrong end of the line — the classic bidi break | `judgment` |
-| 7 | `تماس: 021-9123456` with the digits reordered | `<bdi dir="ltr">021-9123456</bdi>` | Phone numbers, IBANs, card numbers and versions scramble without isolation | `judgment` (R007 assists) |
+| 6 | `صفحات 12-15`, `دورهٔ 2024-2026`, `تخفیف 10-20%` all render reversed | Wrap the range in `<bdi dir="ltr">` | Any number split into groups by a space or hyphen reverses under RTL — measured in a real browser, not assumed (web.md §4) | `judgment` |
+| 7 | `+98 21 9123 4567` → `4567 9123 21 98+`; `قیمت $1,200` → `1,200$` | `<bdi dir="ltr">` around the number | Grouped phone numbers reverse and a leading currency sign jumps sides. Emails, URLs, `2.1.0`, `4.9/5` are safe — the real rule is narrower than the folklore | `judgment` (R007 assists) |
 | 8 | `آیا مطمئنید?` with ASCII `? , ;` | `آیا مطمئنید؟` (؟ U+061F, ، U+060C, ؛ U+061B) | Wrong punctuation shapes; the mirror-image glyph is jarring in Persian | not yet — detector gap |
 | 9 | `۲.۵ مگابایت`, `2,500,000` | `۲٫۵` (momayyez U+066B), `۲٬۵۰۰٬۰۰۰` (U+066C) | Persian uses its own decimal and thousands separators | not yet — detector gap |
 

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>rtl-design — ۲۱ خطای فارسی که هوش مصنوعی تکرار می‌کند</title>
+<meta name="description" content="نمایش زنده‌ی خطاهای RTL و فارسی در خروجی ایجنت‌های کدنویسی، و شکل درست هرکدام.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0e1116; --panel:#161b23; --panel-2:#1d232d;
+    --ink:#e8edf4; --ink-2:#9aa7b8; --ink-3:#65718444;
+    --line:#252c37;
+    --bad:#f87171; --bad-bg:#2a1618; --bad-line:#7f2d2d;
+    --good:#4ade80; --good-bg:#132419; --good-line:#2c6b41;
+    --accent:#8b9dff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:"Vazirmatn","Noto Sans Arabic",system-ui,sans-serif;
+    background:var(--bg); color:var(--ink);
+    line-height:1.9; letter-spacing:0;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px; margin-inline:auto; padding-inline:20px}
+
+  header{padding-block:56px 34px; border-block-end:1px solid var(--line)}
+  .kicker{color:var(--accent); font-size:.85rem; font-weight:700; margin-block-end:12px}
+  h1{font-size:clamp(1.8rem,1.2rem + 2.6vw,2.9rem); font-weight:800; line-height:1.45; margin-block-end:14px}
+  header p{color:var(--ink-2); font-size:1.02rem; max-width:62ch}
+  header .meta{display:flex; gap:22px; flex-wrap:wrap; margin-block-start:22px; font-size:.86rem; color:var(--ink-2)}
+  header .meta b{color:var(--ink); font-weight:700}
+  .cta{display:inline-flex; align-items:center; gap:8px; margin-block-start:24px;
+       background:var(--accent); color:#0e1116; font-weight:700; font-size:.92rem;
+       padding:11px 20px; border-radius:10px; text-decoration:none}
+
+  h2.section{font-size:1.25rem; font-weight:800; margin-block:44px 6px; padding-block-end:10px; border-block-end:1px solid var(--line)}
+  h2.section span{color:var(--ink-2); font-weight:400; font-size:.85rem; margin-inline-start:8px}
+
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:14px; margin-block-start:18px; overflow:hidden}
+  .card > header{padding:16px 20px 14px; border:0; border-block-end:1px solid var(--line); display:flex; gap:12px; align-items:baseline}
+  .num{background:var(--panel-2); color:var(--ink-2); font-size:.8rem; font-weight:700;
+       min-width:30px; height:30px; border-radius:8px; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0}
+  .card h3{font-size:1.02rem; font-weight:700; line-height:1.6}
+  .card .why{color:var(--ink-2); font-size:.86rem; margin-block-start:2px}
+  .pair{display:grid; grid-template-columns:1fr 1fr}
+  .side{padding:18px 20px 20px; min-width:0}
+  .side.bad{background:var(--bad-bg); border-inline-end:1px solid var(--line)}
+  .side.good{background:var(--good-bg)}
+  .tag{display:inline-flex; align-items:center; gap:6px; font-size:.76rem; font-weight:700; margin-block-end:12px}
+  .bad .tag{color:var(--bad)} .good .tag{color:var(--good)}
+  .demo{background:#0b0e13; border:1px solid var(--line); border-radius:9px; padding:14px 16px; min-height:62px}
+  code, .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.82rem; direction:ltr; unicode-bidi:isolate; display:block; color:#c8d3e4; white-space:pre-wrap; text-align:left}  /* rtl-ignore */
+  .note{color:var(--ink-2); font-size:.79rem; margin-block-start:10px}
+  .badge{display:inline-block; font-size:.72rem; font-weight:700; padding:3px 9px; border-radius:999px; margin-inline-start:auto; flex-shrink:0}
+  .auto{background:#16302a; color:#4ade80} .judg{background:#2b2637; color:#b9a6ff} .gap{background:#332a16; color:#facc15}
+
+  footer{margin-block:56px 40px; padding-block-start:26px; border-block-start:1px solid var(--line); color:var(--ink-2); font-size:.88rem}
+  footer a{color:var(--accent)}
+
+  /* ---- demo-specific styles ---- */
+  .fa-tajawal{font-family:"Tajawal",serif; font-size:1.5rem}
+  .fa-ok{font-family:"Vazirmatn"; font-size:1.5rem}
+  .tracked{letter-spacing:.18em} /* rtl-ignore — intentional defect specimen */
+  .cramped{line-height:1.25}
+  .roomy{line-height:1.95}
+  .btn-demo{background:#243044; color:#e8edf4; border:0; border-radius:8px; padding:9px 14px; font-family:inherit; font-size:.85rem}
+  .clip{width:150px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .row{display:flex; align-items:center; gap:10px}
+  .chev{width:22px; height:22px; stroke:var(--ink); fill:none; stroke-width:2.2}
+  .mirror{transform:scaleX(-1)}
+  .drawer-stage{position:relative; height:96px; background:#0b0e13; border:1px solid var(--line); border-radius:9px; overflow:hidden}
+  .drawer{position:absolute; top:0; bottom:0; width:58%; background:#243044; padding:12px; font-size:.82rem; transition:transform .45s cubic-bezier(.16,1,.3,1)}
+  .drawer.wrong{left:0; transform:translateX(-101%)} /* rtl-ignore — intentional defect specimen */
+  .drawer.right{inset-inline-start:0; transform:translateX(101%)}
+  .drawer-stage.open .drawer{transform:translateX(0)}
+  .box-stage{background:#0b0e13; border:1px solid var(--line); border-radius:9px; padding:12px}
+  .box{background:#243044; border-radius:7px; padding:9px 12px; font-size:.84rem}
+  .box.phys{margin-left:56px} /* rtl-ignore — intentional defect specimen */
+  .box.logi{margin-inline-start:56px}
+  input.demo-input{width:100%; background:#0b0e13; border:1px solid var(--line); border-radius:8px;
+                   padding:10px 12px; color:var(--ink); font-family:inherit; font-size:.95rem}
+  .slider{width:100%; height:34px; background:#0b0e13; border:1px solid var(--line); border-radius:8px; position:relative; cursor:pointer; overflow:hidden}
+  .slider .fill{position:absolute; top:0; bottom:0; inset-inline-start:0; width:35%; background:#3b4d6b}
+  .slider .val{position:relative; font-size:.82rem; padding:5px 10px}
+
+  @media (max-width:720px){ .pair{grid-template-columns:1fr} .side.bad{border-inline-end:0; border-block-end:1px solid var(--line)} }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<header>
+  <div class="kicker">rtl-design · نمونهٔ اثبات</div>
+  <h1>۲۱ خطای فارسی که هوش مصنوعی مدام تکرار می‌کند</h1>
+  <p>
+    هر بار که با یک ایجنت کدنویسی رابط فارسی می‌سازید، همین چند خطا برمی‌گردند: عدد لاتین وسط
+    جمله، نیم‌فاصله‌ی جاافتاده، شماره‌ی تلفنی که به‌هم می‌ریزد، فلشی که به سمت اشتباه اشاره می‌کند.
+    این صفحه ادعا نمی‌کند — هر خطا را همین‌جا، زنده در مرورگر شما، نشان می‌دهد.
+  </p>
+  <div class="meta">
+    <span><b>۹</b> مورد را آشکارساز به‌صورت قطعی می‌گیرد</span>
+    <span><b>۹</b> مورد قضاوتی است</span>
+    <span><b>۳</b> شکاف اعلام‌شده</span>
+  </div>
+  <a class="cta" href="https://github.com/Baghlani/rtl-design">نصب اسکیل ←</a>
+</header>
+
+<h2 class="section">متن و داده <span>۹ مورد</span></h2>
+
+<div class="card">
+  <header><span class="num">۱</span><div><h3>حرف عربی ي و ك در متن فارسی</h3>  <!-- rtl-ignore -->
+  <div class="why">شکل حرف فرق دارد و جست‌وجو، مرتب‌سازی و حذف تکراری روی داده‌ی واقعی می‌شکند.</div></div>
+  <span class="badge auto">خودکار</span></header>
+  <div class="pair">
+    <div class="side bad"><div class="tag">✕ خروجی پیش‌فرض</div>
+      <div class="demo"><span class="fa-ok">كتاب هاي من</span></div>  <!-- rtl-ignore -->
+      <div class="note">ك (U+0643) و ي (U+064A) عربی‌اند</div></div>  <!-- rtl-ignore -->
+    <div class="side good"><div class="tag">✓ درست</div>
+      <div class="demo"><span class="fa-ok">کتاب‌های من</span></div>
+      <div class="note">ک (U+06A9) و ی (U+06CC) فارسی</div></div>
+  </div>
+</div>
+
+<div class="card">
+  <header><span class="num">۲</span><div><h3>ارقام لاتین در متن فارسی</h3>
+  <div class="why">عدد لاتین وسط جملهٔ فارسی، متن را شبیه خروجی ماشین می‌کند.</div></div>
+  <span class="badge auto">خودکار</span></header>
+  <div class="pair">
+    <div class="side bad"><div class="tag">✕ خروجی پیش‌فرض</div>
+      <div class="demo"><span class="fa-ok">3 محصول در سبد · سال 1404</span></div></div>  <!-- rtl-ignore -->
+    <div class="side good"><div class="tag">✓ درست</div>
+      <div class="demo"><span class="fa-ok">۳ محصول در سبد · سال ۱۴۰۴</span></div></div>
+  </div>
+</div>
+
+<div class="card">
+  <header><span class="num">۳</span><div><h3>ارقام عربی به‌جای فارسی</h3>
+  <div class="why">۴ و ۶ فارسی با ٤ و ٦ عربی شکل کاملاً متفاوتی دارند.</div></div>  <!-- rtl-ignore -->
+  <span class="badge auto">خودکار</span></header>
+  <div class="pair">
+    <div class="side bad"><div class="tag">✕ خروجی پیش‌فرض</div>
+      <div class="demo"><span class="fa-ok">٤٦٧ سفارش</span></div>  <!-- rtl-ignore -->
+      <div class="note">ارقام هندی-عربی (U+0660–0669)</div></div>
+    <div class="side good"><div class="tag">✓ درست</div>
+      <div class="demo"><span class="fa-ok">۴۶۷ سفارش</span></div>
+      <div class="note">ارقام فارسی (U+06F0–06F9)</div></div>
+  </div>
+</div>
+
+<div class="card">
+  <header><span class="num">۴</span><div><h3>نیم‌فاصله (ZWNJ)</h3>
+  <div class="why">واضح‌ترین نشانهٔ متن فارسیِ غیرحرفه‌ای.</div></div>
+  <span class="badge auto">خودکار</span></header>
+  <div class="pair">
+    <div class="side bad"><div class="tag">✕ خروجی پیش‌فرض</div>
+      <div class="demo"><span class="fa-ok">می شود · کتاب ها · نمی دانم</span></div></div>  <!-- rtl-ignore -->
+    <div class="side good"><div class="tag">✓ درست</div>
+      <div class="demo"><span class="fa-ok">می‌شود · کتاب‌ها · نمی‌دانم</span></div></div>
+  </div>
+</div>
+
+<div class="card">
+  <header><span class="num">۵</span><div><h3>تاریخ میلادی برای کاربر فارسی‌زبان</h3>
+  <div class="why">کاربر ایرانی تاریخ میلادی نمی‌خواند؛ تقویم اشتباه محصول را بیگانه نشان می‌دهد.</div></div>
+  <span class="badge judg">قضاوتی</span></header>
+  <div class="pair">
+    <div class="side bad"><div class="tag">✕ خروجی پیش‌فرض</div>
+      <div class="demo"><span class="fa-ok">ثبت‌شده در 27 July 2026</span></div></div>  <!-- rtl-ignore -->
+    <div class="side good"><div class="tag">✓ درست</div>
+      <div class="demo"><span class="fa-ok">ثبت‌شده در ۵ مرداد ۱۴۰۵</span></div></div>
+  </div>
+</div>
+
+<div class="card">
+  <header><span class="num">۶</span><div><h3>برعکس شدن بازه‌های عددی</h3>
+  <div class="why">هر عددی که با فاصله یا خط تیره گروه‌بندی شده باشد، بدون ایزوله وارونه رندر می‌شود. همین حالا مقایسه کنید.</div></div>
+  <span class="badge judg">قضاوتی</span></header>
+  <div class="pair">
+    <div class="side bad"><div class="tag">✕ بدون ایزوله</div>
+      <div class="demo"><span class="fa-ok">صفحات 12-15 را بخوانید</span><br>  <!-- rtl-ignore -->
+      <span class="fa-ok">دورهٔ 2024-2026 فعال است</span><br>  <!-- rtl-ignore -->
+      <span class="fa-ok">تخفیف 10-20% ویژه</span></div>  <!-- rtl-ignore -->
+      <div class="note">هر سه بازه وارونه شده‌اند</div></div>
+    <div class="side good"><div class="tag">✓ با bdi</div>
+      <div class="demo"><span class="fa-ok">صفحات <bdi dir="ltr">12-15</bdi> را بخوانید</span><br>
+      <span class="fa-ok">دورهٔ <bdi dir="ltr">2024-2026</bdi> فعال است</span><br>
+      <span class="fa-ok">تخفیف <bdi dir="ltr">10-20%</bdi> ویژه</span></div>
+      <div class="note">ترتیب اصلی حفظ می‌شود</div></div>
+  </div>
+</div>
+
+<div class="card">
+  <header><span class="num">۷</span><div><h3>به‌هم‌ریختن شمارهٔ تلفن و پیشوند واحد پول</h3>
+  <div class="why">شمارهٔ گروه‌بندی‌شده وارونه می‌شود و علامت واحد پول به آن‌سوی عدد می‌پرد.</div></div>
+  <span class="badge judg">قضاوتی</span></header>
+  <div class="pair">
+    <div class="side bad"><div class="tag">✕ بدون ایزوله</div>
+      <div class="demo"><span class="fa-ok">پشتیبانی: +98 21 9123 4567</span><br>
+      <span class="fa-ok">تماس: 021-9123-4567</span><br>
+      <span class="fa-ok">قیمت: $1,200 است</span></div></div>  <!-- rtl-ignore -->
+    <div class="side good"><div class="tag">✓ با bdi</div>
+      <div class="demo"><span class="fa-ok">پشتیبانی: <bdi dir="ltr">+98 21 9123 4567</bdi></span><br>
+      <span class="fa-ok">تماس: <bdi dir="ltr">021-9123-4567</bdi></span><br>
+      <span class="fa-ok">قیمت: <bdi dir="ltr">$1,200</bdi> است</span></div></div>
+  </div>
+</div>
+
+<div class="card">
+  <header><span class="num">۸</span><div><h3>علائم نگارشی ASCII در جملهٔ فارسی</h3>
+  <div class="why">علامت سؤال و ویرگول فارسی قرینهٔ لاتین‌اند؛ شکل اشتباه توی چشم می‌زند.</div></div>
+  <span class="badge gap">شکاف آشکارساز</span></header>
+  <div class="pair">
+    <div class="side bad"><div class="tag">✕ خروجی پیش‌فرض</div>
+      <div class="demo"><span class="fa-ok">مطمئنید? بله, ادامه بده; لغو</span></div></div>
+    <div class="side good"><div class="tag">✓ درست</div>
+      <div class="demo"><span class="fa-ok">مطمئنید؟ بله، ادامه بده؛ لغو</span></div></div>
+  </div>
+</div>
+
+<div class="card">
+  <header><span class="num">۹</span><div><h3>جداکنندهٔ اعشار و هزارگان</h3>
+  <div class="why">فارسی ممیز «٫» و جداکنندهٔ «٬» مخصوص خودش را دارد.</div></div>
+  <span class="badge gap">شکاف آشکارساز</span></header>
+  <div class="pair">
+    <div class="side bad"><div class="tag">✕ خروجی پیش‌فرض</div>
+      <div class="demo"><span class="fa-ok">۲.۵ مگابایت · ۲,۵۰۰,۰۰۰ تومان</span></div></div>
+    <div class="side good"><div class="tag">✓ درست</div>
+      <div class="demo"><span class="fa-ok">۲٫۵ مگابایت · ۲٬۵۰۰٬۰۰۰ تومان</span></div></div>
+  </div>
+</div>
+
+<h2 class="section">چیدمان و جهت <span>۷ مورد</span></h2>
+
+<div class="card">
+  <header><span class="num">۱۰</span><div><h3>‏<span dir="ltr">&lt;html&gt;</span> بدون dir</h3>
+  <div class="why">کل صفحه چپ‌به‌راست چیده می‌شود و هر چیز بعدی هم غلط می‌شود.</div></div>
+  <span class="badge auto">خودکار</span></header>
+  <div class="pair">
+    <div class="side bad"><div class="tag">✕ خروجی پیش‌فرض</div>
+      <div class="demo" dir="ltr"><span class="fa-ok">سلام دنیا — این پاراگراف چپ‌چین شده است.</span></div>  <!-- rtl-ignore -->
+      <div class="note">متن به لبهٔ چپ چسبیده</div></div>
+    <div class="side good"><div class="tag">✓ درست</div>
+      <div class="demo"><span class="fa-ok">سلام دنیا — این پاراگراف راست‌چین است.</span></div>
+      <div class="note">‏<code>&lt;html dir="rtl" lang="fa"&gt;</code></div></div>
+  </div>
+</div>
+
+<div class="card">
+  <header><span class="num">۱۱</span><div><h3>‏CSS فیزیکی به‌جای منطقی</h3>
+  <div class="why">در انگلیسی درست است و در فارسی آینه‌ی اشتباه می‌شود — باگ خاموش.</div></div>
+  <span class="badge auto">خودکار</span></header>
+  <div class="pair">
+    <div class="side bad"><div class="tag">✕ margin-left</div>
+      <div class="box-stage"><div class="box phys">فاصله از سمت غلط افتاده</div></div>
+      <code>margin-left: 56px;</code></div>  <!-- rtl-ignore -->
+    <div class="side good"><div class="tag">✓ margin-inline-start</div>
+      <div class="box-stage"><div class="box logi">فاصله از ابتدای خط</div></div>
+      <code>margin-inline-start: 56px;</code></div>
+  </div>
+</div>
+
+<div class="card">
+  <header><span class="num">۱۲</span><div><h3>‏APIهای فیزیکی فلاتر</h3>
+  <div class="why">همان کلاس خطا در فلاتر — و هیچ اسکیل طراحی دیگری فلاتر را پوشش نمی‌دهد.</div></div>
+  <span class="badge auto">خودکار</span></header>
+  <div class="pair">
+    <div class="side bad"><div class="tag">✕ خروجی پیش‌فرض</div>
+      <div class="demo"><code>EdgeInsets.only(left: 8)
+Alignment.centerLeft
+Positioned(right: 0)</code></div></div>
+    <div class="side good"><div class="tag">✓ درست</div>
+      <div class="demo"><code>EdgeInsetsDirectional.only(start: 8)
+AlignmentDirectional.centerStart
+PositionedDirectional(end: 0)</code></div></div>
+  </div>
+</div>
+
+<div class="card">
+  <header><span class="num">۱۳</span><div><h3>آینه نشدن آیکون‌های جهت‌دار</h3>
+  <div class="why">پرتکرارترین باگ RTL و اولین چیزی که کاربر می‌بیند.</div></div>
+  <span class="badge judg">قضاوتی</span></header>
+  <div class="pair">
+    <div class="side bad"><div class="tag">✕ خروجی پیش‌فرض</div>
+      <div class="demo"><div class="row"><span class="fa-ok" style="font-size:1rem">مرحلهٔ بعد</span>
+        <svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div></div>
+      <div class="note">فلش به سمت راست — یعنی «عقب» در فارسی</div></div>
+    <div class="side good"><div class="tag">✓ درست</div>
+      <div class="demo"><div class="row"><span class="fa-ok" style="font-size:1rem">مرحلهٔ بعد</span>
+        <svg class="chev mirror" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></div></div>
+      <div class="note">آینه‌شده؛ ولی play و ساعت و لوگو هرگز آینه نمی‌شوند</div></div>
+  </div>
+</div>
+
+<div class="card">
+  <header><span class="num">۱۴</span><div><h3>منوی کشویی از سمت اشتباه</h3>
+  <div class="why">منوی موبایل از سمت غلط صفحه وارد می‌شود. روی کارت‌ها کلیک کنید.</div></div>
+  <span class="badge auto">خودکار</span></header>
+  <div class="pair">
+    <div class="side bad"><div class="tag">✕ left: 0</div>
+      <div class="drawer-stage" onclick="this.classList.toggle('open')"><div class="drawer wrong">منو</div>
+      <span class="note" style="padding:12px; display:block">برای باز شدن کلیک کنید</span></div></div>
+    <div class="side good"><div class="tag">✓ inset-inline-start</div>
+      <div class="drawer-stage" onclick="this.classList.toggle('open')"><div class="drawer right">منو</div>
+      <span class="note" style="padding:12px; display:block">برای باز شدن کلیک کنید</span></div></div>
+  </div>
+</div>
+
+<div class="card">
+  <header><span class="num">۱۵</span><div><h3>فیلد شماره و ایمیل بدون جهت لاتین</h3>
+  <div class="why">مکان‌نما می‌پرد و ارقام تایپ‌شده جابه‌جا می‌نشینند. داخل فیلدها تایپ کنید.</div></div>
+  <span class="badge judg">قضاوتی</span></header>
+  <div class="pair">
+    <div class="side bad"><div class="tag">✕ بدون dir</div>
+      <div class="demo"><input class="demo-input" placeholder="۰۹۱۲..." value="0912 345"></div>
+      <div class="note">تایپ کنید: +98 21</div></div>
+    <div class="side good"><div class="tag">✓ dir="ltr"</div>  <!-- rtl-ignore -->
+      <div class="demo"><input class="demo-input" dir="ltr" placeholder="0912..." value="0912 345"></div>
+      <div class="note">تایپ کنید: +98 21</div></div>
+  </div>
+</div>
+
+<div class="card">
+  <header><span class="num">۱۶</span><div><h3>ریاضی درگ و اسلایدر برعکس</h3>
+  <div class="why">‏<code style="display:inline">dx / width</code> از لبهٔ چپ اندازه می‌گیرد. روی نوارها کلیک کنید.</div></div>
+  <span class="badge judg">قضاوتی</span></header>
+  <div class="pair">
+    <div class="side bad"><div class="tag">✕ بدون تصحیح جهت</div>
+      <div class="slider" data-rtl="0"><div class="fill"></div><div class="val">۳۵٪</div></div>
+      <div class="note">هرجا کلیک کنید، مقدار برعکس می‌شود</div></div>
+    <div class="side good"><div class="tag">✓ تصحیح‌شده</div>
+      <div class="slider" data-rtl="1"><div class="fill"></div><div class="val">۳۵٪</div></div>
+      <div class="note">مقدار با جای کلیک می‌خواند</div></div>
+  </div>
+</div>
+
+<h2 class="section">رندر تایپ <span>۵ مورد</span></h2>
+
+<div class="card">
+  <header><span class="num">۱۷</span><div><h3>‏letter-spacing روی متن فارسی</h3>
+  <div class="why">خط فارسی به‌هم‌پیوسته است؛ فاصله‌گذاری حروف آن را پاره می‌کند و لایهٔ متن PDF را هم خراب می‌کند.</div></div>
+  <span class="badge auto">خودکار</span></header>
+  <div class="pair">
+    <div class="side bad"><div class="tag">✕ خروجی پیش‌فرض</div>
+      <div class="demo"><span class="fa-ok tracked">پژوهش‌گران ایرانی</span></div>
+      <div class="note">حروف از هم گسسته‌اند</div></div>
+    <div class="side good"><div class="tag">✓ letter-spacing: 0</div>
+      <div class="demo"><span class="fa-ok">پژوهش‌گران ایرانی</span></div></div>
+  </div>
+</div>
+
+<div class="card">
+  <header><span class="num">۱۸</span><div><h3>ارتفاع خط لاتین روی متن فارسی</h3>
+  <div class="why">فارسی نقطه‌ها را بالا و پایین حرف می‌چیند؛ فاصلهٔ لاتین خفه و درهم می‌شود.</div></div>
+  <span class="badge gap">شکاف آشکارساز</span></header>
+  <div class="pair">
+    <div class="side bad"><div class="tag">✕ line-height: 1.25</div>
+      <div class="demo cramped"><span style="font-size:.95rem">استانداردسازی زیرساخت‌های بین‌المللی برای پژوهش‌گرانی که مسئولیت‌پذیری را جدی می‌گیرند.</span></div></div>
+    <div class="side good"><div class="tag">✓ line-height: 1.95</div>
+      <div class="demo roomy"><span style="font-size:.95rem">استانداردسازی زیرساخت‌های بین‌المللی برای پژوهش‌گرانی که مسئولیت‌پذیری را جدی می‌گیرند.</span></div></div>
+  </div>
+</div>
+
+<div class="card">
+  <header><span class="num">۱۹</span><div><h3>فونتی که اصلاً حروف فارسی ندارد</h3>
+  <div class="why">‏Tajawal و Readex Pro فونت‌های محبوب «عربی»اند و پ چ ژ گ ندارند. سمت راست واقعاً با Tajawal رندر شده.</div></div>
+  <span class="badge judg">قضاوتی</span></header>
+  <div class="pair">
+    <div class="side bad"><div class="tag">✕ font-family: Tajawal</div>
+      <div class="demo"><span class="fa-tajawal">پژوهش‌گران چگونه می‌کاوند؟</span></div>
+      <div class="note">حروف فارسی به فونت دیگری می‌افتند — ناهماهنگی را ببینید</div></div>
+    <div class="side good"><div class="tag">✓ فونت راستی‌آزمایی‌شده</div>
+      <div class="demo"><span class="fa-ok">پژوهش‌گران چگونه می‌کاوند؟</span></div>
+      <div class="note">همین رشته را برای وارسی هر فونت فارسی استفاده کنید</div></div>
+  </div>
+</div>
+
+<div class="card">
+  <header><span class="num">۲۰</span><div><h3>فونت تجاری از مخزن «رایگان»</h3>
+  <div class="why">کلمه، ایران‌نستعلیق و پیدا آزادانه روی گیت‌هاب پخش می‌شوند و لایسنس تجاری داخل خود فایل است.</div></div>
+  <span class="badge judg">قضاوتی</span></header>
+  <div class="pair">
+    <div class="side bad"><div class="tag">✕ نقض لایسنس</div>
+      <div class="demo"><code>@font-face { font-family: "Kalameh";
+  src: url("/fonts/kalameh.woff2"); }</code></div>
+      <div class="note">دانلودش قانونی به نظر می‌رسد؛ انتشارش نقض است</div></div>
+    <div class="side good"><div class="tag">✓ امن</div>
+      <div class="demo"><code>font-family: "Kalameh", "Vazirmatn",
+             "Noto Sans Arabic", sans-serif;</code></div>
+      <div class="note">دارندهٔ لایسنس فونت واقعی را می‌بیند، بقیه fallback آزاد</div></div>
+  </div>
+</div>
+
+<div class="card">
+  <header><span class="num">۲۱</span><div><h3>سرریز متن بلند فارسی</h3>
+  <div class="why">ترکیب‌های فارسی بلندند؛ دکمه‌ای که با متن انگلیسی اندازه شده، اولین رشتهٔ واقعی را می‌برد.</div></div>
+  <span class="badge judg">قضاوتی</span></header>
+  <div class="pair">
+    <div class="side bad"><div class="tag">✕ اندازه‌شده با متن انگلیسی</div>
+      <div class="demo"><button class="btn-demo clip">تنظیمات شخصی‌سازی‌شده</button></div>
+      <div class="note">برچسب بریده شد</div></div>
+    <div class="side good"><div class="tag">✓ تست‌شده با رشتهٔ واقعی</div>
+      <div class="demo"><button class="btn-demo">تنظیمات شخصی‌سازی‌شده</button></div></div>
+  </div>
+</div>
+
+<footer>
+  <p>
+    هر ردیف این صفحه به <a href="https://github.com/Baghlani/rtl-design/blob/main/docs/pain-points.md">کاتالوگ دردها</a>
+    در مخزن وصل است. ۹ مورد را آشکارساز بدون هیچ مدل زبانی و بدون وابستگی می‌گیرد؛ بقیه قاعده‌های
+    قضاوتی‌اند که اسکیل به ایجنت می‌دهد. سه شکاف هم صادقانه اعلام شده‌اند.
+  </p>
+  <p style="margin-block-start:14px">
+    <a href="https://github.com/Baghlani/rtl-design">github.com/Baghlani/rtl-design</a> ·
+    <code style="display:inline">npx skills add Baghlani/rtl-design</code>
+  </p>
+</footer>
+</div>
+
+<script>
+  document.querySelectorAll('.slider').forEach(function (s) {
+    s.addEventListener('click', function (e) {
+      var r = s.getBoundingClientRect();
+      var visual = (e.clientX - r.left) / r.width;      // measured from the visual left
+      var isRtl = s.dataset.rtl === '1';
+      var v = isRtl ? 1 - visual : visual;              // the one-line fix
+      var pct = Math.round(Math.max(0, Math.min(1, v)) * 100);
+      s.querySelector('.fill').style.width = pct + '%';
+      s.querySelector('.val').textContent =
+        String(pct).replace(/\d/g, function (d) { return '۰۱۲۳۴۵۶۷۸۹'[d]; }) + '٪';
+    });
+  });
+</script>
+
+</body>
+</html>

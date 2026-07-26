@@ -69,7 +69,7 @@ RE_PHYSICAL_PROPS = re.compile(
     r"|\b(text-align|float)\s*:\s*(left|right)\b")
 # bare left:/right: declarations — pure stylesheets only (too noisy in JS objects)
 RE_BARE_INSET = re.compile(r"(?<![-\w$#.])(left|right)\s*:\s*[^;{}]*(?:[;}]|$)")
-RE_LETTER_SPACING = re.compile(r"letter-spacing\s*:\s*([^;}!]+)")
+RE_LETTER_SPACING = re.compile(r"letter-spacing\s*:\s*([^;}!<]+)")
 LETTER_SPACING_OK = {"0", "0px", "0em", "0rem", "normal", "inherit", "unset", "initial",
                      "revert", "revert-layer"}
 RE_DART_LETTER_SPACING = re.compile(r"\bletterSpacing\s*:\s*([^,)\]}]+)")
