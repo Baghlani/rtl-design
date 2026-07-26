@@ -108,6 +108,19 @@ def has_persian(text):
     return bool(RE_PERSIAN.search(text))
 
 
+def ltr_island_content_ok(line, match):
+    """True when the dir="ltr" element's text on this line is non-empty and contains
+    no Arabic-script characters — wrapping pure-Latin content (brand names, SSO/SAML,
+    version strings) is the documented island pattern, not a bug. Conservative:
+    empty/multi-line content stays flagged."""
+    gt = line.find(">", match.end())
+    if gt == -1:
+        return False
+    lt = line.find("<", gt + 1)
+    content = line[gt + 1:lt if lt != -1 else len(line)]
+    return bool(content.strip()) and not ARABIC_SCRIPT.search(content)
+
+
 def snippet(line):
     line = "".join(ch for ch in line.strip()
                    if unicodedata.category(ch) != "Cc")  # strip control chars (ANSI etc.)
@@ -244,7 +257,8 @@ def check_file(path, sink):
         # attribute selectors like input[dir="ltr"], which style rather than wrap)
         m7 = RE_DIR_LTR.search(line) if file_has_persian else None
         if m7 and not (m7.start() > 0 and line[m7.start() - 1] == "[") \
-                and not RE_ISLAND_TAG.search(line):
+                and not RE_ISLAND_TAG.search(line) \
+                and not ltr_island_content_ok(line, m7):
             add("R007", "hardcoded-ltr", "warning", i, line,
                 "dir=\"ltr\" in a Persian file — correct only for LTR islands (phone/email/code "
                 "inputs, code blocks); a bug if it wraps Persian content.")
