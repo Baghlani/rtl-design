@@ -88,7 +88,7 @@ TextField(
 ## 6. Digits
 
 Persian digits in UI text; Latin for phone numbers, codes, and technical IDs (full rules
-in `typography.md` §4). Conversion is presentation-layer:
+in `typography.md` §5). Conversion is presentation-layer:
 
 ```dart
 String toPersianDigits(String s) {
