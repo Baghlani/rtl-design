@@ -31,6 +31,8 @@ SCAN_EXTS = {
     ".php",  # Laravel Blade templates and Persian strings in PHP
 }
 PURE_STYLE_EXTS = {".css", ".scss", ".sass", ".less", ".styl"}
+# markup files whose <style> blocks are treated as pure CSS (bare left:/right: rule)
+EMBEDDED_STYLE_EXTS = {".html", ".htm", ".vue", ".svelte"}
 STYLE_EXTS = PURE_STYLE_EXTS | {".vue", ".svelte", ".jsx", ".tsx", ".js", ".ts",
                                 ".html", ".htm"}
 SKIP_DIRS = {
@@ -154,7 +156,21 @@ def check_file(path, sink):
     def add(rule, name, severity, lineno, line, suggestion):
         sink.add(rule, name, severity, path, lineno, line, suggestion)
 
+    in_style = False  # inside a <style> block of a markup file
+
     for i, line in enumerate(lines, 1):
+        # Track <style> blocks so their lines get pure-CSS treatment (never JS/attrs).
+        line_in_style = False
+        if ext in EMBEDDED_STYLE_EXTS:
+            lower = line.lower()
+            opens = "<style" in lower
+            closes = "</style" in lower
+            line_in_style = in_style or opens
+            if opens and not closes:
+                in_style = True
+            elif closes:
+                in_style = False
+
         if len(line) > MAX_LINE_LEN:
             continue  # minified/generated content
         if "rtl-ignore" in line or (i > 1 and "rtl-ignore-next" in lines[i - 2]):
@@ -190,7 +206,7 @@ def check_file(path, sink):
                 add("R004", "physical-css", "warning", i, line,
                     f"Prefer logical properties: replace `{key}` with `{LOGICAL_MAP[key]}`. "
                     "Physical values are only correct for physically-anchored UI (video controls, maps, code).")
-            elif ext in PURE_STYLE_EXTS:
+            elif ext in PURE_STYLE_EXTS or line_in_style:
                 m2 = RE_BARE_INSET.search(line)
                 if m2:
                     add("R004", "physical-css", "warning", i, line,

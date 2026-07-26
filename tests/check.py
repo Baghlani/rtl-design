@@ -71,6 +71,15 @@ check("islands: exit 0", rc == 0, f"rc={rc}")
 check("islands: zero findings on taught patterns",
       d["counts"] == {"error": 0, "warning": 0}, str(d["findings"]))
 
+# 5c. <style> blocks in markup files get pure-CSS treatment; JS stays exempt
+# (field regression: RTL drawer anchored with left:0 inside an HTML style block)
+rc, d = run(FIX / "embedded-style.html")
+rules = Counter(f["rule"] for f in d["findings"])
+check("embedded-style: exactly one R004", rules == Counter({"R004": 1}), str(dict(rules)))
+check("embedded-style: it is the drawer line, not the JS object",
+      d["findings"][0]["line"] == 4 and "drawer" in d["findings"][0]["snippet"],
+      str(d["findings"][0]))
+
 # 6. unknown rule id → exit 2
 rc, _ = run(FIX / "clean.html", "--rules", "R999")
 check("unknown rule id: exit 2", rc == 2, f"rc={rc}")
