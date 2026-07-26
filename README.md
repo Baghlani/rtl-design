@@ -54,11 +54,16 @@ agents, text for humans, exit codes for CI.
 ## Install
 
 ```bash
-npx skills add Baghlani/rtl-design
+npx skills add Baghlani/rtl-design        # this project only
+npx skills add Baghlani/rtl-design -g     # all your projects
 ```
 
 Or copy `skills/rtl-design/` into your agent's skills directory
 (`.claude/skills/`, `.agents/skills/`, …).
+
+Two things worth knowing: the default install is **project-scoped** (it lands in the
+directory you run it from — use `-g` for global), and agents discover skills at
+**session start** — restart your session after installing.
 
 ## Design & structure
 
