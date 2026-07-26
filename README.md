@@ -1,5 +1,7 @@
 # rtl-design
 
+[![ci](https://github.com/Baghlani/rtl-design/actions/workflows/ci.yml/badge.svg)](https://github.com/Baghlani/rtl-design/actions/workflows/ci.yml)
+
 **The first serious RTL/Persian UI design skill for AI coding agents.**
 Works in Claude Code, Cursor, Codex CLI, Gemini CLI, and 70+ other agents via the
 [Agent Skills](https://agentskills.io) open standard.
@@ -52,7 +54,7 @@ agents, text for humans, exit codes for CI.
 ## Install
 
 ```bash
-npx skills add abolfazl-baghlani/rtl-design
+npx skills add Baghlani/rtl-design
 ```
 
 Or copy `skills/rtl-design/` into your agent's skills directory
