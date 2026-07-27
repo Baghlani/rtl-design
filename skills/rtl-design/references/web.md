@@ -81,8 +81,30 @@ names are LTR islands and will scramble punctuation and ordering if not isolated
 - Plain strings passed to non-HTML sinks (title attribute, `document.title`, push
   notifications, canvas): use Unicode isolates in the string itself — U+2066 (LRI) /
   U+2067 (RLI) … U+2069 (PDI). Avoid legacy LRM/RLM sprinkling except as a last resort.
-- Punctuation at direction boundaries is the tell: if you see «سلام dear!» rendering as
-  «!سلام dear» the island isn't isolated.
+### Which patterns actually break (measured, not assumed)
+
+Rendered in an RTL container and compared character-position by character-position — most
+mixed content is fine, and the failures cluster in one place: **a number split into groups
+by a space or hyphen reverses**, and a currency/sign prefix jumps to the far side.
+
+| Pattern | Renders as | Verdict |
+|---|---|---|
+| `+98 21 9123 4567` | `4567 9123 21 98+` | **breaks** — groups reversed |
+| `021-9123-4567` | `4567-9123-021` | **breaks** |
+| `صفحات 12-15` | `صفحات 15-12` | **breaks** |
+| `دورهٔ 2024-2026` | `دورهٔ 2026-2024` | **breaks** |
+| `تخفیف 10-20%` | `تخفیف 20-10%` | **breaks** |
+| `قیمت $1,200` | `قیمت 1,200$` | **breaks** — sign jumps |
+| `info@site.com`, `4.9/5`, `2.1.0`, `iPhone 15 Pro`, `9:00 - 17:00`, `IR12 0170 0000` | unchanged | safe |
+
+So the rule to apply is narrow and testable: **isolate any number that contains a space or
+hyphen, and any number carrying a leading sign or currency symbol.** Bare emails, URLs,
+dotted versions, slashed ratios and Latin product names do not need `<bdi>` for ordering —
+though wrapping them anyway costs nothing and protects against future edits.
+
+- Punctuation at direction boundaries is the classic tell people repeat, but verify before
+  claiming it: a trailing `.` or `!` after a Latin run inside an RTL sentence renders
+  correctly on its own. Measure the specific string rather than assuming.
 
 ## 5. Forms and inputs
 

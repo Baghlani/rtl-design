@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تنظیمات حساب کاربری</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Vazirmatn", "Noto Sans Arabic", sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.8;
+            direction: rtl;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background-color: #ffffff;
+            border-inline-end: 1px solid #e0e0e0;
+            padding-block: 24px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding-inline: 20px;
+            margin-block-end: 32px;
+            border-block-end: 1px solid #e0e0e0;
+            padding-block-end: 16px;
+        }
+
+        .sidebar-header h1 {
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        .sidebar-section {
+            margin-block-end: 24px;
+        }
+
+        .sidebar-section-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #999;
+            padding-inline: 20px;
+            margin-block-end: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-block-end: 0;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-inline: 20px;
+            padding-block: 12px;
+            color: #666;
+            text-decoration: none;
+            font-size: 14px;
+            border-inline-start: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-menu a:hover {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .sidebar-menu a.active {
+            background-color: #f0f0f0;
+            color: #2563eb;
+            border-inline-start-color: #2563eb;
+        }
+
+        .sidebar-icon {
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        /* Chevron icon mirroring for RTL */
+        [dir="rtl"] .sidebar-menu a::after {
+            content: "‹";
+            margin-inline-start: auto;
+            font-size: 18px;
+            color: #ccc;
+        }
+
+        /* Main content */
+        .main {
+            flex: 1;
+            padding: 32px;
+            overflow-y: auto;
+        }
+
+        .content-section {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 32px;
+            margin-block-end: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .section-header {
+            margin-block-end: 24px;
+            border-block-end: 1px solid #e0e0e0;
+            padding-block-end: 16px;
+        }
+
+        .section-header h2 {
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1.4;
+            color: #333;
+            margin-block-end: 8px;
+        }
+
+        .section-header p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-block-end: 24px;
+        }
+
+        .form-group:last-child {
+            margin-block-end: 0;
+        }
+
+        .form-group label {
+            display: block;
+            margin-block-end: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding-inline: 12px;
+            padding-block: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: "Vazirmatn", "Noto Sans Arabic", sans-serif;
+            font-size: 14px;
+            direction: rtl;
+            text-align: start;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-group input[dir="ltr"] {
+            direction: ltr;
+            text-align: right;
+        }
+
+        .form-group input::placeholder {
+            color: #aaa;
+        }
+
+        .input-hint {
+            display: block;
+            margin-block-start: 6px;
+            font-size: 12px;
+            color: #999;
+            line-height: 1.6;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        /* Settings toggles */
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-block: 16px;
+            border-block-end: 1px solid #f0f0f0;
+        }
+
+        .setting-item:last-child {
+            border-block-end: none;
+        }
+
+        .setting-label {
+            flex: 1;
+        }
+
+        .setting-label h3 {
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            margin-block-end: 4px;
+        }
+
+        .setting-label p {
+            font-size: 12px;
+            color: #999;
+            line-height: 1.6;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 28px;
+            background-color: #ddd;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            border: none;
+            padding: 0;
+        }
+
+        .toggle-switch.active {
+            background-color: #10b981;
+        }
+
+        .toggle-switch::after {
+            content: "";
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background-color: white;
+            border-radius: 50%;
+            top: 2px;
+            inset-inline-end: 2px;
+            transition: inset-inline-end 0.3s ease;
+        }
+
+        .toggle-switch.active::after {
+            inset-inline-end: 24px;
+        }
+
+        /* Security info */
+        .info-card {
+            background-color: #f0f9ff;
+            border-inline-start: 4px solid #0284c7;
+            padding: 16px;
+            border-radius: 6px;
+            margin-block-end: 16px;
+        }
+
+        .info-card h3 {
+            font-size: 14px;
+            font-weight: 500;
+            color: #0c4a6e;
+            margin-block-end: 8px;
+        }
+
+        .info-card p {
+            font-size: 13px;
+            color: #0c4a6e;
+            line-height: 1.6;
+        }
+
+        .info-detail {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-block: 12px;
+            border-block-end: 1px solid #e0e0e0;
+            font-size: 14px;
+        }
+
+        .info-detail:last-child {
+            border-block-end: none;
+        }
+
+        .info-detail-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .info-detail-value {
+            color: #333;
+            font-weight: 500;
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-block-start: 24px;
+        }
+
+        .btn {
+            padding-inline: 20px;
+            padding-block: 10px;
+            border: none;
+            border-radius: 6px;
+            font-family: "Vazirmatn", "Noto Sans Arabic", sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background-color: #2563eb;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background-color: #f3f4f6;
+            color: #333;
+            border: 1px solid #e5e7eb;
+        }
+
+        .btn-secondary:hover {
+            background-color: #f9fafb;
+        }
+
+        .btn-danger {
+            background-color: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+
+        /* Billing section */
+        .billing-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            background-color: #fef3c7;
+            border: 1px solid #fcd34d;
+            border-radius: 8px;
+            padding: 20px;
+            margin-block-end: 20px;
+        }
+
+        .billing-detail {
+            font-size: 13px;
+            color: #78350f;
+        }
+
+        .billing-detail-label {
+            color: #92400e;
+            font-weight: 500;
+            margin-block-end: 4px;
+        }
+
+        .billing-detail-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #78350f;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column-reverse;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                border-inline-end: none;
+                border-block-start: 1px solid #e0e0e0;
+                position: static;
+            }
+
+            .main {
+                padding: 20px;
+            }
+
+            .content-section {
+                padding: 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .billing-card {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar-menu a {
+                padding-inline: 16px;
+                padding-block: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>تنظیمات</h1>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">حساب کاربری</div>
+                <ul class="sidebar-menu">
+                    <li><a href="#personal" class="active"><span class="sidebar-icon">👤</span> اطلاعات شخصی</a></li>
+                    <li><a href="#notifications"><span class="sidebar-icon">🔔</span> اعلان‌ها</a></li>
+                    <li><a href="#security"><span class="sidebar-icon">🔒</span> امنیت</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">پرداخت</div>
+                <ul class="sidebar-menu">
+                    <li><a href="#billing"><span class="sidebar-icon">💳</span> صورتحساب</a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <main class="main">
+            <!-- Personal Information Section -->
+            <section id="personal" class="content-section">
+                <div class="section-header">
+                    <h2>اطلاعات شخصی</h2>
+                    <p>اطلاعات حساب کاربری خود را به‌روز کنید.</p>
+                </div>
+
+                <form>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstname">نام</label>
+                            <input type="text" id="firstname" placeholder="نام خود را وارد کنید">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastname">نام‌خانوادگی</label>
+                            <input type="text" id="lastname" placeholder="نام‌خانوادگی خود را وارد کنید">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">آدرس ایمیل</label>
+                        <input type="email" id="email" dir="ltr" placeholder="example@domain.com" value="user@example.com">
+                        <span class="input-hint">ایمیل شما برای ورود و تأیید‌کننده استفاده می‌شود.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">شماره موبایل</label>
+                        <input type="tel" id="phone" dir="ltr" placeholder="09123456789" value="0912 345 6789">
+                        <span class="input-hint">فقط شماره‌های ایرانی پشتیبانی می‌شود.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="country">کشور</label>
+                        <select id="country">
+                            <option>ایران</option>
+                            <option>امارات</option>
+                            <option>کویت</option>
+                        </select>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="submit" class="btn btn-primary">ذخیره تغییرات</button>
+                        <button type="reset" class="btn btn-secondary">لغو</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Notifications Section -->
+            <section id="notifications" class="content-section">
+                <div class="section-header">
+                    <h2>تنظیمات اعلان‌ها</h2>
+                    <p>انتخاب کنید چه زمانی اعلان‌هایی دریافت می‌کنید.</p>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-label">
+                        <h3>اعلان‌های ایمیل</h3>
+                        <p>برای رویدادهای مهم ایمیل دریافت کنید.</p>
+                    </div>
+                    <button class="toggle-switch active" onclick="this.classList.toggle('active')"></button>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-label">
+                        <h3>اعلان‌های پوش</h3>
+                        <p>اعلان‌های پوش در دستگاه خود دریافت کنید.</p>
+                    </div>
+                    <button class="toggle-switch active" onclick="this.classList.toggle('active')"></button>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-label">
+                        <h3>اعلان‌های ایمیل تبلیغاتی</h3>
+                        <p>درباره‌ی پیشنهادات جدید و تخفیف‌ها مطلع شوید.</p>
+                    </div>
+                    <button class="toggle-switch" onclick="this.classList.toggle('active')"></button>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-label">
+                        <h3>اعلان‌های هفتگی</h3>
+                        <p>خلاصه‌ای از فعالیت هفتگی خود را دریافت کنید.</p>
+                    </div>
+                    <button class="toggle-switch active" onclick="this.classList.toggle('active')"></button>
+                </div>
+            </section>
+
+            <!-- Security Section -->
+            <section id="security" class="content-section">
+                <div class="section-header">
+                    <h2>امنیت</h2>
+                    <p>حساب و دستگاه‌های خود را مدیریت کنید.</p>
+                </div>
+
+                <div class="info-card">
+                    <h3>⚠️ فعالیت ورود</h3>
+                    <p>آخرین بار که در حساب‌تان وارد شده‌اید را ببینید.</p>
+                </div>
+
+                <div class="info-detail">
+                    <span class="info-detail-label">آخرین ورود:</span>
+                    <span class="info-detail-value">۲۶ مهر ۱۴۰۵ ساعت ۱۴:۳۰</span>
+                </div>
+
+                <div class="info-detail">
+                    <span class="info-detail-label">مکان:</span>
+                    <span class="info-detail-value">تهران، ایران</span>
+                </div>
+
+                <div class="info-detail">
+                    <span class="info-detail-label">دستگاه:</span>
+                    <span class="info-detail-value">macOS · Chrome</span>
+                </div>
+
+                <div class="button-group" style="margin-block-start: 32px;">
+                    <button class="btn btn-secondary">تغییر رمز عبور</button>
+                    <button class="btn btn-danger">خروج از تمام دستگاه‌ها</button>
+                </div>
+            </section>
+
+            <!-- Billing Section -->
+            <section id="billing" class="content-section">
+                <div class="section-header">
+                    <h2>صورتحساب</h2>
+                    <p>طرح‌ اشتراک‌تان و تاریخ تمدید را مشاهده کنید.</p>
+                </div>
+
+                <div class="billing-card">
+                    <div class="billing-detail">
+                        <div class="billing-detail-label">طرح فعلی</div>
+                        <div class="billing-detail-value">حرفه‌ای</div>
+                    </div>
+                    <div class="billing-detail">
+                        <div class="billing-detail-label">مبلغ ماهانه</div>
+                        <div class="billing-detail-value" dir="ltr">۳۹٬۹۹۹ تومان</div>
+                    </div>
+                </div>
+
+                <div class="info-detail">
+                    <span class="info-detail-label">تاریخ تمدید:</span>
+                    <span class="info-detail-value">۱۵ آبان ۱۴۰۵</span>
+                </div>
+
+                <div class="info-detail">
+                    <span class="info-detail-label">وضعیت:</span>
+                    <span class="info-detail-value" style="color: #10b981;">✓ فعال</span>
+                </div>
+
+                <div class="button-group" style="margin-block-start: 32px;">
+                    <button class="btn btn-secondary">مشاهده‌ی صورتحساب‌ها</button>
+                    <button class="btn btn-secondary">تغییر طرح</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Smooth section navigation
+        document.querySelectorAll('.sidebar-menu a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
+                this.classList.add('active');
+
+                const targetId = this.getAttribute('href');
+                const section = document.querySelector(targetId);
+                if (section) {
+                    section.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

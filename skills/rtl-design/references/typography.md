@@ -16,7 +16,7 @@ correctness rules and the taste recipes.
   joins. It also breaks PDF text extraction/search for Persian (empirically verified:
   PDF generators emit per-glyph positioning that destroys the text layer). If a design
   system applies default tracking to headings/labels (Material 3 does), zero it for
-  Persian. For "airy" display text, use kashida (§2) or weight/size contrast instead.
+  Persian. For "airy" display text, use kashida (§4) or weight/size contrast instead.
 - **No text-transform equivalents:** no uppercase, no small-caps. Hierarchy must come
   from weight, size, and color — this is why variable-weight fonts matter more in
   Persian than in Latin.
@@ -24,7 +24,7 @@ correctness rules and the taste recipes.
   long-form reading text, and prefer engines/fonts with kashida-aware justification;
   UI copy is always `start`-aligned.
 
-## 2. The free font ladder (licensing verified 2026-07)
+## 2. Text faces — the free ladder (licensing verified 2026-07)
 
 | Font | License | Best role | Notes |
 |---|---|---|---|
@@ -44,7 +44,30 @@ correctness rules and the taste recipes.
   Morabba, IRANYekanX, IRANSans, Yekan Bakh, Peyda) require a paid license from
   fontiran.com. Recommending them by name is fine; bundling or hotlinking files is not.
 
-## 3. Pairing recipes (the taste layer)
+## 3. Font safety — does the face actually work for Persian?
+
+Picking a font that cannot render Persian is a silent, common failure: the page looks
+designed, and half the letters are missing or disconnected. Verify before committing.
+Every claim below comes from parsing the font binary and shaping Persian text — not
+from the foundry's description.
+
+**Verified traps — these will break Persian, and people hit them constantly:**
+
+| Face | What happens |
+|---|---|
+| **Tajawal** | Popular Arabic UI face — has پ but **no چ ژ گ ی ک and no Persian digits** |
+| **Readex Pro** | Markets itself as Arabic; **zero** Persian letters |
+| **Amiri Quran** | Missing پ چ ژ گ ک — easily confused with **Amiri**, which is fine |
+| **Ruwudu**, **Alkalami** | One letter short (چ) plus no Persian digits — still fatal |
+| **Fandogh** | Has every Persian character **but no `init`/`medi`/`fina` rules** — renders Persian as disconnected letters |
+| **Kalameh**, **IranNastaliq**, **Rokh**, **Ravi** | Freely downloadable on GitHub, **commercially licensed** inside the font binary |
+
+**How to vet any Persian font in 30 seconds:** render «پژوهش‌گران چگونه می‌کاوند؟ ۱۴۰۵» —
+it exercises all four Persian-only letters, ZWNJ joining, the Persian question mark and
+Persian digits. If letters stand apart instead of joining, or any glyph falls back to a
+different face, reject it. Isolated-letter specimens hide exactly these failures.
+
+## 4. Pairing recipes (the taste layer)
 
 Stack-first pattern: the first family is the aspirational (often commercial) face; the
 fallbacks are free and legal, so the design works for everyone and upgrades instantly
@@ -67,8 +90,11 @@ Recipe mechanics:
   the Google Fonts build dropped the axis. Short display lines only — never body text.
 - One family can carry a whole app (Estedad or Vazirmatn variable) — vary weight/size.
   Two families max; the second earns its place by contrast (naskh vs geometric).
+- Fallback discipline still applies to display stacks: end every stack with
+  `"Vazirmatn", "Noto Sans Arabic", sans-serif` so a missing display face degrades to
+  correct Persian instead of tofu.
 
-## 4. Digits
+## 5. Digits
 
 - UI text, counts, dates, prices: **Persian digits ۰۱۲۳۴۵۶۷۸۹ (U+06F0–U+06F9)**.
 - Keep **Latin digits** for: phone numbers, verification codes/OTP, postal/national/card
@@ -81,7 +107,7 @@ Recipe mechanics:
   separator, currency word after the number. Decimal separator is the momayyez
   ٫ (U+066B): «۲٫۵ مگابایت» — not the ASCII period.
 
-## 5. ی / ک and Unicode hygiene
+## 6. ی / ک and Unicode hygiene
 
 - Persian ی (U+06CC) and ک (U+06A9) — **never** Arabic ي (U+064A) / ك (U+0643) in
   Persian text. They render with wrong dots/forms and break search, sorting, and dedup.
@@ -93,7 +119,7 @@ Recipe mechanics:
 - Persian question mark ؟ (U+061F), comma ، (U+060C), semicolon ؛ (U+061B) — not ASCII
   `?,;` in Persian copy. Quotes: «گیومه» — not Latin quotes, straight `"…"` or curly “…”.
 
-## 6. ZWNJ (نیم‌فاصله, U+200C)
+## 7. ZWNJ (نیم‌فاصله, U+200C)
 
 The signature of professional Persian text. It joins words semantically while breaking
 the letterform connection:
@@ -110,7 +136,7 @@ Rules for UI work:
 - LLM-generated Persian frequently omits ZWNJ or uses full spaces — copyedit generated
   copy against the patterns above.
 
-## 7. Persian AI-tells (the slop list)
+## 8. Persian AI-tells (the slop list)
 
 Generated Persian UI has recognizable tells. Ban them:
 
@@ -126,7 +152,7 @@ Generated Persian UI has recognizable tells. Ban them:
 9. ASCII punctuation ? , ; and "quotes" in Persian sentences.
 10. Center-aligned long Persian paragraphs.
 
-## 8. Webfont mechanics
+## 9. Webfont mechanics
 
 - Load from Google Fonts (Vazirmatn, Estedad, Noto) or self-host the OFL files —
   self-hosting is legal for OFL and faster inside Iran where Google CDN can be slow;
@@ -137,7 +163,7 @@ Generated Persian UI has recognizable tells. Ban them:
 - `size-adjust`/fallback metrics: match the fallback (Noto Sans Arabic) to the primary
   to kill CLS on slow loads.
 
-## 9. Specimen page (see-it-before-you-commit)
+## 10. Specimen page (see-it-before-you-commit)
 
 When the user wants to compare directions/recipes, generate a single-file
 `specimen.html` in their project (they open it locally; nothing is published):
@@ -149,4 +175,6 @@ When the user wants to compare directions/recipes, generate a single-file
 - Include per recipe: H1/H2/body/caption scale, a stat row with Persian digits, a mixed
   bidi paragraph containing an email + a price, a form row (Persian field + LTR phone
   field), and one long-string overflow card (stress strings in web.md §8).
+- Put the vetting string «پژوهش‌گران چگونه می‌کاوند؟ ۱۴۰۵» (§3) under every face in the
+  specimen — it makes joining failures and missing Persian glyphs visible at a glance.
 - End with a licensing note: which faces are free, which need a fontiran.com license.

@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>داشبورد فروش</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            direction: rtl;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: right;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 25px;
+            border-radius: 10px;
+            border-right: 4px solid #667eea;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-card:nth-child(2) {
+            border-right-color: #f093fb;
+        }
+
+        .stat-card:nth-child(3) {
+            border-right-color: #4facfe;
+        }
+
+        .stat-card:nth-child(4) {
+            border-right-color: #fa709a;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+            font-weight: 500;
+            text-align: right;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #333;
+            text-align: right;
+        }
+
+        .stat-unit {
+            font-size: 14px;
+            color: #999;
+            margin-right: 5px;
+        }
+
+        .filter-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: right;
+        }
+
+        .filter-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            text-align: right;
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .filter-label {
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        input[type="date"],
+        select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            background: white;
+            color: #333;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .orders-section h2 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: right;
+            font-weight: 700;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        th {
+            padding: 16px;
+            text-align: right;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #e9ecef;
+            font-size: 14px;
+            text-align: right;
+        }
+
+        tbody tr {
+            transition: background-color 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .order-id {
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .status.completed {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status.pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status.shipped {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .status.cancelled {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .amount {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .date {
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>داشبورد فروش فروشگاه</h1>
+            <p>۲۷ مهر ۱۴۰۵</p>
+        </div>
+
+        <div class="content">
+            <!-- Statistics Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">فروش امروز</div>
+                    <div class="stat-value">۱۲,۵۸۰<span class="stat-unit">تومان</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">تعداد سفارش</div>
+                    <div class="stat-value">۲۴<span class="stat-unit">سفارش</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">مشتری جدید</div>
+                    <div class="stat-value">۸<span class="stat-unit">نفر</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">نرخ بازگشت</div>
+                    <div class="stat-value">۳.۲<span class="stat-unit">%</span></div>
+                </div>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <div class="filter-title">محدودهٔ زمانی گزارش</div>
+                <div class="filter-controls">
+                    <div class="filter-group">
+                        <label class="filter-label">از تاریخ</label>
+                        <input type="date" value="2026-07-20">
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">تا تاریخ</label>
+                        <input type="date" value="2026-07-27">
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">وضعیت</label>
+                        <select>
+                            <option>همه</option>
+                            <option>تکمیل شده</option>
+                            <option>در انتظار</option>
+                            <option>ارسال شده</option>
+                            <option>لغو شده</option>
+                        </select>
+                    </div>
+                    <button>اعمال فیلتر</button>
+                </div>
+            </div>
+
+            <!-- Recent Orders Table -->
+            <div class="orders-section">
+                <h2>۶ سفارش آخر</h2>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>شماره سفارش</th>
+                                <th>تاریخ</th>
+                                <th>مشتری</th>
+                                <th>مبلغ</th>
+                                <th>وضعیت</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="order-id">#۱۲۰۲۶</td>
+                                <td class="date">۲۷ مهر ۱۴۰۵</td>
+                                <td>احمد رضایی</td>
+                                <td class="amount">۴۵۰,۰۰۰ تومان</td>
+                                <td><span class="status completed">تکمیل شده</span></td>
+                            </tr>
+                            <tr>
+                                <td class="order-id">#۱۲۰۲۵</td>
+                                <td class="date">۲۷ مهر ۱۴۰۵</td>
+                                <td>فاطمه محمدی</td>
+                                <td class="amount">۲۸۵,۰۰۰ تومان</td>
+                                <td><span class="status shipped">ارسال شده</span></td>
+                            </tr>
+                            <tr>
+                                <td class="order-id">#۱۲۰۲۴</td>
+                                <td class="date">۲۶ مهر ۱۴۰۵</td>
+                                <td>علی کریمی</td>
+                                <td class="amount">۷۲۰,۰۰۰ تومان</td>
+                                <td><span class="status pending">در انتظار</span></td>
+                            </tr>
+                            <tr>
+                                <td class="order-id">#۱۲۰۲۳</td>
+                                <td class="date">۲۶ مهر ۱۴۰۵</td>
+                                <td>زهرا حسینی</td>
+                                <td class="amount">۱۹۰,۰۰۰ تومان</td>
+                                <td><span class="status completed">تکمیل شده</span></td>
+                            </tr>
+                            <tr>
+                                <td class="order-id">#۱۲۰۲۲</td>
+                                <td class="date">۲۵ مهر ۱۴۰۵</td>
+                                <td>محمود نصری</td>
+                                <td class="amount">۵۶۰,۰۰۰ تومان</td>
+                                <td><span class="status cancelled">لغو شده</span></td>
+                            </tr>
+                            <tr>
+                                <td class="order-id">#۱۲۰۲۱</td>
+                                <td class="date">۲۵ مهر ۱۴۰۵</td>
+                                <td>لیلا توکلی</td>
+                                <td class="amount">۳۲۰,۰۰۰ تومان</td>
+                                <td><span class="status shipped">ارسال شده</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

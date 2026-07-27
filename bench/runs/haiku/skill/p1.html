@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>صفحهٔ پروفایل</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 16px;
+    }
+
+    body {
+      font-family: "Vazir", "Droid Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      padding-block: 2rem;
+      padding-inline: 1rem;
+      color: #1a1a1a;
+      line-height: 1.9;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Profile Header Card */
+    .profile-header {
+      background: white;
+      border-radius: 1rem;
+      padding: 2rem;
+      margin-block-end: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      text-align: center;
+    }
+
+    .profile-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin: 0 auto 1rem;
+      border: 4px solid #007acc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      background: #f0f4f8;
+    }
+
+    .profile-name {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-block-end: 0.5rem;
+      line-height: 1.4;
+    }
+
+    .profile-status {
+      color: #666;
+      font-size: 0.95rem;
+      margin-block-end: 1rem;
+    }
+
+    /* User Information Card */
+    .user-info-card {
+      background: white;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin-block-end: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .user-info-card h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-block-end: 1.25rem;
+      line-height: 1.4;
+      border-inline-end: 4px solid #007acc;
+      padding-inline-end: 1rem;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-block: 0.875rem;
+      border-bottom: 1px solid #e8e8e8;
+    }
+
+    .info-row:last-child {
+      border-bottom: none;
+    }
+
+    .info-label {
+      font-weight: 500;
+      color: #666;
+      font-size: 0.95rem;
+    }
+
+    .info-value {
+      color: #1a1a1a;
+      font-weight: 500;
+      direction: auto;
+    }
+
+    .info-value[dir="auto"] {
+      unicode-bidi: isolate;
+    }
+
+    /* Edit Form */
+    .edit-form-card {
+      background: white;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin-block-end: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .edit-form-card h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-block-end: 1.25rem;
+      line-height: 1.4;
+      border-inline-end: 4px solid #007acc;
+      padding-inline-end: 1rem;
+    }
+
+    .form-group {
+      margin-block-end: 1.25rem;
+    }
+
+    .form-group:last-of-type {
+      margin-block-end: 0;
+    }
+
+    .form-label {
+      display: block;
+      margin-block-end: 0.5rem;
+      font-weight: 500;
+      color: #1a1a1a;
+      font-size: 0.95rem;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid #d0d0d0;
+      border-radius: 0.5rem;
+      font-family: "Vazir", sans-serif;
+      font-size: 1rem;
+      color: #1a1a1a;
+      direction: rtl;
+      text-align: right;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #007acc;
+      box-shadow: 0 0 0 3px rgba(0, 122, 204, 0.1);
+    }
+
+    .form-input[dir="auto"] {
+      direction: auto;
+      text-align: start;
+    }
+
+    .form-button-group {
+      display: flex;
+      gap: 0.875rem;
+      margin-block-start: 1.5rem;
+      flex-direction: row-reverse;
+    }
+
+    .form-button {
+      flex: 1;
+      padding: 0.875rem 1.5rem;
+      border: none;
+      border-radius: 0.5rem;
+      font-family: "Vazir", sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-submit {
+      background: #007acc;
+      color: white;
+    }
+
+    .btn-submit:hover {
+      background: #005a96;
+      box-shadow: 0 2px 8px rgba(0, 122, 204, 0.3);
+    }
+
+    .btn-cancel {
+      background: #f0f0f0;
+      color: #1a1a1a;
+    }
+
+    .btn-cancel:hover {
+      background: #e0e0e0;
+    }
+
+    /* Subscription Card */
+    .subscription-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 1rem;
+      padding: 1.75rem;
+      color: white;
+      box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+    }
+
+    .subscription-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-block-end: 1.5rem;
+    }
+
+    .subscription-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    .subscription-badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.25);
+      color: white;
+      padding: 0.375rem 0.875rem;
+      border-radius: 2rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .subscription-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-block-end: 1.5rem;
+    }
+
+    .subscription-detail {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1rem;
+      border-radius: 0.75rem;
+      text-align: center;
+    }
+
+    .subscription-detail-label {
+      display: block;
+      font-size: 0.85rem;
+      opacity: 0.85;
+      margin-block-end: 0.5rem;
+    }
+
+    .subscription-detail-value {
+      display: block;
+      font-size: 1.5rem;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .subscription-footer {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    .subscription-footer p {
+      margin-block-end: 0.5rem;
+    }
+
+    .subscription-footer p:last-child {
+      margin-block-end: 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      body {
+        padding-block: 1rem;
+        padding-inline: 0.75rem;
+      }
+
+      .profile-header {
+        padding: 1.5rem 1rem;
+      }
+
+      .profile-name {
+        font-size: 1.5rem;
+      }
+
+      .subscription-details {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .form-button-group {
+        flex-direction: column-reverse;
+      }
+
+      .form-button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Profile Header -->
+    <div class="profile-header">
+      <div class="profile-avatar">👤</div>
+      <h1 class="profile-name">فاطمهٔ احمدی</h1>
+      <p class="profile-status">کاربر تایید‌شدهٔ سیستم</p>
+    </div>
+
+    <!-- User Information -->
+    <div class="user-info-card">
+      <h2>اطلاعات شخصی</h2>
+      <div class="info-row">
+        <span class="info-label">تاریخ عضویت:</span>
+        <span class="info-value">۱۲ اردیبهشت ۱۴۰۳</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">شمارهٔ موبایل:</span>
+        <span class="info-value" dir="auto">+۹۸ ۹۱۲ ۳۴۵ ۶۷۸۹</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">پست الکترونیکی:</span>
+        <span class="info-value" dir="auto">fatima.ahmadi@example.com</span>
+      </div>
+    </div>
+
+    <!-- Edit Form -->
+    <div class="edit-form-card">
+      <h2>ویرایش اطلاعات</h2>
+      <form>
+        <div class="form-group">
+          <label class="form-label">نام کامل</label>
+          <input type="text" class="form-input" value="فاطمهٔ احمدی" placeholder="نام شما را وارد کنید">
+        </div>
+        <div class="form-group">
+          <label class="form-label">شمارهٔ موبایل</label>
+          <input type="tel" class="form-input" dir="auto" value="+۹۸ ۹۱۲ ۳۴۵ ۶۷۸۹" placeholder="+۹۸ ...">
+        </div>
+        <div class="form-group">
+          <label class="form-label">پست الکترونیکی</label>
+          <input type="email" class="form-input" dir="auto" value="fatima.ahmadi@example.com" placeholder="your@email.com">
+        </div>
+        <div class="form-button-group">
+          <button type="submit" class="form-button btn-submit">ذخیرهٔ تغییرات</button>
+          <button type="reset" class="form-button btn-cancel">لغو</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Subscription Card -->
+    <div class="subscription-card">
+      <div class="subscription-header">
+        <h2 class="subscription-title">اشتراک فعال</h2>
+        <span class="subscription-badge">فعال</span>
+      </div>
+      <div class="subscription-details">
+        <div class="subscription-detail">
+          <span class="subscription-detail-label">تاریخ انقضا</span>
+          <span class="subscription-detail-value">۲۸ دی ۱۴۰۵</span>
+        </div>
+        <div class="subscription-detail">
+          <span class="subscription-detail-label">مبلغ پرداختی</span>
+          <span class="subscription-detail-value">۳۹۹,۰۰۰ ریال</span>
+        </div>
+      </div>
+      <div class="subscription-footer">
+        <p>نوع اشتراک: طرح سالانهٔ پریمیوم</p>
+        <p>روز باقی‌مانده: ۱۵۴ روز</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

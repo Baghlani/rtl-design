@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تنظیمات حساب کاربری</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Roboto, 'IRANSans', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background-color: #fff;
+            border-left: 1px solid #e0e0e0;
+            padding: 30px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .sidebar-header {
+            padding: 0 24px 24px;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 24px;
+        }
+
+        .sidebar-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .sidebar-section {
+            margin-bottom: 24px;
+        }
+
+        .sidebar-section-title {
+            padding: 12px 24px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-nav a {
+            padding: 12px 24px;
+            color: #666;
+            text-decoration: none;
+            font-size: 14px;
+            border-right: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-nav a:hover {
+            background-color: #fafafa;
+            color: #333;
+        }
+
+        .sidebar-nav a.active {
+            background-color: #f0f0f0;
+            color: #007bff;
+            border-right-color: #007bff;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            background-color: #f5f5f5;
+        }
+
+        .content-header {
+            margin-bottom: 32px;
+        }
+
+        .content-header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .content-header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Sections */
+        .section {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-icon {
+            width: 24px;
+            height: 24px;
+            background-color: #007bff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="tel"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group input[type="email"]:focus,
+        .form-group input[type="tel"]:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        button {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: #e0e0e0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background-color: #d0d0d0;
+        }
+
+        /* Toggle Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 28px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 28px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            right: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #007bff;
+        }
+
+        input:checked + .slider:before {
+            right: auto;
+            left: 3px;
+        }
+
+        /* Toggle Items */
+        .toggle-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .toggle-item:last-child {
+            border-bottom: none;
+        }
+
+        .toggle-item-label {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .toggle-item-label strong {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .toggle-item-label span {
+            font-size: 12px;
+            color: #999;
+        }
+
+        /* Info Box */
+        .info-box {
+            background-color: #f0f8ff;
+            border-right: 4px solid #007bff;
+            padding: 16px;
+            border-radius: 6px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-item strong {
+            color: #333;
+        }
+
+        .info-item span {
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                border-left: none;
+                border-bottom: 1px solid #e0e0e0;
+            }
+
+            .main-content {
+                padding: 24px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>تنظیمات</h2>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">حساب</div>
+                <nav class="sidebar-nav">
+                    <a href="#" class="active">اطلاعات شخصی</a>
+                    <a href="#">تنظیمات اعلان‌ها</a>
+                    <a href="#">امنیت</a>
+                    <a href="#">صورتحساب</a>
+                </nav>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">دیگر</div>
+                <nav class="sidebar-nav">
+                    <a href="#">کمک و پشتیبانی</a>
+                    <a href="#">درباره ما</a>
+                    <a href="#">خروج</a>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <div class="content-header">
+                <h1>اطلاعات شخصی</h1>
+                <p>اطلاعات حساب کاربری و تماس خود را مدیریت کنید</p>
+            </div>
+
+            <!-- Personal Information Section -->
+            <section class="section">
+                <h2 class="section-title">
+                    <span class="section-icon">👤</span>
+                    اطلاعات شخصی
+                </h2>
+
+                <form>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstname">نام</label>
+                            <input type="text" id="firstname" value="علی">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastname">نام خانوادگی</label>
+                            <input type="text" id="lastname" value="محمدی">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">آدرس ایمیل</label>
+                        <input type="email" id="email" value="ali.mohammadi@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">شماره تلفن</label>
+                        <input type="tel" id="phone" value="۰۹۱۲۳۴۵۶۷۸۹">
+                    </div>
+
+                    <div class="button-group">
+                        <button type="submit" class="btn-primary">ذخیره تغییرات</button>
+                        <button type="reset" class="btn-secondary">لغو</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Notification Settings Section -->
+            <section class="section">
+                <h2 class="section-title">
+                    <span class="section-icon">🔔</span>
+                    تنظیمات اعلان‌ها
+                </h2>
+
+                <div class="toggle-item">
+                    <div class="toggle-item-label">
+                        <strong>اعلان‌های ایمیلی</strong>
+                        <span>دریافت به‌روزرسانی‌های اهم از طریق ایمیل</span>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="toggle-item">
+                    <div class="toggle-item-label">
+                        <strong>اعلان‌های تلفن همراه</strong>
+                        <span>دریافت اعلان‌ها روی دستگاه شما</span>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="toggle-item">
+                    <div class="toggle-item-label">
+                        <strong>اعلان‌های پیامکی</strong>
+                        <span>دریافت پیام‌های پیامک درباره فعالیت‌ها</span>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="toggle-item">
+                    <div class="toggle-item-label">
+                        <strong>خبرنامه هفتگی</strong>
+                        <span>دریافت خبرنامه بوسیلهٔ ایمیل</span>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </section>
+
+            <!-- Security Section -->
+            <section class="section">
+                <h2 class="section-title">
+                    <span class="section-icon">🔒</span>
+                    امنیت
+                </h2>
+
+                <div class="info-box">
+                    حساب شما محافظت شده است. درصورت‌الزرور می‌توانید رمز عبور خود را تغییر دهید.
+                </div>
+
+                <div class="info-item">
+                    <strong>آخرین ورود:</strong>
+                    <span>۱۴۰۲/۰۵/۱۵ - ساعت ۱۴:۳۰</span>
+                </div>
+
+                <div class="info-item">
+                    <strong>محل آخرین ورود:</strong>
+                    <span>تهران، ایران</span>
+                </div>
+
+                <div class="info-item">
+                    <strong>دستگاه:</strong>
+                    <span>Mac OS (Chrome)</span>
+                </div>
+
+                <div class="button-group" style="margin-top: 32px;">
+                    <button type="button" class="btn-primary">تغییر رمز عبور</button>
+                </div>
+            </section>
+
+            <!-- Billing Section -->
+            <section class="section">
+                <h2 class="section-title">
+                    <span class="section-icon">💳</span>
+                    صورتحساب و پرداخت
+                </h2>
+
+                <div class="info-box">
+                    <strong>وضعیت اشتراک:</strong> فعال
+                </div>
+
+                <div class="info-item">
+                    <strong>نوع اشتراک:</strong>
+                    <span>پریمیوم ماهانه</span>
+                </div>
+
+                <div class="info-item">
+                    <strong>تاریخ تمدید:</strong>
+                    <span>۱۴۰۲/۰۶/۲۷</span>
+                </div>
+
+                <div class="info-item">
+                    <strong>مبلغ ماهانه:</strong>
+                    <span>۲۹۹,۰۰۰ تومان</span>
+                </div>
+
+                <div class="info-item">
+                    <strong>روش پرداخت:</strong>
+                    <span>کارت بانکی (آخر رقم: ۱۲۳۴)</span>
+                </div>
+
+                <div class="button-group" style="margin-top: 32px;">
+                    <button type="button" class="btn-primary">مشاهدهٔ صورتحساب‌ها</button>
+                    <button type="button" class="btn-secondary">تغییر روش پرداخت</button>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

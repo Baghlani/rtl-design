@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>رزرو نوبت آنلاین | کلینیک درمانی نور</title>
+<style>
+  :root{
+    --primary:#0d7a6c;
+    --primary-dark:#0a5f54;
+    --primary-light:#e6f4f2;
+    --accent:#c98a3e;
+    --bg:#f7f8f9;
+    --surface:#ffffff;
+    --border:#e2e5e8;
+    --text:#1f2937;
+    --text-muted:#6b7280;
+    --danger:#c0392b;
+    --radius:14px;
+    --shadow:0 2px 10px rgba(15,35,32,.06);
+    font-size:16px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:"Vazirmatn","IRANSans","Segoe UI",Tahoma,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.9;
+    padding:0 0 60px;
+  }
+  .wrap{
+    max-width:900px;
+    margin:0 auto;
+    padding:0 20px;
+  }
+  header.top{
+    background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);
+    color:#fff;
+    padding:28px 0 34px;
+    margin-bottom:28px;
+  }
+  header.top .wrap{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;}
+  header.top h1{font-size:1.5rem; margin:0 0 4px;}
+  header.top p{margin:0; opacity:.9; font-size:.95rem;}
+  .clinic-badge{
+    display:flex; align-items:center; gap:10px;
+  }
+  .clinic-badge .logo{
+    width:52px; height:52px; border-radius:50%;
+    background:rgba(255,255,255,.15);
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.6rem;
+  }
+  .contact-strip{
+    background:rgba(255,255,255,.12);
+    border-radius:10px;
+    padding:8px 16px;
+    font-size:.85rem;
+    display:flex; gap:18px; flex-wrap:wrap;
+  }
+
+  .steps-nav{
+    display:flex;
+    gap:8px;
+    margin-bottom:24px;
+    list-style:none;
+    padding:0;
+    counter-reset:step;
+  }
+  .steps-nav li{
+    flex:1;
+    text-align:center;
+    font-size:.8rem;
+    color:var(--text-muted);
+    position:relative;
+    padding-top:38px;
+  }
+  .steps-nav li::before{
+    counter-increment:step;
+    content:counter(step);
+    position:absolute;
+    top:0; right:50%;
+    transform:translateX(50%);
+    width:28px; height:28px;
+    border-radius:50%;
+    background:var(--surface);
+    border:2px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700;
+    color:var(--text-muted);
+  }
+  .steps-nav li.active{color:var(--primary-dark); font-weight:700;}
+  .steps-nav li.active::before{background:var(--primary); border-color:var(--primary); color:#fff;}
+  .steps-nav li.done::before{background:var(--primary-light); border-color:var(--primary); color:var(--primary-dark); content:"✓";}
+
+  section.card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:24px;
+    margin-bottom:20px;
+  }
+  section.card h2{
+    font-size:1.15rem;
+    margin:0 0 4px;
+    display:flex; align-items:center; gap:8px;
+  }
+  section.card h2 .num{
+    background:var(--primary-light);
+    color:var(--primary-dark);
+    width:30px; height:30px;
+    border-radius:8px;
+    display:inline-flex; align-items:center; justify-content:center;
+    font-size:.95rem;
+  }
+  section.card .hint{
+    color:var(--text-muted);
+    font-size:.85rem;
+    margin:0 0 18px;
+  }
+
+  /* Doctor selection */
+  .doctor-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:14px;
+  }
+  .doctor-card{
+    border:2px solid var(--border);
+    border-radius:12px;
+    padding:16px;
+    cursor:pointer;
+    transition:.15s;
+    position:relative;
+  }
+  .doctor-card:hover{border-color:var(--primary); box-shadow:var(--shadow);}
+  .doctor-card.selected{
+    border-color:var(--primary);
+    background:var(--primary-light);
+  }
+  .doctor-card .avatar{
+    width:48px; height:48px;
+    border-radius:50%;
+    background:var(--primary);
+    color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700;
+    font-size:1.1rem;
+    margin-bottom:10px;
+  }
+  .doctor-card h3{margin:0 0 2px; font-size:1rem;}
+  .doctor-card .specialty{color:var(--primary-dark); font-size:.85rem; margin:0 0 8px;}
+  .doctor-card .meta{font-size:.8rem; color:var(--text-muted); display:flex; justify-content:space-between; align-items:center;}
+  .doctor-card .fee{
+    background:#fff;
+    border:1px solid var(--border);
+    padding:3px 10px;
+    border-radius:20px;
+    font-weight:700;
+    color:var(--accent);
+    font-size:.8rem;
+  }
+  .doctor-card .check{
+    position:absolute; top:14px; left:14px;
+    width:22px; height:22px;
+    border-radius:50%;
+    border:2px solid var(--border);
+    background:#fff;
+  }
+  .doctor-card.selected .check{
+    background:var(--primary);
+    border-color:var(--primary);
+    position:absolute; top:14px; left:14px;
+    color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-size:.7rem;
+  }
+  .doctor-card.selected .check::after{content:"✓";}
+
+  /* Date / time */
+  fieldset{border:none; padding:0; margin:0 0 20px;}
+  legend{font-weight:700; margin-bottom:10px; padding:0; font-size:.9rem; color:var(--text);}
+  .date-row{
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+    padding-bottom:6px;
+  }
+  .date-chip{
+    flex:0 0 auto;
+    min-width:88px;
+    border:1.5px solid var(--border);
+    border-radius:10px;
+    padding:10px 8px;
+    text-align:center;
+    cursor:pointer;
+    background:#fff;
+    transition:.15s;
+  }
+  .date-chip:hover{border-color:var(--primary);}
+  .date-chip .dow{font-size:.75rem; color:var(--text-muted); display:block; margin-bottom:4px;}
+  .date-chip .dnum{font-size:1.15rem; font-weight:700; display:block;}
+  .date-chip.selected{background:var(--primary); border-color:var(--primary); color:#fff;}
+  .date-chip.selected .dow{color:rgba(255,255,255,.85);}
+  .date-chip.disabled{opacity:.4; cursor:not-allowed;}
+
+  .slot-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(96px,1fr));
+    gap:10px;
+  }
+  .slot-btn{
+    border:1.5px solid var(--border);
+    background:#fff;
+    border-radius:8px;
+    padding:9px 6px;
+    cursor:pointer;
+    font-size:.9rem;
+    font-family:inherit;
+    transition:.15s;
+    color:var(--text);
+  }
+  .slot-btn:hover:not(:disabled){border-color:var(--primary); color:var(--primary-dark);}
+  .slot-btn.selected{background:var(--primary); border-color:var(--primary); color:#fff; font-weight:700;}
+  .slot-btn:disabled{
+    background:#f2f2f2;
+    color:#b4b4b4;
+    text-decoration:line-through;
+    cursor:not-allowed;
+  }
+  .empty-note{color:var(--text-muted); font-size:.85rem; padding:10px 0;}
+
+  /* Form fields */
+  .field-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+  }
+  .field{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    margin-bottom:16px;
+  }
+  .field.full{grid-column:1 / -1;}
+  .field label{font-size:.9rem; font-weight:600;}
+  .field label .req{color:var(--danger);}
+  .field input, .field textarea{
+    font-family:inherit;
+    font-size:.95rem;
+    padding:11px 13px;
+    border:1.5px solid var(--border);
+    border-radius:9px;
+    background:#fff;
+    color:var(--text);
+    outline:none;
+    transition:.15s;
+    width:100%;
+  }
+  .field input:focus, .field textarea:focus{border-color:var(--primary); box-shadow:0 0 0 3px var(--primary-light);}
+  .field textarea{resize:vertical; min-height:90px;}
+  .field .err{color:var(--danger); font-size:.78rem; min-height:16px;}
+  .field input:invalid.touched, .field input.invalid{border-color:var(--danger);}
+
+  @media (max-width:640px){
+    .field-grid{grid-template-columns:1fr;}
+    .steps-nav li{font-size:.7rem;}
+  }
+
+  /* Summary */
+  .summary-box{
+    background:var(--primary-light);
+    border:1.5px dashed var(--primary);
+    border-radius:12px;
+    padding:20px;
+  }
+  .summary-row{
+    display:flex;
+    justify-content:space-between;
+    padding:9px 0;
+    border-bottom:1px solid rgba(13,122,108,.15);
+    font-size:.92rem;
+  }
+  .summary-row:last-of-type{border-bottom:none;}
+  .summary-row .k{color:var(--text-muted);}
+  .summary-row .v{font-weight:600;}
+  .summary-total{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:14px;
+    padding-top:14px;
+    border-top:2px solid var(--primary);
+    font-size:1.05rem;
+    font-weight:700;
+  }
+  .summary-total .v{color:var(--accent); font-size:1.3rem;}
+  .placeholder-note{color:var(--text-muted); font-size:.85rem; text-align:center; padding:14px 0;}
+
+  .submit-btn{
+    width:100%;
+    margin-top:18px;
+    padding:15px;
+    border:none;
+    border-radius:11px;
+    background:var(--primary);
+    color:#fff;
+    font-size:1.02rem;
+    font-weight:700;
+    font-family:inherit;
+    cursor:pointer;
+    transition:.15s;
+  }
+  .submit-btn:hover{background:var(--primary-dark);}
+  .submit-btn:disabled{background:#c8cbcd; cursor:not-allowed;}
+
+  .success-panel{
+    display:none;
+    text-align:center;
+    padding:40px 20px;
+  }
+  .success-panel.show{display:block;}
+  .success-panel .icon{
+    width:70px; height:70px; border-radius:50%;
+    background:var(--primary-light); color:var(--primary);
+    display:flex; align-items:center; justify-content:center;
+    font-size:2rem;
+    margin:0 auto 16px;
+  }
+  .success-panel h2{margin:0 0 8px; justify-content:center;}
+  .success-panel p{color:var(--text-muted);}
+  .success-panel .code{
+    display:inline-block;
+    background:var(--bg);
+    border:1px dashed var(--border);
+    padding:8px 18px;
+    border-radius:8px;
+    font-weight:700;
+    letter-spacing:1px;
+    margin:10px 0 20px;
+  }
+  .booking-form.hide{display:none;}
+
+  footer.bottom{
+    text-align:center;
+    color:var(--text-muted);
+    font-size:.8rem;
+    margin-top:20px;
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="clinic-badge">
+      <div class="logo">🩺</div>
+      <div>
+        <h1>کلینیک درمانی نور</h1>
+        <p>رزرو نوبت آنلاین — سریع، ساده و بدون تماس تلفنی</p>
+      </div>
+    </div>
+    <div class="contact-strip">
+      <span>📞 ۰۲۱-۸۸۷۷۶۶۵۵</span>
+      <span>📍 تهران، خیابان ولیعصر</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <ol class="steps-nav" id="stepsNav">
+    <li id="navStep1" class="active">انتخاب پزشک</li>
+    <li id="navStep2">تاریخ و ساعت</li>
+    <li id="navStep3">اطلاعات تماس</li>
+    <li id="navStep4">تأیید نهایی</li>
+  </ol>
+
+  <form id="bookingForm" class="booking-form" novalidate>
+
+    <!-- Step 1: Doctor selection -->
+    <section class="card">
+      <h2><span class="num">۱</span>انتخاب پزشک</h2>
+      <p class="hint">یکی از پزشکان کلینیک را برای دریافت نوبت انتخاب کنید.</p>
+      <div class="doctor-grid" id="doctorGrid" role="radiogroup" aria-label="انتخاب پزشک"></div>
+    </section>
+
+    <!-- Step 2: Date & time -->
+    <section class="card">
+      <h2><span class="num">۲</span>انتخاب تاریخ و ساعت</h2>
+      <p class="hint" id="dateHint">ابتدا پزشک را از بخش بالا انتخاب کنید تا روزهای کاری او نمایش داده شود.</p>
+
+      <fieldset id="dateFieldset" disabled>
+        <legend>تاریخ ویزیت</legend>
+        <div class="date-row" id="dateRow" role="radiogroup" aria-label="انتخاب تاریخ"></div>
+      </fieldset>
+
+      <fieldset id="timeFieldset" disabled>
+        <legend>ساعت‌های خالی</legend>
+        <div class="slot-grid" id="slotGrid" role="radiogroup" aria-label="انتخاب ساعت"></div>
+        <p class="empty-note" id="slotEmptyNote" style="display:none;">برای مشاهدهٔ ساعت‌های خالی، ابتدا یک تاریخ انتخاب کنید.</p>
+      </fieldset>
+    </section>
+
+    <!-- Step 3: Contact info -->
+    <section class="card">
+      <h2><span class="num">۳</span>اطلاعات تماس بیمار</h2>
+      <p class="hint">این اطلاعات صرفاً برای هماهنگی نوبت شما استفاده می‌شود.</p>
+
+      <div class="field-grid">
+        <div class="field">
+          <label for="fullName">نام و نام خانوادگی <span class="req">*</span></label>
+          <input type="text" id="fullName" name="fullName" placeholder="مثلاً: سارا احمدی" required minlength="3">
+          <span class="err" id="err-fullName"></span>
+        </div>
+
+        <div class="field">
+          <label for="phone">شمارهٔ تماس <span class="req">*</span></label>
+          <input type="tel" id="phone" name="phone" placeholder="۰۹۱۲۱۲۳۴۵۶۷" required inputmode="numeric" pattern="^0?9\d{9}$">
+          <span class="err" id="err-phone"></span>
+        </div>
+
+        <div class="field full">
+          <label for="email">ایمیل (اختیاری)</label>
+          <input type="email" id="email" name="email" placeholder="example@mail.com">
+          <span class="err" id="err-email"></span>
+        </div>
+
+        <div class="field full">
+          <label for="notes">توضیحات تکمیلی</label>
+          <textarea id="notes" name="notes" placeholder="در صورت وجود علائم خاص، سابقهٔ پزشکی یا درخواست ویژه، اینجا بنویسید…" maxlength="500"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- Step 4: Summary -->
+    <section class="card">
+      <h2><span class="num">۴</span>خلاصهٔ رزرو</h2>
+      <p class="hint">پیش از تأیید نهایی، اطلاعات نوبت خود را بررسی کنید.</p>
+
+      <div class="summary-box">
+        <p class="placeholder-note" id="summaryPlaceholder">پس از تکمیل مراحل بالا، خلاصهٔ نوبت شما اینجا نمایش داده می‌شود.</p>
+        <div id="summaryContent" style="display:none;">
+          <div class="summary-row"><span class="k">پزشک</span><span class="v" id="sumDoctor">—</span></div>
+          <div class="summary-row"><span class="k">تخصص</span><span class="v" id="sumSpecialty">—</span></div>
+          <div class="summary-row"><span class="k">تاریخ ویزیت</span><span class="v" id="sumDate">—</span></div>
+          <div class="summary-row"><span class="k">ساعت</span><span class="v" id="sumTime">—</span></div>
+          <div class="summary-row"><span class="k">بیمار</span><span class="v" id="sumName">—</span></div>
+          <div class="summary-row"><span class="k">شمارهٔ تماس</span><span class="v" id="sumPhone">—</span></div>
+          <div class="summary-total"><span>هزینهٔ ویزیت</span><span class="v" id="sumFee">—</span></div>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn" disabled>تأیید و ثبت نهایی نوبت</button>
+    </section>
+
+  </form>
+
+  <div class="success-panel" id="successPanel">
+    <div class="icon">✓</div>
+    <h2>نوبت شما با موفقیت ثبت شد</h2>
+    <p>پیامک تأییدیه به شمارهٔ وارد شده ارسال خواهد شد. لطفاً ۱۰ دقیقه زودتر از موعد در کلینیک حضور داشته باشید.</p>
+    <div class="code" id="bookingCode">کد رزرو: —</div>
+    <br>
+    <button type="button" class="submit-btn" id="newBookingBtn" style="max-width:260px; margin:0 auto;">ثبت نوبت جدید</button>
+  </div>
+
+  <footer class="bottom">
+    © کلینیک درمانی نور — تمامی حقوق محفوظ است.
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---------- Data ----------
+  var doctors = [
+    { id:"d1", name:"دکتر مریم صادقی", specialty:"متخصص پوست و مو", fee:850000, initials:"م‌ص", days:[0,1,2,3] },
+    { id:"d2", name:"دکتر امیر حسینی", specialty:"متخصص قلب و عروق", fee:1200000, initials:"ا‌ح", days:[1,2,4] },
+    { id:"d3", name:"دکتر نیلوفر کریمی", specialty:"پزشک عمومی", fee:450000, initials:"ن‌ک", days:[0,2,3,4] },
+    { id:"d4", name:"دکتر رضا مرادی", specialty:"متخصص ارتوپدی", fee:950000, initials:"ر‌م", days:[0,1,3] }
+  ];
+
+  var dayNames = ["شنبه","یک‌شنبه","دوشنبه","سه‌شنبه","چهارشنبه","پنجشنبه","جمعه"];
+  var monthNames = ["فروردین","اردیبهشت","خرداد","تیر","مرداد","شهریور","مهر","آبان","آذر","دی","بهمن","اسفند"];
+
+  var persianDigitsMap = ["۰","۱","۲","۳","۴","۵","۶","۷","۸","۹"];
+  function toPersianDigits(input){
+    return String(input).replace(/[0-9]/g, function(d){ return persianDigitsMap[+d]; });
+  }
+  function formatToman(n){
+    var s = n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return toPersianDigits(s) + " تومان";
+  }
+
+  // Build a fake 7-day upcoming schedule using a mock "Persian-like" calendar
+  // (day index 0 = شنبه). We just fabricate day numbers for demo purposes.
+  var baseDayNum = 5; // fabricated starting day-of-month
+  var upcomingDays = [];
+  for (var i=0;i<7;i++){
+    var dow = i % 7; // 0..6 cycling starting at شنبه
+    upcomingDays.push({
+      dow: dow,
+      dayName: dayNames[dow],
+      dayNum: baseDayNum + i,
+      monthName: monthNames[6], // مهر (fixed month for demo)
+      key: "day" + i
+    });
+  }
+
+  var allSlots = ["۰۹:۰۰","۰۹:۳۰","۱۰:۰۰","۱۰:۳۰","۱۱:۰۰","۱۱:۳۰","۱۶:۰۰","۱۶:۳۰","۱۷:۰۰","۱۷:۳۰"];
+
+  // Deterministic pseudo-random booked-slot generator so the demo looks realistic
+  function seedRandom(seed){
+    var x = Math.sin(seed) * 10000;
+    return x - Math.floor(x);
+  }
+  function isSlotBooked(doctorId, dayKey, slotIndex){
+    var seed = (doctorId.charCodeAt(1) * 31) + (dayKey.length * 7) + slotIndex * 13 + dayKey.charCodeAt(dayKey.length-1);
+    return seedRandom(seed) > 0.6;
+  }
+
+  // ---------- State ----------
+  var state = {
+    doctor: null,
+    day: null,   // upcomingDays entry
+    time: null
+  };
+
+  // ---------- Render doctors ----------
+  var doctorGrid = document.getElementById("doctorGrid");
+  doctors.forEach(function(doc){
+    var card = document.createElement("div");
+    card.className = "doctor-card";
+    card.setAttribute("role","radio");
+    card.setAttribute("aria-checked","false");
+    card.setAttribute("tabindex","0");
+    card.dataset.id = doc.id;
+    card.innerHTML =
+      '<span class="check"></span>' +
+      '<div class="avatar">' + doc.initials + '</div>' +
+      '<h3>' + doc.name + '</h3>' +
+      '<p class="specialty">' + doc.specialty + '</p>' +
+      '<div class="meta"><span>' + doc.days.length + ' روز کاری در هفته</span><span class="fee">' + formatToman(doc.fee) + '</span></div>';
+
+    function select(){
+      doctors.forEach(function(){});
+      document.querySelectorAll(".doctor-card").forEach(function(el){
+        el.classList.remove("selected");
+        el.setAttribute("aria-checked","false");
+      });
+      card.classList.add("selected");
+      card.setAttribute("aria-checked","true");
+      state.doctor = doc;
+      state.day = null;
+      state.time = null;
+      onDoctorChosen();
+    }
+    card.addEventListener("click", select);
+    card.addEventListener("keydown", function(e){
+      if (e.key === "Enter" || e.key === " "){ e.preventDefault(); select(); }
+    });
+    doctorGrid.appendChild(card);
+  });
+
+  // ---------- Step 2: dates ----------
+  var dateHint = document.getElementById("dateHint");
+  var dateFieldset = document.getElementById("dateFieldset");
+  var dateRow = document.getElementById("dateRow");
+  var timeFieldset = document.getElementById("timeFieldset");
+  var slotGrid = document.getElementById("slotGrid");
+  var slotEmptyNote = document.getElementById("slotEmptyNote");
+
+  function onDoctorChosen(){
+    dateHint.textContent = "روزهای کاریِ " + state.doctor.name + " را انتخاب کنید.";
+    dateFieldset.disabled = false;
+    dateRow.innerHTML = "";
+    timeFieldset.disabled = true;
+    slotGrid.innerHTML = "";
+    slotEmptyNote.style.display = "block";
+
+    upcomingDays.forEach(function(day){
+      var available = state.doctor.days.indexOf(day.dow) !== -1;
+      var chip = document.createElement("div");
+      chip.className = "date-chip" + (available ? "" : " disabled");
+      chip.setAttribute("role","radio");
+      chip.setAttribute("aria-checked","false");
+      chip.tabIndex = available ? 0 : -1;
+      chip.innerHTML =
+        '<span class="dow">' + day.dayName + '</span>' +
+        '<span class="dnum">' + toPersianDigits(day.dayNum) + '</span>' +
+        '<span class="dow">' + day.monthName + '</span>';
+
+      if (available){
+        chip.addEventListener("click", function(){ selectDate(day, chip); });
+        chip.addEventListener("keydown", function(e){
+          if (e.key === "Enter" || e.key === " "){ e.preventDefault(); selectDate(day, chip); }
+        });
+      }
+      dateRow.appendChild(chip);
+    });
+
+    updateStepsNav();
+    updateSummary();
+  }
+
+  function selectDate(day, chipEl){
+    document.querySelectorAll(".date-chip").forEach(function(el){
+      el.classList.remove("selected");
+      el.setAttribute("aria-checked","false");
+    });
+    chipEl.classList.add("selected");
+    chipEl.setAttribute("aria-checked","true");
+    state.day = day;
+    state.time = null;
+    renderSlots(day);
+    updateStepsNav();
+    updateSummary();
+  }
+
+  function renderSlots(day){
+    timeFieldset.disabled = false;
+    slotGrid.innerHTML = "";
+    slotEmptyNote.style.display = "none";
+
+    var anyFree = false;
+    allSlots.forEach(function(slot, idx){
+      var booked = isSlotBooked(state.doctor.id, day.key, idx);
+      if (!booked) anyFree = true;
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "slot-btn";
+      btn.textContent = slot;
+      btn.disabled = booked;
+      if (booked){
+        btn.setAttribute("aria-label", slot + " — قبلاً رزرو شده");
+      } else {
+        btn.addEventListener("click", function(){
+          document.querySelectorAll(".slot-btn").forEach(function(el){ el.classList.remove("selected"); });
+          btn.classList.add("selected");
+          state.time = slot;
+          updateStepsNav();
+          updateSummary();
+        });
+      }
+      slotGrid.appendChild(btn);
+    });
+
+    if (!anyFree){
+      slotEmptyNote.style.display = "block";
+      slotEmptyNote.textContent = "متأسفانه در این روز ساعت خالی وجود ندارد. روز دیگری را انتخاب کنید.";
+    }
+  }
+
+  // ---------- Step 3: contact form validation ----------
+  var fullNameInput = document.getElementById("fullName");
+  var phoneInput = document.getElementById("phone");
+  var emailInput = document.getElementById("email");
+  var notesInput = document.getElementById("notes");
+
+  var errFullName = document.getElementById("err-fullName");
+  var errPhone = document.getElementById("err-phone");
+  var errEmail = document.getElementById("err-email");
+
+  function validateFullName(){
+    var v = fullNameInput.value.trim();
+    if (v.length === 0){ errFullName.textContent = "نام و نام خانوادگی الزامی است."; return false; }
+    if (v.length < 3){ errFullName.textContent = "نام وارد شده خیلی کوتاه است."; return false; }
+    errFullName.textContent = "";
+    return true;
+  }
+  function validatePhone(){
+    var v = phoneInput.value.trim();
+    var re = /^0?9\d{9}$/;
+    if (v.length === 0){ errPhone.textContent = "شمارهٔ تماس الزامی است."; return false; }
+    if (!re.test(v)){ errPhone.textContent = "شماره را به‌صورت ۰۹۱۲۱۲۳۴۵۶۷ وارد کنید."; return false; }
+    errPhone.textContent = "";
+    return true;
+  }
+  function validateEmail(){
+    var v = emailInput.value.trim();
+    if (v.length === 0){ errEmail.textContent = ""; return true; }
+    var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!re.test(v)){ errEmail.textContent = "فرمت ایمیل صحیح نیست."; return false; }
+    errEmail.textContent = "";
+    return true;
+  }
+
+  [fullNameInput, phoneInput, emailInput].forEach(function(input){
+    input.addEventListener("input", function(){
+      input.classList.remove("invalid");
+      if (input === fullNameInput) validateFullName();
+      if (input === phoneInput) validatePhone();
+      if (input === emailInput) validateEmail();
+      updateSummary();
+    });
+    input.addEventListener("blur", function(){ input.classList.add("touched"); });
+  });
+  notesInput.addEventListener("input", updateSummary);
+
+  // ---------- Step 4: summary + submit ----------
+  var summaryPlaceholder = document.getElementById("summaryPlaceholder");
+  var summaryContent = document.getElementById("summaryContent");
+  var sumDoctor = document.getElementById("sumDoctor");
+  var sumSpecialty = document.getElementById("sumSpecialty");
+  var sumDate = document.getElementById("sumDate");
+  var sumTime = document.getElementById("sumTime");
+  var sumName = document.getElementById("sumName");
+  var sumPhone = document.getElementById("sumPhone");
+  var sumFee = document.getElementById("sumFee");
+  var submitBtn = document.getElementById("submitBtn");
+
+  function isReadyToSubmit(){
+    return !!(state.doctor && state.day && state.time &&
+      validateFullName() && validatePhone() && validateEmail() &&
+      fullNameInput.value.trim() && phoneInput.value.trim());
+  }
+
+  function updateSummary(){
+    var haveBasics = state.doctor && state.day && state.time;
+    if (!haveBasics){
+      summaryPlaceholder.style.display = "block";
+      summaryContent.style.display = "none";
+      submitBtn.disabled = true;
+      return;
+    }
+    summaryPlaceholder.style.display = "none";
+    summaryContent.style.display = "block";
+
+    sumDoctor.textContent = state.doctor.name;
+    sumSpecialty.textContent = state.doctor.specialty;
+    sumDate.textContent = state.day.dayName + " " + toPersianDigits(state.day.dayNum) + " " + state.day.monthName;
+    sumTime.textContent = state.time;
+    sumName.textContent = fullNameInput.value.trim() || "—";
+    sumPhone.textContent = phoneInput.value.trim() ? toPersianDigits(phoneInput.value.trim()) : "—";
+    sumFee.textContent = formatToman(state.doctor.fee);
+
+    submitBtn.disabled = !isReadyToSubmit();
+  }
+
+  function updateStepsNav(){
+    var nav1 = document.getElementById("navStep1");
+    var nav2 = document.getElementById("navStep2");
+    var nav3 = document.getElementById("navStep3");
+    var nav4 = document.getElementById("navStep4");
+    [nav1,nav2,nav3,nav4].forEach(function(n){ n.classList.remove("active","done"); });
+
+    if (!state.doctor){ nav1.classList.add("active"); return; }
+    nav1.classList.add("done");
+
+    if (!state.day || !state.time){ nav2.classList.add("active"); return; }
+    nav2.classList.add("done");
+
+    if (!isReadyToSubmit()){ nav3.classList.add("active"); return; }
+    nav3.classList.add("done");
+    nav4.classList.add("active");
+  }
+
+  // Recompute nav state whenever contact fields change too
+  [fullNameInput, phoneInput, emailInput].forEach(function(input){
+    input.addEventListener("input", updateStepsNav);
+  });
+
+  // ---------- Submit ----------
+  var form = document.getElementById("bookingForm");
+  var successPanel = document.getElementById("successPanel");
+  var bookingCode = document.getElementById("bookingCode");
+  var newBookingBtn = document.getElementById("newBookingBtn");
+
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    fullNameInput.classList.add("touched");
+    phoneInput.classList.add("touched");
+    emailInput.classList.add("touched");
+
+    var okName = validateFullName();
+    var okPhone = validatePhone();
+    var okEmail = validateEmail();
+
+    if (!okName) fullNameInput.classList.add("invalid"); else fullNameInput.classList.remove("invalid");
+    if (!okPhone) phoneInput.classList.add("invalid"); else phoneInput.classList.remove("invalid");
+    if (!okEmail) emailInput.classList.add("invalid"); else emailInput.classList.remove("invalid");
+
+    if (!isReadyToSubmit()) return;
+
+    var code = "NR" + toPersianDigits(Math.floor(100000 + Math.random()*900000));
+    bookingCode.textContent = "کد رزرو: " + code;
+
+    form.classList.add("hide");
+    document.getElementById("stepsNav").style.display = "none";
+    successPanel.classList.add("show");
+    window.scrollTo({top:0, behavior:"smooth"});
+  });
+
+  newBookingBtn.addEventListener("click", function(){
+    form.reset();
+    state = { doctor:null, day:null, time:null };
+    document.querySelectorAll(".doctor-card").forEach(function(el){
+      el.classList.remove("selected"); el.setAttribute("aria-checked","false");
+    });
+    dateRow.innerHTML = "";
+    slotGrid.innerHTML = "";
+    dateFieldset.disabled = true;
+    timeFieldset.disabled = true;
+    dateHint.textContent = "ابتدا پزشک را از بخش بالا انتخاب کنید تا روزهای کاری او نمایش داده شود.";
+    slotEmptyNote.style.display = "block";
+    slotEmptyNote.textContent = "برای مشاهدهٔ ساعت‌های خالی، ابتدا یک تاریخ انتخاب کنید.";
+    [fullNameInput, phoneInput, emailInput].forEach(function(i){ i.classList.remove("invalid","touched"); });
+    errFullName.textContent = ""; errPhone.textContent = ""; errEmail.textContent = "";
+    updateSummary();
+    updateStepsNav();
+    successPanel.classList.remove("show");
+    form.classList.remove("hide");
+    document.getElementById("stepsNav").style.display = "flex";
+    window.scrollTo({top:0, behavior:"smooth"});
+  });
+
+  // init
+  updateSummary();
+  updateStepsNav();
+})();
+</script>
+</body>
+</html>

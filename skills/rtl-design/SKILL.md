@@ -49,9 +49,9 @@ line-height, one default font everywhere).
 9. Persian body line-height 1.8–2.0 (Latin's 1.5 is cramped); headings 1.4.
 10. **Never letter-spacing on Persian** — it tears the joined script and breaks PDF
     text layers. Zero out design-system defaults (Material 3 has them).
-11. Never a single font at default weights everywhere: pick a pairing recipe
-    (typography.md §3), stack-first with free fallbacks. Hierarchy comes from
-    weight/size — Persian has no uppercase.
+11. Verify the font actually renders Persian before using it — several popular
+    "Arabic" faces have no پ چ ژ گ at all (typography.md §3). End every stack with
+    a known-good fallback so a missing face degrades instead of showing tofu.
 12. Test every constrained surface with real long Persian strings
     («استانداردسازی زیرساخت‌های بین‌المللی»), not «تست».
 
@@ -61,7 +61,7 @@ line-height, one default font everywhere).
 |---|---|
 | Building/reviewing **web** UI (CSS, React/Next, Tailwind, icons, bidi, forms, motion) | `references/web.md` |
 | **Flutter** project (Directional widgets, icons, Jalali packages, TextField, testing) | `references/flutter.md` |
-| Choosing **fonts**, type scale, pairing recipes, digits/ZWNJ detail, licensing, specimen page | `references/typography.md` |
+| **Fonts** (safety, licensing, pairing), type metrics, digits/ZWNJ detail, specimen page | `references/typography.md` |
 
 ## Audit mode — zero-token detector
 
@@ -91,7 +91,9 @@ This skill composes with general design skills (taste, structure, color, motion 
 theirs). On conflict, RTL/Persian script needs win — general skills assume Latin
 script: reject their letter-spacing on headings, Latin line-height (1.4–1.5), and
 Latin font suggestions (Inter etc.) for Persian text; apply this skill's metrics,
-font recipes, and icon-mirroring rules instead.
+font recipes, and icon-mirroring rules instead. Their quality checks are calibrated
+for Latin, so a clean pass from a general design linter says nothing about Persian
+correctness — run `scripts/detect.py` as well.
 
 ## Workflow
 
@@ -105,5 +107,5 @@ font recipes, and icon-mirroring rules instead.
   where "technically RTL" slop comes from.
 - **"Which font?":** never answer with one font. Use the ladder + recipes in
   typography.md, respect licensing (free-first, commercial by name with official links
-  only, never bundle commercial files), and offer a specimen page (typography.md §9)
+  only, never bundle commercial files), and offer a specimen page (typography.md §10)
   when the user wants to see options.

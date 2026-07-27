@@ -1,0 +1,941 @@
+<!doctype html>
+<html dir="rtl" lang="fa">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>رزرو نوبت آنلاین | کلینیک درمانی سلامت</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&family=Estedad:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --color-primary:#0d9488;
+    --color-primary-dark:#0f766e;
+    --color-primary-soft:#e6f7f5;
+    --color-bg:#f6f8f8;
+    --color-surface:#ffffff;
+    --color-border:#e2e8e7;
+    --color-text:#1c2b2a;
+    --color-text-muted:#647572;
+    --color-danger:#c0392b;
+    --color-danger-soft:#fdecea;
+    --color-success:#1e8e5a;
+    --radius-md:12px;
+    --radius-lg:20px;
+    --shadow-card:0 1px 2px rgba(15,23,42,.05), 0 10px 28px -14px rgba(15,23,42,.16);
+    --font-body:"Vazirmatn","Noto Sans Arabic",Tahoma,sans-serif;
+    --font-heading:"Estedad","Vazirmatn","Noto Sans Arabic",Tahoma,sans-serif;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ color-scheme:light; }
+  body{
+    margin:0;
+    background:var(--color-bg);
+    color:var(--color-text);
+    font-family:var(--font-body);
+    font-size:16px;
+    line-height:1.9;
+    letter-spacing:normal;
+  }
+  h1,h2,h3,legend{
+    font-family:var(--font-heading);
+    line-height:1.4;
+    letter-spacing:normal;
+    margin:0;
+  }
+  p{ margin:0; }
+  button, input, textarea, select{ font-family:inherit; }
+
+  .visually-hidden{
+    position:absolute;
+    inline-size:1px; block-size:1px;
+    overflow:hidden;
+    clip-path: inset(50%);
+    white-space:nowrap;
+  }
+
+  /* ---------- shell ---------- */
+  .page{
+    max-inline-size:1080px;
+    margin-inline:auto;
+    padding:20px 16px 64px;
+  }
+
+  .site-header{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding-block:8px 22px;
+  }
+  .brand-mark{
+    inline-size:48px; block-size:48px;
+    border-radius:14px;
+    background:linear-gradient(155deg, var(--color-primary), var(--color-primary-dark));
+    color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-heading);
+    font-weight:800;
+    font-size:20px;
+    flex-shrink:0;
+  }
+  .brand-text h1{ font-size:20px; font-weight:800; color:var(--color-primary-dark); }
+  .brand-text p{ color:var(--color-text-muted); font-size:14px; margin-block-start:2px; }
+
+  /* ---------- step progress ---------- */
+  .progress{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-block-end:24px;
+    overflow-x:auto;
+    padding-block-end:4px;
+  }
+  .progress-step{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-shrink:0;
+    color:var(--color-text-muted);
+    font-size:13px;
+  }
+  .progress-dot{
+    inline-size:26px; block-size:26px;
+    border-radius:50%;
+    border:2px solid var(--color-border);
+    background:var(--color-surface);
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700;
+    font-size:13px;
+    color:var(--color-text-muted);
+    transition:all .15s ease;
+  }
+  .progress-step.is-active .progress-dot{
+    border-color:var(--color-primary);
+    color:var(--color-primary-dark);
+  }
+  .progress-step.is-complete .progress-dot{
+    border-color:var(--color-primary);
+    background:var(--color-primary);
+    color:#fff;
+  }
+  .progress-step.is-complete{ color:var(--color-text); }
+  .progress-line{
+    inline-size:28px; block-size:2px;
+    background:var(--color-border);
+    flex-shrink:0;
+  }
+
+  /* ---------- layout ---------- */
+  .booking-grid{
+    display:grid;
+    grid-template-columns: 1.7fr 1fr;
+    gap:20px;
+    align-items:start;
+  }
+  @media (max-width: 860px){
+    .booking-grid{ grid-template-columns: 1fr; }
+  }
+
+  .booking-main{ display:flex; flex-direction:column; gap:16px; min-inline-size:0; }
+
+  .card{
+    background:var(--color-surface);
+    border:1px solid var(--color-border);
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-card);
+    padding:22px;
+  }
+  .card-head{ display:flex; align-items:baseline; gap:10px; margin-block-end:6px; flex-wrap:wrap; }
+  .card-head h2{ font-size:17px; font-weight:800; }
+  .card-head .step-num{ color:var(--color-primary); }
+  .card-hint{ color:var(--color-text-muted); font-size:14px; margin-block-end:16px; }
+
+  .card[data-locked="true"]{ position:relative; }
+  .card[data-locked="true"] .lockable{
+    opacity:.45;
+    pointer-events:none;
+    filter:grayscale(.3);
+  }
+  .lock-note{
+    display:none;
+    align-items:center;
+    gap:8px;
+    background:var(--color-primary-soft);
+    color:var(--color-primary-dark);
+    border-radius:var(--radius-md);
+    padding:10px 14px;
+    font-size:13.5px;
+    margin-block-end:14px;
+  }
+  .card[data-locked="true"] .lock-note{ display:flex; }
+
+  /* ---------- doctor cards ---------- */
+  .doctor-list{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:12px;
+  }
+  @media (max-width:560px){ .doctor-list{ grid-template-columns:1fr; } }
+
+  .doctor-card{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    border:1.5px solid var(--color-border);
+    border-radius:var(--radius-md);
+    padding:14px;
+    cursor:pointer;
+    position:relative;
+    transition:border-color .12s ease, background .12s ease;
+  }
+  .doctor-card:hover{ border-color:var(--color-primary); }
+  input.doctor-input:checked + .doctor-card{
+    border-color:var(--color-primary);
+    background:var(--color-primary-soft);
+  }
+  input.doctor-input:focus-visible + .doctor-card{
+    outline:2px solid var(--color-primary-dark);
+    outline-offset:2px;
+  }
+  .doctor-avatar{
+    inline-size:44px; block-size:44px;
+    border-radius:50%;
+    background:var(--color-primary-dark);
+    color:#fff;
+    flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700;
+    font-size:14px;
+  }
+  .doctor-info{ min-inline-size:0; flex:1; }
+  .doctor-name{ font-weight:700; font-size:15px; }
+  .doctor-specialty{ color:var(--color-text-muted); font-size:13.5px; margin-block-start:2px; }
+  .doctor-fee{ font-size:13.5px; margin-block-start:8px; color:var(--color-primary-dark); font-weight:600; }
+  .check-badge{
+    position:absolute;
+    inset-inline-end:10px; inset-block-start:10px;
+    inline-size:20px; block-size:20px;
+    border-radius:50%;
+    background:var(--color-primary);
+    color:#fff;
+    display:none;
+    align-items:center; justify-content:center;
+  }
+  input.doctor-input:checked + .doctor-card .check-badge{ display:flex; }
+
+  /* ---------- dates ---------- */
+  .date-row{
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+    padding-block-end:6px;
+    margin-block-end:18px;
+  }
+  .date-chip-input{ position:absolute; opacity:0; inline-size:1px; block-size:1px; }
+  .date-chip{
+    flex-shrink:0;
+    inline-size:84px;
+    text-align:center;
+    border:1.5px solid var(--color-border);
+    border-radius:var(--radius-md);
+    padding:10px 6px;
+    cursor:pointer;
+    transition:border-color .12s ease, background .12s ease;
+  }
+  .date-chip .weekday{ font-size:12.5px; color:var(--color-text-muted); }
+  .date-chip .day{ font-size:19px; font-weight:800; margin-block:2px; }
+  .date-chip .month{ font-size:12.5px; color:var(--color-text-muted); }
+  .date-chip-input:checked + .date-chip{
+    border-color:var(--color-primary);
+    background:var(--color-primary-soft);
+  }
+  .date-chip-input:focus-visible + .date-chip{
+    outline:2px solid var(--color-primary-dark);
+    outline-offset:2px;
+  }
+  .date-chip.is-closed{
+    cursor:not-allowed;
+    opacity:.5;
+  }
+  .date-chip.is-closed .day{ text-decoration: line-through; }
+
+  .slots-label{ font-size:14px; font-weight:700; margin-block-end:10px; }
+  .slot-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(84px, 1fr));
+    gap:8px;
+  }
+  .slot-btn{
+    border:1.5px solid var(--color-border);
+    background:var(--color-surface);
+    border-radius:var(--radius-md);
+    padding:9px 4px;
+    font-size:14px;
+    font-weight:600;
+    color:var(--color-text);
+    cursor:pointer;
+    font-family:inherit;
+  }
+  .slot-btn:hover:not(:disabled){ border-color:var(--color-primary); }
+  .slot-btn.is-selected{
+    border-color:var(--color-primary);
+    background:var(--color-primary);
+    color:#fff;
+  }
+  .slot-btn:disabled{
+    color:var(--color-text-muted);
+    text-decoration:line-through;
+    background:#f1f4f3;
+    cursor:not-allowed;
+  }
+  .slots-empty{ color:var(--color-text-muted); font-size:14px; }
+
+  /* ---------- form fields ---------- */
+  .field{ margin-block-end:16px; }
+  .field:last-child{ margin-block-end:0; }
+  .field label{
+    display:block;
+    font-size:14px;
+    font-weight:600;
+    margin-block-end:6px;
+  }
+  .field .optional{ font-weight:400; color:var(--color-text-muted); font-size:12.5px; }
+  .field input, .field textarea{
+    inline-size:100%;
+    border:1.5px solid var(--color-border);
+    border-radius:var(--radius-md);
+    padding:11px 13px;
+    font-size:15px;
+    color:var(--color-text);
+    background:#fff;
+    text-align:start;
+  }
+  .field input[dir="ltr"], .field input.ltr-field{ text-align:right; }
+  .field input:focus, .field textarea:focus{
+    outline:none;
+    border-color:var(--color-primary);
+    box-shadow:0 0 0 3px var(--color-primary-soft);
+  }
+  .field textarea{ min-block-size:96px; resize:vertical; line-height:1.9; }
+  .field-error{
+    display:none;
+    color:var(--color-danger);
+    font-size:13px;
+    margin-block-start:6px;
+  }
+  .field.has-error input, .field.has-error textarea{ border-color:var(--color-danger); }
+  .field.has-error .field-error{ display:block; }
+
+  .contact-grid{ display:grid; grid-template-columns:1fr 1fr; gap:0 14px; }
+  @media (max-width:560px){ .contact-grid{ grid-template-columns:1fr; } }
+  .contact-grid .field.full{ grid-column:1 / -1; }
+
+  /* ---------- summary ---------- */
+  .booking-summary{ position:sticky; top:16px; }
+  @media (max-width:860px){ .booking-summary{ position:static; } }
+
+  .summary-card h2{ font-size:17px; font-weight:800; margin-block-end:14px; }
+  .summary-row{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    font-size:14.5px;
+    padding-block:7px;
+  }
+  .summary-row .label{ color:var(--color-text-muted); flex-shrink:0; }
+  .summary-row .value{ font-weight:600; text-align:end; }
+  .summary-row .value.is-placeholder{ color:var(--color-text-muted); font-weight:400; }
+  .summary-divider{ border:none; border-block-start:1px dashed var(--color-border); margin:12px 0; }
+  .summary-row.total .value{ color:var(--color-primary-dark); font-size:17px; font-weight:800; }
+  .summary-note{ font-size:12.5px; color:var(--color-text-muted); margin-block-start:10px; line-height:1.7; }
+
+  .submit-btn{
+    inline-size:100%;
+    margin-block-start:18px;
+    background:var(--color-primary);
+    color:#fff;
+    border:none;
+    border-radius:var(--radius-md);
+    padding:14px;
+    font-size:15.5px;
+    font-weight:700;
+    font-family:inherit;
+    cursor:pointer;
+    transition:background .12s ease;
+  }
+  .submit-btn:hover{ background:var(--color-primary-dark); }
+
+  .error-banner{
+    display:none;
+    background:var(--color-danger-soft);
+    color:var(--color-danger);
+    border:1px solid #f2c6c0;
+    border-radius:var(--radius-md);
+    padding:12px 14px;
+    font-size:14px;
+    margin-block-end:14px;
+  }
+  .error-banner.is-visible{ display:block; }
+  .error-banner ul{ margin:6px 0 0; padding-inline-start:20px; }
+
+  /* ---------- success panel ---------- */
+  .success-panel{
+    background:var(--color-surface);
+    border:1px solid var(--color-border);
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-card);
+    padding:32px 24px;
+    text-align:center;
+    max-inline-size:520px;
+    margin-inline:auto;
+  }
+  .success-icon{
+    inline-size:56px; block-size:56px;
+    border-radius:50%;
+    background:var(--color-success);
+    color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    margin-inline:auto;
+    margin-block-end:14px;
+  }
+  .success-panel h2{ font-size:20px; font-weight:800; margin-block-end:8px; }
+  .success-panel p.lead{ color:var(--color-text-muted); font-size:14.5px; margin-block-end:20px; }
+  .success-detail{
+    text-align:start;
+    background:var(--color-bg);
+    border-radius:var(--radius-md);
+    padding:16px;
+    margin-block-end:18px;
+  }
+  .success-detail .summary-row{ font-size:14px; }
+  .booking-code{
+    font-family:var(--font-body);
+    font-weight:700;
+    color:var(--color-primary-dark);
+  }
+  .reset-btn{
+    background:none;
+    border:1.5px solid var(--color-border);
+    border-radius:var(--radius-md);
+    padding:11px 20px;
+    font-size:14.5px;
+    font-weight:600;
+    cursor:pointer;
+    font-family:inherit;
+    color:var(--color-text);
+  }
+  .reset-btn:hover{ border-color:var(--color-primary); color:var(--color-primary-dark); }
+
+  .site-footer{
+    margin-block-start:28px;
+    text-align:center;
+    color:var(--color-text-muted);
+    font-size:13px;
+    line-height:1.9;
+  }
+  .site-footer .ltr-inline{ unicode-bidi:isolate; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="site-header">
+    <div class="brand-mark">سل</div>
+    <div class="brand-text">
+      <h1>کلینیک درمانی سلامت</h1>
+      <p>رزرو آنلاین نوبت ویزیت — پاسخ‌گویی از ۸ صبح تا ۸ شب</p>
+    </div>
+  </header>
+
+  <nav class="progress" aria-label="مراحل رزرو نوبت">
+    <div class="progress-step is-active" data-step-indicator="1">
+      <span class="progress-dot">۱</span><span>پزشک</span>
+    </div>
+    <span class="progress-line"></span>
+    <div class="progress-step" data-step-indicator="2">
+      <span class="progress-dot">۲</span><span>تاریخ و ساعت</span>
+    </div>
+    <span class="progress-line"></span>
+    <div class="progress-step" data-step-indicator="3">
+      <span class="progress-dot">۳</span><span>اطلاعات تماس</span>
+    </div>
+    <span class="progress-line"></span>
+    <div class="progress-step" data-step-indicator="4">
+      <span class="progress-dot">۴</span><span>ثبت نهایی</span>
+    </div>
+  </nav>
+
+  <form id="booking-form" novalidate>
+  <div class="booking-grid">
+    <div class="booking-main">
+
+      <!-- step 1: doctor -->
+      <section class="card">
+        <div class="card-head">
+          <h2><span class="step-num">۱.</span> انتخاب پزشک</h2>
+        </div>
+        <p class="card-hint">پزشک موردنظر خود را از میان متخصصان کلینیک انتخاب کنید.</p>
+        <fieldset style="border:none; padding:0; margin:0;">
+          <legend class="visually-hidden">انتخاب پزشک</legend>
+          <div class="doctor-list" id="doctor-list"></div>
+        </fieldset>
+      </section>
+
+      <!-- step 2: date & time -->
+      <section class="card" id="datetime-card" data-locked="true">
+        <div class="card-head">
+          <h2><span class="step-num">۲.</span> انتخاب تاریخ و ساعت</h2>
+        </div>
+        <p class="lock-note">برای مشاهدهٔ نوبت‌های خالی، ابتدا پزشک را از بخش بالا انتخاب کنید.</p>
+        <div class="lockable">
+          <p class="card-hint">یکی از تاریخ‌های زیر را انتخاب کنید تا ساعت‌های خالی نمایش داده شود.</p>
+          <fieldset style="border:none; padding:0; margin:0;">
+            <legend class="visually-hidden">انتخاب تاریخ</legend>
+            <div class="date-row" id="date-row"></div>
+          </fieldset>
+          <div class="slots-label">ساعت‌های خالی</div>
+          <div class="slot-grid" id="slot-grid">
+            <p class="slots-empty">ابتدا یک تاریخ انتخاب کنید.</p>
+          </div>
+          <input type="hidden" id="selected-time" name="selected-time" value="">
+        </div>
+      </section>
+
+      <!-- step 3: contact -->
+      <section class="card">
+        <div class="card-head">
+          <h2><span class="step-num">۳.</span> اطلاعات تماس</h2>
+        </div>
+        <p class="card-hint">این اطلاعات صرفاً برای هماهنگی نوبت شما استفاده می‌شود.</p>
+        <div class="contact-grid">
+          <div class="field full" id="field-name">
+            <label for="patient-name">نام و نام خانوادگی <span aria-hidden="true">*</span></label>
+            <input type="text" id="patient-name" name="patient-name" placeholder="مثلاً: زهرا حسینی" autocomplete="name" required>
+            <p class="field-error">لطفاً نام و نام خانوادگی را وارد کنید.</p>
+          </div>
+          <div class="field" id="field-phone">
+            <label for="patient-phone">شمارهٔ تماس <span aria-hidden="true">*</span></label>
+            <input type="tel" id="patient-phone" name="patient-phone" dir="ltr" inputmode="numeric" placeholder="09123456789" autocomplete="tel" required>
+            <p class="field-error">شماره باید ۱۱ رقم و با ۰۹ شروع شود.</p>
+          </div>
+          <div class="field" id="field-email">
+            <label for="patient-email">ایمیل <span class="optional">(اختیاری)</span></label>
+            <input type="email" id="patient-email" name="patient-email" dir="ltr" placeholder="example@email.com" autocomplete="email">
+            <p class="field-error">فرمت ایمیل صحیح نیست.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- step 4: notes -->
+      <section class="card">
+        <div class="card-head">
+          <h2><span class="step-num">۴.</span> توضیحات تکمیلی</h2>
+        </div>
+        <div class="field">
+          <label for="patient-notes">علائم یا توضیحاتی که پزشک باید بداند <span class="optional">(اختیاری)</span></label>
+          <textarea id="patient-notes" name="patient-notes" placeholder="مثلاً: سابقهٔ حساسیت دارویی، بیماری زمینه‌ای یا دلیل مراجعه را بنویسید…"></textarea>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- summary -->
+    <aside class="booking-summary">
+      <div class="card summary-card">
+        <h2>خلاصهٔ رزرو</h2>
+
+        <div class="error-banner" id="error-banner">
+          برای ثبت نوبت، موارد زیر را کامل کنید:
+          <ul id="error-list"></ul>
+        </div>
+
+        <div class="summary-row">
+          <span class="label">پزشک</span>
+          <span class="value is-placeholder" id="summary-doctor">انتخاب نشده</span>
+        </div>
+        <div class="summary-row">
+          <span class="label">تخصص</span>
+          <span class="value is-placeholder" id="summary-specialty">—</span>
+        </div>
+        <div class="summary-row">
+          <span class="label">تاریخ</span>
+          <span class="value is-placeholder" id="summary-date">انتخاب نشده</span>
+        </div>
+        <div class="summary-row">
+          <span class="label">ساعت</span>
+          <span class="value is-placeholder" id="summary-time">انتخاب نشده</span>
+        </div>
+        <div class="summary-row">
+          <span class="label">بیمار</span>
+          <span class="value is-placeholder" id="summary-patient">—</span>
+        </div>
+
+        <hr class="summary-divider">
+
+        <div class="summary-row">
+          <span class="label">هزینهٔ ویزیت</span>
+          <span class="value is-placeholder" id="summary-fee">—</span>
+        </div>
+        <div class="summary-row total">
+          <span class="label">جمع قابل‌پرداخت</span>
+          <span class="value is-placeholder" id="summary-total">—</span>
+        </div>
+
+        <button type="submit" class="submit-btn">ثبت نهایی نوبت</button>
+        <p class="summary-note">* مبلغ ویزیت نقداً یا با کارت در محل مطب دریافت می‌شود؛ در این فرم پرداختی انجام نمی‌گیرد.</p>
+      </div>
+    </aside>
+  </div>
+  </form>
+
+  <div id="success-wrap" hidden>
+    <div class="success-panel">
+      <div class="success-icon" aria-hidden="true">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M4 12.5L9.5 18L20 6" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h2>نوبت شما با موفقیت ثبت شد</h2>
+      <p class="lead">پیامک تأییدیه برای شمارهٔ ثبت‌شده ارسال خواهد شد.</p>
+      <div class="success-detail">
+        <div class="summary-row"><span class="label">کد پیگیری</span><span class="value booking-code" id="done-code" dir="ltr"></span></div>
+        <div class="summary-row"><span class="label">پزشک</span><span class="value" id="done-doctor"></span></div>
+        <div class="summary-row"><span class="label">تاریخ و ساعت</span><span class="value" id="done-datetime"></span></div>
+        <div class="summary-row"><span class="label">بیمار</span><span class="value" id="done-patient"></span></div>
+        <div class="summary-row"><span class="label">هزینهٔ ویزیت</span><span class="value" id="done-fee"></span></div>
+      </div>
+      <button type="button" class="reset-btn" id="reset-booking">رزرو نوبت جدید</button>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>آدرس: تهران، خیابان ولیعصر، پلاک ۱۲۴ &nbsp;|&nbsp; تلفن: <bdi class="ltr-inline" dir="ltr">021-9123-4567</bdi></p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var faDigitMap = {"0":"۰","1":"۱","2":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹"};
+  function faDigits(input){
+    return String(input).replace(/[0-9]/g, function(d){ return faDigitMap[d]; });
+  }
+  function formatToman(amount){
+    var grouped = Number(amount).toLocaleString("en-US").replace(/,/g, "٬");
+    return faDigits(grouped) + " تومان";
+  }
+  function hashStr(str){
+    var h = 0;
+    for (var i = 0; i < str.length; i++){
+      h = (h * 31 + str.charCodeAt(i)) >>> 0;
+    }
+    return h;
+  }
+
+  var DOCTORS = [
+    { id:"doc1", name:"دکتر سارا محمدی", specialty:"متخصص پوست و مو", fee:450000, initials:"س‌م" },
+    { id:"doc2", name:"دکتر علی رضایی", specialty:"دندان‌پزشک عمومی", fee:350000, initials:"ع‌ر" },
+    { id:"doc3", name:"دکتر مریم کریمی", specialty:"متخصص زنان و زایمان", fee:500000, initials:"م‌ک" },
+    { id:"doc4", name:"دکتر حسین احمدی", specialty:"پزشک عمومی", fee:250000, initials:"ح‌ا" }
+  ];
+
+  var DATES = [
+    { id:"d1", weekday:"دوشنبه", day:"۵", month:"مرداد", closed:false },
+    { id:"d2", weekday:"سه‌شنبه", day:"۶", month:"مرداد", closed:false },
+    { id:"d3", weekday:"چهارشنبه", day:"۷", month:"مرداد", closed:false },
+    { id:"d4", weekday:"پنجشنبه", day:"۸", month:"مرداد", closed:false },
+    { id:"d5", weekday:"جمعه", day:"۹", month:"مرداد", closed:true },
+    { id:"d6", weekday:"شنبه", day:"۱۰", month:"مرداد", closed:false },
+    { id:"d7", weekday:"یکشنبه", day:"۱۱", month:"مرداد", closed:false }
+  ];
+
+  var TIMES = ["۰۹:۰۰","۰۹:۳۰","۱۰:۰۰","۱۰:۳۰","۱۱:۰۰","۱۱:۳۰","۱۶:۰۰","۱۶:۳۰","۱۷:۰۰","۱۷:۳۰"];
+
+  var state = {
+    doctorId: null,
+    dateId: null,
+    time: null
+  };
+
+  function findDoctor(id){
+    for (var i = 0; i < DOCTORS.length; i++){ if (DOCTORS[i].id === id) return DOCTORS[i]; }
+    return null;
+  }
+  function findDate(id){
+    for (var i = 0; i < DATES.length; i++){ if (DATES[i].id === id) return DATES[i]; }
+    return null;
+  }
+
+  // ---------- render doctors ----------
+  var doctorList = document.getElementById("doctor-list");
+  DOCTORS.forEach(function(doc){
+    var wrap = document.createElement("div");
+    wrap.innerHTML =
+      '<input class="visually-hidden doctor-input" type="radio" name="doctor" id="' + doc.id + '" value="' + doc.id + '">' +
+      '<label for="' + doc.id + '" class="doctor-card">' +
+        '<span class="doctor-avatar" aria-hidden="true">' + doc.initials + '</span>' +
+        '<span class="doctor-info">' +
+          '<span class="doctor-name">' + doc.name + '</span>' +
+          '<span class="doctor-specialty">' + doc.specialty + '</span>' +
+          '<span class="doctor-fee">هزینهٔ ویزیت: ' + formatToman(doc.fee) + '</span>' +
+        '</span>' +
+        '<span class="check-badge" aria-hidden="true">' +
+          '<svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M4 12.5L9.5 18L20 6" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+        '</span>' +
+      '</label>';
+    doctorList.appendChild(wrap);
+  });
+
+  // ---------- render dates ----------
+  var dateRow = document.getElementById("date-row");
+  DATES.forEach(function(d){
+    var wrap = document.createElement("div");
+    if (d.closed){
+      wrap.innerHTML =
+        '<div class="date-chip is-closed" title="کلینیک در این روز تعطیل است">' +
+          '<div class="weekday">' + d.weekday + '</div>' +
+          '<div class="day">' + d.day + '</div>' +
+          '<div class="month">تعطیل</div>' +
+        '</div>';
+    } else {
+      wrap.innerHTML =
+        '<input class="date-chip-input" type="radio" name="date" id="' + d.id + '" value="' + d.id + '">' +
+        '<label for="' + d.id + '" class="date-chip">' +
+          '<div class="weekday">' + d.weekday + '</div>' +
+          '<div class="day">' + d.day + '</div>' +
+          '<div class="month">' + d.month + '</div>' +
+        '</label>';
+    }
+    dateRow.appendChild(wrap);
+  });
+
+  // ---------- slot generation ----------
+  function getSlots(doctorId, dateId){
+    var seed = hashStr(doctorId + "|" + dateId);
+    return TIMES.map(function(t, i){
+      var available = ((seed + i * 7) % 5) !== 0;
+      return { time: t, available: available };
+    });
+  }
+
+  var slotGrid = document.getElementById("slot-grid");
+  var selectedTimeInput = document.getElementById("selected-time");
+
+  function renderSlots(){
+    slotGrid.innerHTML = "";
+    state.time = null;
+    selectedTimeInput.value = "";
+    updateSummary();
+
+    if (!state.doctorId || !state.dateId){
+      slotGrid.innerHTML = '<p class="slots-empty">ابتدا یک تاریخ انتخاب کنید.</p>';
+      return;
+    }
+    var slots = getSlots(state.doctorId, state.dateId);
+    slots.forEach(function(slot){
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "slot-btn";
+      btn.textContent = slot.time;
+      if (!slot.available){
+        btn.disabled = true;
+      } else {
+        btn.addEventListener("click", function(){
+          var all = slotGrid.querySelectorAll(".slot-btn");
+          all.forEach(function(b){ b.classList.remove("is-selected"); });
+          btn.classList.add("is-selected");
+          state.time = slot.time;
+          selectedTimeInput.value = slot.time;
+          clearFieldError("field-datetime");
+          updateSummary();
+          updateProgress();
+        });
+      }
+      slotGrid.appendChild(btn);
+    });
+  }
+
+  // ---------- events ----------
+  var datetimeCard = document.getElementById("datetime-card");
+
+  doctorList.addEventListener("change", function(e){
+    if (e.target.name !== "doctor") return;
+    state.doctorId = e.target.value;
+    datetimeCard.setAttribute("data-locked", "false");
+    clearFieldError("field-doctor");
+    renderSlots();
+    updateSummary();
+    updateProgress();
+  });
+
+  dateRow.addEventListener("change", function(e){
+    if (e.target.name !== "date") return;
+    state.dateId = e.target.value;
+    renderSlots();
+    updateProgress();
+  });
+
+  // ---------- summary ----------
+  function updateSummary(){
+    var doc = findDoctor(state.doctorId);
+    var date = findDate(state.dateId);
+
+    setSummary("summary-doctor", doc ? doc.name : null, "انتخاب نشده");
+    setSummary("summary-specialty", doc ? doc.specialty : null, "—");
+    setSummary("summary-date", date ? (date.weekday + "، " + date.day + " " + date.month + " ۱۴۰۵") : null, "انتخاب نشده");
+    setSummary("summary-time", state.time, "انتخاب نشده");
+
+    var name = document.getElementById("patient-name").value.trim();
+    setSummary("summary-patient", name || null, "—");
+
+    setSummary("summary-fee", doc ? formatToman(doc.fee) : null, "—");
+    setSummary("summary-total", doc ? formatToman(doc.fee) : null, "—");
+  }
+
+  function setSummary(elId, value, placeholder){
+    var el = document.getElementById(elId);
+    if (value){
+      el.textContent = value;
+      el.classList.remove("is-placeholder");
+    } else {
+      el.textContent = placeholder;
+      el.classList.add("is-placeholder");
+    }
+  }
+
+  document.getElementById("patient-name").addEventListener("input", updateSummary);
+
+  // ---------- progress indicator ----------
+  function updateProgress(){
+    setStepState(1, !!state.doctorId);
+    setStepState(2, !!(state.dateId && state.time));
+    var name = document.getElementById("patient-name").value.trim();
+    var phone = document.getElementById("patient-phone").value.trim();
+    setStepState(3, !!(name && /^09\d{9}$/.test(phone)));
+  }
+  function setStepState(stepIndex, complete){
+    var stepEl = document.querySelector('[data-step-indicator="' + stepIndex + '"]');
+    var nextEl = document.querySelector('[data-step-indicator="' + (stepIndex + 1) + '"]');
+    stepEl.classList.toggle("is-complete", complete);
+    stepEl.classList.toggle("is-active", !complete);
+    if (nextEl){ nextEl.classList.toggle("is-active", complete); }
+  }
+  document.getElementById("patient-name").addEventListener("input", updateProgress);
+  document.getElementById("patient-phone").addEventListener("input", updateProgress);
+
+  // ---------- field error helpers ----------
+  function setFieldError(fieldId, on){
+    var el = document.getElementById(fieldId);
+    if (!el) return;
+    el.classList.toggle("has-error", !!on);
+  }
+  function clearFieldError(fieldId){ setFieldError(fieldId, false); }
+
+  // ---------- submit ----------
+  var form = document.getElementById("booking-form");
+  var errorBanner = document.getElementById("error-banner");
+  var errorList = document.getElementById("error-list");
+
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    var problems = [];
+
+    setFieldError("field-name", false);
+    setFieldError("field-phone", false);
+    setFieldError("field-email", false);
+
+    if (!state.doctorId){
+      problems.push("انتخاب پزشک");
+    }
+    if (!state.dateId || !state.time){
+      problems.push("انتخاب تاریخ و ساعت");
+    }
+
+    var nameInput = document.getElementById("patient-name");
+    var name = nameInput.value.trim();
+    if (!name){
+      problems.push("نام و نام خانوادگی");
+      setFieldError("field-name", true);
+    }
+
+    var phoneInput = document.getElementById("patient-phone");
+    var phone = phoneInput.value.trim();
+    if (!/^09\d{9}$/.test(phone)){
+      problems.push("شمارهٔ تماس معتبر (۱۱ رقم، شروع با ۰۹)");
+      setFieldError("field-phone", true);
+    }
+
+    var emailInput = document.getElementById("patient-email");
+    var email = emailInput.value.trim();
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+      problems.push("فرمت صحیح ایمیل");
+      setFieldError("field-email", true);
+    }
+
+    if (problems.length){
+      errorList.innerHTML = "";
+      problems.forEach(function(p){
+        var li = document.createElement("li");
+        li.textContent = p;
+        errorList.appendChild(li);
+      });
+      errorBanner.classList.add("is-visible");
+      errorBanner.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+
+    errorBanner.classList.remove("is-visible");
+
+    var doc = findDoctor(state.doctorId);
+    var date = findDate(state.dateId);
+    var code = "SLM-1405-" + String(hashStr(state.doctorId + state.dateId + state.time + phone) % 900000 + 100000);
+
+    document.getElementById("done-code").textContent = code;
+    document.getElementById("done-doctor").textContent = doc.name + " (" + doc.specialty + ")";
+    document.getElementById("done-datetime").textContent = date.weekday + "، " + date.day + " " + date.month + " ۱۴۰۵ — ساعت " + state.time;
+    document.getElementById("done-patient").textContent = name;
+    document.getElementById("done-fee").textContent = formatToman(doc.fee);
+
+    form.closest(".booking-grid").style.display = "none";
+    document.querySelector(".progress").style.display = "none";
+    document.getElementById("success-wrap").hidden = false;
+    document.getElementById("success-wrap").scrollIntoView({ behavior: "smooth", block: "start" });
+    updateStepAllComplete();
+  });
+
+  function updateStepAllComplete(){
+    for (var i = 1; i <= 4; i++){
+      var stepEl = document.querySelector('[data-step-indicator="' + i + '"]');
+      stepEl.classList.add("is-complete");
+      stepEl.classList.remove("is-active");
+    }
+  }
+
+  document.getElementById("reset-booking").addEventListener("click", function(){
+    form.reset();
+    state.doctorId = null; state.dateId = null; state.time = null;
+    datetimeCard.setAttribute("data-locked", "true");
+    renderSlots();
+    updateSummary();
+    document.querySelectorAll(".progress-step").forEach(function(el, i){
+      el.classList.remove("is-complete");
+      el.classList.toggle("is-active", i === 0);
+    });
+    errorBanner.classList.remove("is-visible");
+    setFieldError("field-name", false);
+    setFieldError("field-phone", false);
+    setFieldError("field-email", false);
+    form.closest(".booking-grid").style.display = "";
+    document.querySelector(".progress").style.display = "";
+    document.getElementById("success-wrap").hidden = true;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  // ---------- init ----------
+  renderSlots();
+  updateSummary();
+})();
+</script>
+</body>
+</html>

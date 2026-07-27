@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پروفایل کاربری</title>
+<style>
+  :root{
+    --bg: #f3f4f7;
+    --card-bg: #ffffff;
+    --text-primary: #1e2230;
+    --text-secondary: #6b7280;
+    --border: #e5e7eb;
+    --accent: #2f6feb;
+    --accent-dark: #2457c4;
+    --accent-soft: #eaf1ff;
+    --success: #1f9d55;
+    --success-soft: #e7f8ee;
+    --radius-lg: 18px;
+    --radius-md: 12px;
+    --radius-sm: 8px;
+    --shadow: 0 4px 18px rgba(20, 25, 40, 0.06);
+    font-size: 16px;
+  }
+
+  *{ box-sizing: border-box; }
+
+  body{
+    margin: 0;
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: "Vazirmatn", "IRANSans", "Tahoma", "Segoe UI", sans-serif;
+    line-height: 1.9;
+    padding: 32px 16px 64px;
+  }
+
+  .page{
+    max-width: 760px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  h1.page-title{
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 4px;
+  }
+
+  .card{
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    padding: 24px;
+  }
+
+  /* --- Header / identity --- */
+  .profile-header{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .avatar-wrap{
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .avatar{
+    width: 92px;
+    height: 92px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--accent-soft);
+    background: var(--accent-soft);
+  }
+
+  .avatar-badge{
+    position: absolute;
+    bottom: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    background: var(--success);
+    border: 3px solid var(--card-bg);
+    border-radius: 50%;
+  }
+
+  .profile-info{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .profile-name{
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .profile-username{
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+  }
+
+  .profile-meta{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    margin-top: 6px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+  }
+
+  .profile-meta span{
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .icon-dot{
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  /* --- Contact info --- */
+  .info-grid{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .info-item{
+    background: var(--bg);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .info-label{
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+  }
+
+  .info-value{
+    font-size: 0.95rem;
+    font-weight: 600;
+    direction: rtl;
+    unicode-bidi: plaintext;
+  }
+
+  .section-title{
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 0 0 16px;
+  }
+
+  /* --- Form --- */
+  .form-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .form-field{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .form-field.full{
+    grid-column: 1 / -1;
+  }
+
+  .form-field label{
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .form-field input,
+  .form-field textarea{
+    font-family: inherit;
+    font-size: 0.95rem;
+    padding: 11px 14px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: #fbfbfd;
+    color: var(--text-primary);
+    outline: none;
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+
+  .form-field input[dir="ltr"]{
+    text-align: right;
+  }
+
+  .form-field input:focus,
+  .form-field textarea:focus{
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+    background: #fff;
+  }
+
+  .form-field textarea{
+    resize: vertical;
+    min-height: 78px;
+  }
+
+  .form-hint{
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+  }
+
+  .form-actions{
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .btn{
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding: 11px 26px;
+    border-radius: var(--radius-sm);
+    border: none;
+    cursor: pointer;
+    transition: background .15s ease, transform .05s ease;
+  }
+
+  .btn-primary{
+    background: var(--accent);
+    color: #fff;
+  }
+  .btn-primary:hover{ background: var(--accent-dark); }
+  .btn-primary:active{ transform: scale(0.98); }
+
+  .btn-secondary{
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+  }
+  .btn-secondary:hover{ background: var(--bg); }
+
+  /* --- Subscription card --- */
+  .sub-card{
+    background: linear-gradient(135deg, #24304d 0%, #16192b 100%);
+    color: #fff;
+    border: none;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .sub-card::before{
+    content: "";
+    position: absolute;
+    inset-inline-end: -60px;
+    top: -60px;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+  }
+
+  .sub-top{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+    z-index: 1;
+  }
+
+  .sub-plan-name{
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 0 0 4px;
+  }
+
+  .sub-plan-desc{
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.65);
+    margin: 0;
+  }
+
+  .sub-status{
+    background: var(--success-soft);
+    color: var(--success);
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 5px 14px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+
+  .sub-status::before{
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--success);
+  }
+
+  .sub-divider{
+    height: 1px;
+    background: rgba(255,255,255,0.12);
+    margin: 20px 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .sub-details{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .sub-detail-label{
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.55);
+    margin: 0 0 6px;
+  }
+
+  .sub-detail-value{
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .sub-detail-value .unit{
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: rgba(255,255,255,0.6);
+    margin-inline-start: 4px;
+  }
+
+  .sub-progress-wrap{
+    margin-top: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .sub-progress-labels{
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 8px;
+  }
+
+  .sub-progress-bar{
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.12);
+    overflow: hidden;
+  }
+
+  .sub-progress-fill{
+    height: 100%;
+    width: 62%;
+    background: linear-gradient(90deg, #4f8cff, #7db3ff);
+    border-radius: 999px;
+  }
+
+  .sub-actions{
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .btn-on-dark{
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.18);
+  }
+  .btn-on-dark:hover{ background: rgba(255,255,255,0.2); }
+
+  .btn-light{
+    background: #fff;
+    color: #16192b;
+  }
+  .btn-light:hover{ background: #eef1f6; }
+
+  @media (max-width: 560px){
+    .profile-header{ flex-direction: column; text-align: center; }
+    .profile-meta{ justify-content: center; }
+    .info-grid, .form-grid{ grid-template-columns: 1fr; }
+    .sub-details{ grid-template-columns: 1fr 1fr; }
+    .form-actions{ justify-content: stretch; }
+    .form-actions .btn{ flex: 1; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <h1 class="page-title">پروفایل کاربری</h1>
+
+  <!-- Identity + contact card -->
+  <section class="card">
+    <div class="profile-header">
+      <div class="avatar-wrap">
+        <img
+          class="avatar"
+          src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 92 92'%3E%3Ccircle cx='46' cy='46' r='46' fill='%232f6feb'/%3E%3Ccircle cx='46' cy='36' r='16' fill='%23eaf1ff'/%3E%3Cpath d='M14 82c4-20 20-30 32-30s28 10 32 30' fill='%23eaf1ff'/%3E%3C/svg%3E"
+          alt="عکس پروفایل سارا محمدی">
+        <span class="avatar-badge" title="آنلاین"></span>
+      </div>
+      <div class="profile-info">
+        <div class="profile-name">سارا محمدی</div>
+        <div class="profile-username">‎@sara.mohammadi</div>
+        <div class="profile-meta">
+          <span><i class="icon-dot"></i> عضویت از ۱۴۰۱/۰۳/۱۲</span>
+          <span><i class="icon-dot"></i> آخرین ورود: امروز، ۰۹:۴۲</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sub-divider" style="background:var(--border); margin:22px 0 18px;"></div>
+
+    <div class="info-grid">
+      <div class="info-item">
+        <span class="info-label">شمارهٔ موبایل</span>
+        <span class="info-value" dir="ltr" style="text-align:right;">۰۹۱۲۳۴۵۶۷۸۹</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">ایمیل</span>
+        <span class="info-value" dir="ltr" style="text-align:right;">sara.mohammadi@example.com</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Edit form -->
+  <section class="card">
+    <h2 class="section-title">ویرایش اطلاعات حساب</h2>
+    <form>
+      <div class="form-grid">
+        <div class="form-field">
+          <label for="fname">نام</label>
+          <input type="text" id="fname" name="fname" value="سارا">
+        </div>
+        <div class="form-field">
+          <label for="lname">نام خانوادگی</label>
+          <input type="text" id="lname" name="lname" value="محمدی">
+        </div>
+        <div class="form-field">
+          <label for="phone">شمارهٔ موبایل</label>
+          <input type="tel" id="phone" name="phone" dir="ltr" value="۰۹۱۲۳۴۵۶۷۸۹" inputmode="numeric">
+          <span class="form-hint">برای تغییر، کد تأیید برایتان پیامک می‌شود.</span>
+        </div>
+        <div class="form-field">
+          <label for="email">ایمیل</label>
+          <input type="email" id="email" name="email" dir="ltr" value="sara.mohammadi@example.com">
+        </div>
+        <div class="form-field full">
+          <label for="bio">دربارهٔ من</label>
+          <textarea id="bio" name="bio" placeholder="چند جمله دربارهٔ خودتان بنویسید...">طراح رابط کاربری و علاقه‌مند به تایپوگرافی فارسی.</textarea>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">ذخیرهٔ تغییرات</button>
+        <button type="reset" class="btn btn-secondary">انصراف</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- Active subscription card -->
+  <section class="card sub-card">
+    <div class="sub-top">
+      <div>
+        <p class="sub-plan-name">اشتراک ویژه (سالانه)</p>
+        <p class="sub-plan-desc">دسترسی کامل به تمام امکانات پلتفرم</p>
+      </div>
+      <span class="sub-status">فعال</span>
+    </div>
+
+    <div class="sub-divider"></div>
+
+    <div class="sub-details">
+      <div>
+        <p class="sub-detail-label">تاریخ شروع</p>
+        <p class="sub-detail-value">۱۴۰۴/۰۲/۰۱</p>
+      </div>
+      <div>
+        <p class="sub-detail-label">تاریخ انقضا</p>
+        <p class="sub-detail-value">۱۴۰۵/۰۲/۰۱</p>
+      </div>
+      <div>
+        <p class="sub-detail-label">مبلغ پرداختی</p>
+        <p class="sub-detail-value">۲٬۴۰۰٬۰۰۰<span class="unit">تومان</span></p>
+      </div>
+    </div>
+
+    <div class="sub-progress-wrap">
+      <div class="sub-progress-labels">
+        <span>گذشته از دورهٔ اشتراک</span>
+        <span>۱۳۹ روز مانده</span>
+      </div>
+      <div class="sub-progress-bar">
+        <div class="sub-progress-fill"></div>
+      </div>
+    </div>
+
+    <div class="sub-actions">
+      <button type="button" class="btn btn-light">تمدید اشتراک</button>
+      <button type="button" class="btn btn-on-dark">مشاهدهٔ فاکتورها</button>
+    </div>
+  </section>
+
+</div>
+
+</body>
+</html>
