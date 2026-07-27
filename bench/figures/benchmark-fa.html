@@ -1,0 +1,129 @@
+<div class="viz-root" dir="rtl" lang="fa" data-palette="#2a78d6,#eb6834">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  .viz-root{
+    color-scheme: light;
+    --surface-1:#fcfcfb; --text-primary:#0b0b0b; --text-secondary:#52514e; --text-muted:#78776f;
+    --grid:#e6e5e0; --series-1:#2a78d6; --series-2:#eb6834;
+    font-family:'Vazirmatn','Noto Sans Arabic',system-ui,sans-serif;
+    background:var(--surface-1); color:var(--text-primary);
+    padding:28px 30px 22px; max-width:720px; margin-inline:auto;
+    line-height:1.9; letter-spacing:0;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:where(:not([data-theme="light"])) .viz-root{
+      color-scheme: dark;
+      --surface-1:#1a1a19; --text-primary:#ffffff; --text-secondary:#c3c2b7; --text-muted:#9b9a90;
+      --grid:#33322e; --series-1:#3987e5; --series-2:#d95926;
+    }
+  }
+  :root[data-theme="dark"] .viz-root{
+    color-scheme: dark;
+    --surface-1:#1a1a19; --text-primary:#ffffff; --text-secondary:#c3c2b7; --text-muted:#9b9a90;
+    --grid:#33322e; --series-1:#3987e5; --series-2:#d95926;
+  }
+  .viz-root h2{font-size:18px; font-weight:700; margin:0 0 4px; line-height:1.6}
+  .viz-root .sub{font-size:13px; color:var(--text-secondary); margin:0 0 16px; line-height:1.9}
+  .viz-root h3{font-size:14px; font-weight:700; margin:26px 0 2px; line-height:1.6}
+  .legend{display:flex; gap:18px; align-items:center; font-size:12.5px; color:var(--text-secondary); margin-bottom:8px}
+  .legend i{width:9px; height:9px; border-radius:50%; display:inline-block; margin-inline-end:6px; vertical-align:-1px}
+  .foot{font-size:12px; color:var(--text-muted); margin-top:16px; line-height:1.95}
+  .viz-root svg{display:block; width:100%; height:auto; overflow:visible}
+  .t{font-size:12px; fill:var(--text-secondary)}
+  .tv{font-size:14px; font-weight:700; fill:var(--text-primary)}
+  .tm{font-size:11.5px; fill:var(--text-muted)}
+  .tmcap{font-size:11.5px; color:var(--text-muted); margin:0 0 2px}
+  table{border-collapse:collapse; font-size:12.5px; margin-top:14px; width:100%}
+  th,td{text-align:start; padding:5px 8px; border-bottom:1px solid var(--grid); color:var(--text-secondary)}
+  th{color:var(--text-primary); font-weight:700}
+  td.n{font-variant-numeric:tabular-nums}
+</style>
+
+<h2>یک اسکیل هزارتوکنی با خروجی فارسی چه می‌کند</h2>
+<p class="sub">پنج بریف رابط کاربری فارسی، هر کدام دو بار تولید شد — یک بار خام، یک بار پس از
+خواندن اسکیل. همان پرامپت، همان مدل، یک متغیر. ۱۸ نقص سنجیده‌شده به‌صورت ماشینی.</p>
+
+<div class="legend">
+  <span><i style="background:var(--series-1)"></i><bdi dir="ltr">Claude Sonnet 5</bdi></span>
+  <span><i style="background:var(--series-2)"></i><bdi dir="ltr">Claude Haiku 4.5</bdi></span>
+</div>
+
+<p class="tmcap">میانگین نقص در هر صفحه</p>
+<svg viewBox="0 0 640 262" role="img" aria-label="نمودار شیب: میانگین نقص در هر صفحه از ۲ به صفر و از ۳ به صفر می‌رسد.">
+  <line x1="0" y1="30"  x2="510" y2="30"  stroke="var(--grid)" stroke-width="1"/>
+  <line x1="0" y1="90"  x2="510" y2="90"  stroke="var(--grid)" stroke-width="1"/>
+  <line x1="0" y1="150" x2="510" y2="150" stroke="var(--grid)" stroke-width="1"/>
+  <line x1="0" y1="210" x2="510" y2="210" stroke="var(--grid)" stroke-width="1.5"/>
+  <text class="tm" x="518" y="34">۳</text>
+  <text class="tm" x="518" y="94">۲</text>
+  <text class="tm" x="518" y="154">۱</text>
+  <text class="tm" x="518" y="214">۰</text>
+
+  <line x1="440" y1="90" x2="140" y2="210" stroke="var(--series-1)" stroke-width="2"/>
+  <line x1="440" y1="30" x2="140" y2="210" stroke="var(--series-2)" stroke-width="2"/>
+  <circle cx="440" cy="90"  r="5.5" fill="var(--series-1)" stroke="var(--surface-1)" stroke-width="2"/>
+  <circle cx="440" cy="30"  r="5.5" fill="var(--series-2)" stroke="var(--surface-1)" stroke-width="2"/>
+  <circle cx="140" cy="210" r="6.5" fill="var(--series-1)" stroke="var(--surface-1)" stroke-width="2"/>
+
+  <text class="tv" x="456" y="95">۲٫۰</text>
+  <text class="tv" x="456" y="35">۳٫۰</text>
+  <text class="tv" x="120" y="203" text-anchor="end">۰٫۰</text>
+  <text class="tm" x="120" y="221" text-anchor="end">هر دو مدل</text>
+
+  <text class="t" x="440" y="252" text-anchor="middle">بدون اسکیل</text>
+  <text class="t" x="150" y="252" text-anchor="middle">با rtl-design</text>
+</svg>
+
+<h3>کدام نقص‌ها را اجراهای بدون اسکیل واقعاً ساختند</h3>
+<p class="sub" style="margin-bottom:10px">تعداد صفحه‌های آسیب‌دیده از پنج صفحه. با اسکیل، هر کدام از این‌ها صفر شد.</p>
+
+<svg viewBox="0 0 640 232" role="img" aria-label="نمودار میله‌ای گروهی نرخ نقص‌ها از پنج صفحه، برای دو مدل.">
+  <g>
+    <text class="t" x="640" y="16" text-anchor="end">‏CSS فیزیکی به‌جای منطقی</text>
+    <rect x="130" y="6"  width="180" height="12" rx="4" fill="var(--series-1)"/>
+    <rect x="130" y="20" width="180" height="12" rx="4" fill="var(--series-2)"/>
+    <text class="tm" x="116" y="16" text-anchor="end">۳/۵</text><text class="tm" x="116" y="30" text-anchor="end">۳/۵</text>
+  </g>
+  <g transform="translate(0,44)">
+    <text class="t" x="640" y="16" text-anchor="end">فیلد تلفن و ایمیل بدون جهت لاتین</text>
+    <rect x="190" y="6"  width="120" height="12" rx="4" fill="var(--series-1)"/>
+    <rect x="130" y="20" width="180" height="12" rx="4" fill="var(--series-2)"/>
+    <text class="tm" x="176" y="16" text-anchor="end">۲/۵</text><text class="tm" x="116" y="30" text-anchor="end">۳/۵</text>
+  </g>
+  <g transform="translate(0,88)">
+    <text class="t" x="640" y="16" text-anchor="end">جداکنندهٔ لاتین بین ارقام فارسی</text>
+    <rect x="190" y="6"  width="120" height="12" rx="4" fill="var(--series-1)"/>
+    <rect x="130" y="20" width="180" height="12" rx="4" fill="var(--series-2)"/>
+    <text class="tm" x="176" y="16" text-anchor="end">۲/۵</text><text class="tm" x="116" y="30" text-anchor="end">۳/۵</text>
+  </g>
+  <g transform="translate(0,132)">
+    <text class="t" x="640" y="16" text-anchor="end">‏letter-spacing روی متن فارسی</text>
+    <rect x="190" y="6"  width="120" height="12" rx="4" fill="var(--series-1)"/>
+    <rect x="190" y="20" width="120" height="12" rx="4" fill="var(--series-2)"/>
+    <text class="tm" x="176" y="16" text-anchor="end">۲/۵</text><text class="tm" x="176" y="30" text-anchor="end">۲/۵</text>
+  </g>
+  <g transform="translate(0,176)">
+    <text class="t" x="640" y="16" text-anchor="end">ارتفاع خط لاتین روی متن فارسی</text>
+    <rect x="250" y="6"  width="60"  height="12" rx="4" fill="var(--series-1)"/>
+    <rect x="130" y="20" width="180" height="12" rx="4" fill="var(--series-2)"/>
+    <text class="tm" x="236" y="16" text-anchor="end">۱/۵</text><text class="tm" x="116" y="30" text-anchor="end">۳/۵</text>
+  </g>
+  <line x1="310" y1="0" x2="310" y2="212" stroke="var(--grid)" stroke-width="1.5"/>
+</svg>
+
+<table>
+  <caption style="text-align:start; font-size:12px; color:var(--text-muted); padding:8px 8px 4px">
+    همان داده‌ها به‌صورت جدول
+  </caption>
+  <tr><th>مدل</th><th>بدون اسکیل</th><th>با rtl-design</th></tr>
+  <tr><td><bdi dir="ltr">Claude Sonnet 5</bdi></td><td class="n">۲٫۰</td><td class="n">۰٫۰</td></tr>
+  <tr><td><bdi dir="ltr">Claude Haiku 4.5</bdi></td><td class="n">۳٫۰</td><td class="n">۰٫۰</td></tr>
+</table>
+
+<p class="foot">
+  مدل‌های امروزی متن فارسی را بدون کمک درست می‌نویسند — صفر مورد حرف عربی، صفر رقم اشتباه،
+  صفر نیم‌فاصلهٔ جاافتاده. خطاها در ‏CSS و معناشناسی فرم جمع می‌شوند، و دقیقاً به همین دلیل
+  از بازبینی رد می‌شوند: اسکرین‌شات درست به نظر می‌رسد.<br>
+  هر ۲۵ صفحهٔ تولیدشده و نمره‌های خام: <bdi dir="ltr">github.com/Baghlani/rtl-design</bdi>
+</p>
+</div>
