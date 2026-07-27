@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رزرو نوبت کلینیک</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Tahoma", "IRANSans", sans-serif;
+            line-height: 1.8;
+            color: #2c3e50;
+        }
+
+        body {
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 24px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.95;
+            line-height: 1.8;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            padding: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
+
+        .form-section h2 {
+            font-size: 18px;
+            margin-bottom: 24px;
+            color: #2c3e50;
+            line-height: 1.4;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #34495e;
+            line-height: 1.6;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e6ed;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            line-height: 1.6;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        select,
+        textarea {
+            text-align: start;
+        }
+
+        input[type="date"] {
+            text-align: center;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="date"]:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            outline: none;
+        }
+
+        input[type="email"],
+        input[type="tel"] {
+            direction: ltr;
+            unicode-bidi: isolate;
+        }
+
+        input[type="email"]::placeholder,
+        input[type="tel"]::placeholder {
+            direction: rtl;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .time-slot {
+            padding: 12px;
+            border: 2px solid #e0e6ed;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 14px;
+            background: white;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .time-slot:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .time-slot.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .summary {
+            background: #f8fafc;
+            padding: 24px;
+            border-radius: 12px;
+            position: sticky;
+            top: 20px;
+        }
+
+        .summary h2 {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            line-height: 1.4;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e0e6ed;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-label {
+            color: #7f8c8d;
+            font-weight: 600;
+        }
+
+        .summary-value {
+            color: #2c3e50;
+            text-align: end;
+            flex: 1;
+            margin-inline-start: 12px;
+        }
+
+        .summary-value.empty {
+            color: #bdc3c7;
+        }
+
+        .cost-section {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 2px solid #e0e6ed;
+        }
+
+        .cost-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .cost-label {
+            font-weight: 600;
+            color: #34495e;
+        }
+
+        .cost-value {
+            color: #667eea;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+            justify-content: flex-start;
+        }
+
+        .button-group button {
+            flex: 1;
+        }
+
+        button {
+            padding: 14px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 100%;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .btn-reset {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-reset:hover {
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .error {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .error.show {
+            display: block;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            display: none;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .success.show {
+            display: block;
+        }
+
+        .doctor-info {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-top: 4px;
+            line-height: 1.6;
+        }
+
+        .icon {
+            display: inline-block;
+            margin-inline-start: 6px;
+        }
+
+        [dir="rtl"] .icon-arrow {
+            transform: scaleX(-1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>رزرو نوبت کلینیک</h1>
+            <p>به‌راحتی نوبت خود را رزرو کنید</p>
+        </div>
+
+        <div class="content">
+            <div class="form-section">
+                <form id="appointmentForm">
+                    <h2>اطلاعات نوبت</h2>
+
+                    <div class="form-group">
+                        <label for="doctor">انتخاب پزشک</label>
+                        <select id="doctor" required>
+                            <option value="">-- پزشک را انتخاب کنید --</option>
+                            <option value="dr-ali" data-price="750000">دکتر علی احمدی — متخصص داخلی</option>
+                            <option value="dr-sara" data-price="850000">دکتر سارا رسالتی — متخصص زنان</option>
+                            <option value="dr-reza" data-price="650000">دکتر رضا محمودی — دندانپزشک</option>
+                            <option value="dr-maryam" data-price="900000">دکتر مریم فرهادی — متخصص چشم</option>
+                        </select>
+                        <div class="doctor-info" id="doctorInfo"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="date">انتخاب تاریخ</label>
+                        <input type="date" id="date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>انتخاب ساعت</label>
+                        <div class="time-slots" id="timeSlots">
+                            <div class="time-slot" data-time="۰۹:۰۰">۰۹:۰۰</div>
+                            <div class="time-slot" data-time="۰۹:۳۰">۰۹:۳۰</div>
+                            <div class="time-slot" data-time="۱۰:۰۰">۱۰:۰۰</div>
+                            <div class="time-slot" data-time="۱۰:۳۰">۱۰:۳۰</div>
+                            <div class="time-slot" data-time="۱۱:۰۰">۱۱:۰۰</div>
+                            <div class="time-slot" data-time="۱۳:۳۰">۱۳:۳۰</div>
+                            <div class="time-slot" data-time="۱۴:۰۰">۱۴:۰۰</div>
+                            <div class="time-slot" data-time="۱۵:۰۰">۱۵:۰۰</div>
+                        </div>
+                    </div>
+
+                    <h2 style="margin-top: 32px;">اطلاعات شخصی</h2>
+
+                    <div class="form-group">
+                        <label for="name">نام و نام‌خانوادگی</label>
+                        <input type="text" id="name" required placeholder="نام کامل خود را وارد کنید">
+                        <div class="error" id="nameError">نام الزامی است</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">شمارهٔ تماس</label>
+                        <input type="tel" id="phone" required placeholder="+98 9xxxxxxxxx" dir="ltr">
+                        <div class="error" id="phoneError">شمارهٔ تماس معتبر نیست</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">آدرس ایمیل</label>
+                        <input type="email" id="email" required placeholder="example@domain.com" dir="ltr">
+                        <div class="error" id="emailError">آدرس ایمیل معتبر نیست</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">توضیحات تکمیلی</label>
+                        <textarea id="description" placeholder="شرح شکایت یا علت مراجعه را وارد کنید..."></textarea>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="submit" class="btn-submit">تایید و رزرو نوبت</button>
+                        <button type="reset" class="btn-reset">پاک‌کردن</button>
+                    </div>
+
+                    <div class="success" id="successMessage">
+                        ✓ نوبت شما با موفقیت رزرو شد. لطفاً ایمیل تأیید را بررسی کنید.
+                    </div>
+                </form>
+            </div>
+
+            <div class="summary">
+                <h2>خلاصهٔ رزرو</h2>
+
+                <div class="summary-item">
+                    <span class="summary-label">پزشک:</span>
+                    <span class="summary-value empty" id="summaryDoctor">انتخاب‌نشده</span>
+                </div>
+
+                <div class="summary-item">
+                    <span class="summary-label">تاریخ:</span>
+                    <span class="summary-value empty" id="summaryDate">انتخاب‌نشده</span>
+                </div>
+
+                <div class="summary-item">
+                    <span class="summary-label">ساعت:</span>
+                    <span class="summary-value empty" id="summaryTime">انتخاب‌نشده</span>
+                </div>
+
+                <div class="summary-item">
+                    <span class="summary-label">نام:</span>
+                    <span class="summary-value empty" id="summaryName">وارد‌نشده</span>
+                </div>
+
+                <div class="summary-item">
+                    <span class="summary-label">تماس:</span>
+                    <span class="summary-value empty" id="summaryContact">وارد‌نشده</span>
+                </div>
+
+                <div class="cost-section">
+                    <div class="cost-row">
+                        <span class="cost-label">هزینهٔ ویزیت:</span>
+                        <span class="cost-value" id="costValue">—</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('appointmentForm');
+        const doctorSelect = document.getElementById('doctor');
+        const dateInput = document.getElementById('date');
+        const timeSlots = document.querySelectorAll('.time-slot');
+        const nameInput = document.getElementById('name');
+        const phoneInput = document.getElementById('phone');
+        const emailInput = document.getElementById('email');
+        const descriptionInput = document.getElementById('description');
+        const successMessage = document.getElementById('successMessage');
+
+        let selectedTime = null;
+
+        // Doctor selection
+        doctorSelect.addEventListener('change', function() {
+            updateSummary();
+            updateCost();
+            const doctorInfo = document.getElementById('doctorInfo');
+            if (this.value) {
+                const selectedOption = this.options[this.selectedIndex];
+                const price = selectedOption.dataset.price;
+                doctorInfo.textContent = `هزینهٔ ویزیت: ${formatPrice(price)} تومان`;
+            } else {
+                doctorInfo.textContent = '';
+            }
+        });
+
+        // Date selection
+        dateInput.addEventListener('change', updateSummary);
+
+        // Time slot selection
+        timeSlots.forEach(slot => {
+            slot.addEventListener('click', function() {
+                timeSlots.forEach(s => s.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedTime = this.dataset.time;
+                updateSummary();
+            });
+        });
+
+        // Real-time summary updates
+        nameInput.addEventListener('input', updateSummary);
+        phoneInput.addEventListener('input', updateSummary);
+        emailInput.addEventListener('input', updateSummary);
+
+        // Form submission
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Validation
+            let isValid = true;
+
+            if (!nameInput.value.trim()) {
+                document.getElementById('nameError').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('nameError').classList.remove('show');
+            }
+
+            if (!phoneInput.value.trim() || !/^[\d\s+\-()]{10,}$/.test(phoneInput.value)) {
+                document.getElementById('phoneError').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('phoneError').classList.remove('show');
+            }
+
+            if (!emailInput.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value)) {
+                document.getElementById('emailError').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('emailError').classList.remove('show');
+            }
+
+            if (!doctorSelect.value || !dateInput.value || !selectedTime) {
+                isValid = false;
+            }
+
+            if (isValid) {
+                successMessage.classList.add('show');
+                form.style.opacity = '0.6';
+                form.style.pointerEvents = 'none';
+                setTimeout(() => {
+                    form.reset();
+                    timeSlots.forEach(s => s.classList.remove('selected'));
+                    selectedTime = null;
+                    successMessage.classList.remove('show');
+                    form.style.opacity = '1';
+                    form.style.pointerEvents = 'auto';
+                    updateSummary();
+                    updateCost();
+                }, 3000);
+            }
+        });
+
+        function updateSummary() {
+            const doctorText = doctorSelect.options[doctorSelect.selectedIndex].text;
+            const dateText = dateInput.value ? convertGregorianToJalali(dateInput.value) : 'انتخاب‌نشده';
+
+            document.getElementById('summaryDoctor').textContent = doctorSelect.value ? doctorText.split(' — ')[0] : 'انتخاب‌نشده';
+            document.getElementById('summaryDoctor').className = doctorSelect.value ? 'summary-value' : 'summary-value empty';
+
+            document.getElementById('summaryDate').textContent = dateText;
+            document.getElementById('summaryDate').className = dateInput.value ? 'summary-value' : 'summary-value empty';
+
+            document.getElementById('summaryTime').textContent = selectedTime || 'انتخاب‌نشده';
+            document.getElementById('summaryTime').className = selectedTime ? 'summary-value' : 'summary-value empty';
+
+            document.getElementById('summaryName').textContent = nameInput.value || 'وارد‌نشده';
+            document.getElementById('summaryName').className = nameInput.value ? 'summary-value' : 'summary-value empty';
+
+            const contact = phoneInput.value || emailInput.value;
+            document.getElementById('summaryContact').textContent = contact || 'وارد‌نشده';
+            document.getElementById('summaryContact').className = contact ? 'summary-value' : 'summary-value empty';
+        }
+
+        function updateCost() {
+            if (doctorSelect.value) {
+                const selectedOption = doctorSelect.options[doctorSelect.selectedIndex];
+                const price = selectedOption.dataset.price;
+                document.getElementById('costValue').textContent = formatPrice(price) + ' تومان';
+            } else {
+                document.getElementById('costValue').textContent = '—';
+            }
+        }
+
+        function formatPrice(price) {
+            return parseInt(price).toLocaleString('fa-IR');
+        }
+
+        function convertGregorianToJalali(gregorianDate) {
+            const date = new Date(gregorianDate);
+            const gy = date.getFullYear();
+            const gm = date.getMonth() + 1;
+            const gd = date.getDate();
+
+            const monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+            if (gy > 1600) {
+                let leapAdj = Math.floor((gy - 1600) / 400) - Math.floor((gy - 1600) / 100);
+                if ((gy - 1600) % 4 === 0 && ((gy - 1600) % 100 !== 0 || (gy - 1600) % 400 === 0)) {
+                    monthDays[1] = 29;
+                }
+            }
+
+            let dayOfYear = 0;
+            for (let i = 0; i < gm - 1; i++) {
+                dayOfYear += monthDays[i];
+            }
+            dayOfYear += gd;
+
+            const jy = gy - 621;
+            const epochBase = 1948439;
+            const julianDate = epochBase + 365 * (gy - 1) + Math.floor((gy - 1) / 4) - Math.floor((gy - 1) / 100) + Math.floor((gy - 1) / 400) + dayOfYear;
+
+            const jdn = julianDate;
+            const l = jdn + 68569;
+            const n = Math.floor((4 * l) / 146097);
+            const l2 = l - Math.floor((146097 * n + 3) / 4);
+            const i = Math.floor((4000 * (l2 + 1)) / 1461001);
+            const l3 = l2 - Math.floor((1461 * i) / 4) + 31;
+            const j = Math.floor((80 * l3) / 2447);
+            const d = l3 - Math.floor((2447 * j) / 80);
+            const l4 = Math.floor(j / 11);
+            const m = j + 2 - 12 * l4;
+            const y = 100 * (n - 49) + i + l4;
+
+            let jalaliYear = y - 621;
+            let jalaliMonth = m;
+            let jalaliDay = d;
+
+            if (jalaliMonth > 6) {
+                jalaliMonth = jalaliMonth - 6;
+            } else {
+                jalaliMonth = jalaliMonth + 6;
+                jalaliYear = jalaliYear - 1;
+            }
+
+            const jalaliMonthNames = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'];
+
+            return `${toPersianDigits(jalaliDay)} ${jalaliMonthNames[jalaliMonth - 1]} ${toPersianDigits(jalaliYear)}`;
+        }
+
+        function toPersianDigits(num) {
+            const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+            return String(num).replace(/\d/g, (digit) => persianDigits[digit]);
+        }
+
+        // Initialize
+        updateSummary();
+        updateCost();
+    </script>
+</body>
+</html>

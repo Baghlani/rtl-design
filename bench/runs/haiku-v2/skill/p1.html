@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>پروفایل کاربر</title>
+	<link href="https://fonts.googleapis.com/css2?family=Estedad:wght@400;500;600;700&family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		html {
+			direction: rtl;
+			lang: fa;
+		}
+
+		body {
+			font-family: "Vazirmatn", "Noto Sans Arabic", sans-serif;
+			font-size: 16px;
+			font-weight: 400;
+			line-height: 1.8;
+			background-color: #f5f5f5;
+			color: #333;
+			padding: 20px;
+		}
+
+		.container {
+			max-width: 600px;
+			margin: 0 auto;
+		}
+
+		/* Header Section */
+		.profile-header {
+			background-color: white;
+			border-radius: 12px;
+			padding: 24px;
+			margin-bottom: 20px;
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+		}
+
+		.profile-top {
+			display: flex;
+			gap: 16px;
+			align-items: flex-start;
+			margin-bottom: 20px;
+		}
+
+		.profile-avatar {
+			width: 80px;
+			height: 80px;
+			border-radius: 50%;
+			background-color: #e0e0e0;
+			flex-shrink: 0;
+			object-fit: cover;
+		}
+
+		.profile-info {
+			flex: 1;
+		}
+
+		.profile-name {
+			font-family: "Estedad", "Vazirmatn", sans-serif;
+			font-size: 24px;
+			font-weight: 700;
+			line-height: 1.4;
+			margin-bottom: 8px;
+			color: #1a1a1a;
+		}
+
+		.profile-meta {
+			font-size: 14px;
+			color: #666;
+			line-height: 1.8;
+		}
+
+		.profile-meta-item {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			margin-bottom: 6px;
+		}
+
+		.meta-label {
+			color: #999;
+			font-weight: 500;
+		}
+
+		.meta-value {
+			color: #333;
+		}
+
+		/* Info Rows */
+		.info-section {
+			margin-top: 20px;
+			padding-top: 20px;
+			border-top: 1px solid #e0e0e0;
+		}
+
+		.info-row {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 12px 0;
+			gap: 16px;
+		}
+
+		.info-row:not(:last-child) {
+			border-bottom: 1px solid #f0f0f0;
+		}
+
+		.info-label {
+			font-weight: 500;
+			color: #666;
+			min-width: 100px;
+			text-align: start;
+		}
+
+		.info-value {
+			color: #333;
+			text-align: end;
+			flex: 1;
+		}
+
+		/* Phone and Email (LTR islands) */
+		.info-value[dir="ltr"] {
+			font-family: "Courier New", monospace;
+			direction: ltr;
+			unicode-bidi: isolate;
+		}
+
+		/* Edit Form Section */
+		.edit-section {
+			background-color: white;
+			border-radius: 12px;
+			padding: 24px;
+			margin-bottom: 20px;
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+		}
+
+		.section-title {
+			font-family: "Estedad", "Vazirmatn", sans-serif;
+			font-size: 18px;
+			font-weight: 700;
+			line-height: 1.4;
+			margin-bottom: 16px;
+			color: #1a1a1a;
+		}
+
+		.form-group {
+			margin-bottom: 16px;
+		}
+
+		.form-group:last-child {
+			margin-bottom: 0;
+		}
+
+		.form-label {
+			display: block;
+			font-weight: 500;
+			color: #666;
+			margin-bottom: 8px;
+			font-size: 14px;
+		}
+
+		.form-input {
+			width: 100%;
+			padding: 12px;
+			border: 1px solid #ddd;
+			border-radius: 8px;
+			font-family: "Vazirmatn", sans-serif;
+			font-size: 16px;
+			line-height: 1.8;
+			direction: rtl;
+			text-align: start;
+			transition: border-color 0.3s, box-shadow 0.3s;
+		}
+
+		.form-input:focus {
+			outline: none;
+			border-color: #4a90e2;
+			box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+		}
+
+		.form-input[type="email"],
+		.form-input[type="tel"] {
+			direction: ltr;
+			unicode-bidi: isolate;
+			text-align: end;
+		}
+
+		.form-button-group {
+			display: flex;
+			gap: 12px;
+			margin-top: 20px;
+		}
+
+		.button {
+			flex: 1;
+			padding: 12px 16px;
+			border: none;
+			border-radius: 8px;
+			font-family: "Vazirmatn", sans-serif;
+			font-size: 16px;
+			font-weight: 600;
+			line-height: 1.5;
+			cursor: pointer;
+			transition: background-color 0.3s, color 0.3s;
+		}
+
+		.button-primary {
+			background-color: #4a90e2;
+			color: white;
+		}
+
+		.button-primary:hover {
+			background-color: #357abd;
+		}
+
+		.button-secondary {
+			background-color: #f0f0f0;
+			color: #333;
+			border: 1px solid #ddd;
+		}
+
+		.button-secondary:hover {
+			background-color: #e8e8e8;
+		}
+
+		/* Subscription Card */
+		.subscription-card {
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			border-radius: 12px;
+			padding: 24px;
+			color: white;
+			box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+		}
+
+		.subscription-header {
+			font-family: "Estedad", "Vazirmatn", sans-serif;
+			font-size: 18px;
+			font-weight: 700;
+			line-height: 1.4;
+			margin-bottom: 16px;
+			display: flex;
+			align-items: center;
+			gap: 8px;
+		}
+
+		.subscription-status {
+			display: inline-block;
+			background-color: rgba(255, 255, 255, 0.25);
+			padding: 4px 12px;
+			border-radius: 20px;
+			font-size: 12px;
+			font-weight: 600;
+			margin-inline-start: 8px;
+		}
+
+		.subscription-body {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 20px;
+			margin-bottom: 20px;
+		}
+
+		.subscription-item {
+			text-align: start;
+		}
+
+		.subscription-label {
+			font-size: 13px;
+			opacity: 0.9;
+			margin-bottom: 4px;
+			display: block;
+		}
+
+		.subscription-value {
+			font-size: 18px;
+			font-weight: 700;
+			line-height: 1.3;
+		}
+
+		.subscription-footer {
+			padding-top: 16px;
+			border-top: 1px solid rgba(255, 255, 255, 0.2);
+			font-size: 13px;
+			opacity: 0.9;
+		}
+
+		/* Icon placeholders */
+		.icon {
+			display: inline-block;
+			width: 20px;
+			height: 20px;
+		}
+
+		[dir="rtl"] .icon-directional {
+			transform: scaleX(-1);
+		}
+
+		/* Responsive */
+		@media (max-width: 600px) {
+			body {
+				padding: 12px;
+			}
+
+			.profile-header,
+			.edit-section,
+			.subscription-card {
+				padding: 16px;
+			}
+
+			.profile-top {
+				flex-direction: column;
+				align-items: center;
+				text-align: center;
+			}
+
+			.profile-info {
+				width: 100%;
+			}
+
+			.subscription-body {
+				grid-template-columns: 1fr;
+			}
+
+			.form-button-group {
+				flex-direction: column;
+			}
+
+			.button {
+				width: 100%;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<!-- Profile Header -->
+		<div class="profile-header">
+			<div class="profile-top">
+				<img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' fill='%23d0d0d0'/%3E%3Ccircle cx='40' cy='28' r='12' fill='%23a0a0a0'/%3E%3Cellipse cx='40' cy='60' rx='20' ry='16' fill='%23a0a0a0'/%3E%3C/svg%3E" alt="تصویر پروفایل" class="profile-avatar">
+				<div class="profile-info">
+					<h1 class="profile-name">محمد رسولی</h1>
+					<div class="profile-meta">
+						<div class="profile-meta-item">
+							<span class="meta-label">تاریخ عضویت:</span>
+							<span class="meta-value">۲۷ مرداد ۱۴۰۳</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="info-section">
+				<div class="info-row">
+					<span class="info-label">شمارهٔ موبایل:</span>
+					<span class="info-value" dir="ltr">+98 21 9123 4567</span>
+				</div>
+				<div class="info-row">
+					<span class="info-label">ایمیل:</span>
+					<span class="info-value" dir="ltr">mohammad@example.com</span>
+				</div>
+			</div>
+		</div>
+
+		<!-- Edit Form Section -->
+		<div class="edit-section">
+			<h2 class="section-title">ویرایش اطلاعات</h2>
+			<form>
+				<div class="form-group">
+					<label class="form-label">نام کاملی</label>
+					<input type="text" class="form-input" value="محمد رسولی" placeholder="نام و نام‌خانوادگی را وارد کنید">
+				</div>
+
+				<div class="form-group">
+					<label class="form-label">شمارهٔ موبایل</label>
+					<input type="tel" dir="ltr" class="form-input" value="+98 21 9123 4567" placeholder="شمارهٔ موبایل">
+				</div>
+
+				<div class="form-group">
+					<label class="form-label">ایمیل</label>
+					<input type="email" dir="ltr" class="form-input" value="mohammad@example.com" placeholder="آدرس ایمیل">
+				</div>
+
+				<div class="form-button-group">
+					<button type="submit" class="button button-primary">ذخیرهٔ تغییرات</button>
+					<button type="reset" class="button button-secondary">انصراف</button>
+				</div>
+			</form>
+		</div>
+
+		<!-- Subscription Card -->
+		<div class="subscription-card">
+			<div class="subscription-header">
+				اشتراک فعال
+				<span class="subscription-status">✓ فعال</span>
+			</div>
+			<div class="subscription-body">
+				<div class="subscription-item">
+					<span class="subscription-label">تاریخ انقضا:</span>
+					<span class="subscription-value">۲۷ مهرماه ۱۴۰۵</span>
+				</div>
+				<div class="subscription-item">
+					<span class="subscription-label">مبلغ پرداختی:</span>
+					<span class="subscription-value">۲٬۲۵۰٬۰۰۰ تومان</span>
+				</div>
+			</div>
+			<div class="subscription-footer">
+				زمان باقی‌مانده: ۹۲ روز
+			</div>
+		</div>
+	</div>
+</body>
+</html>

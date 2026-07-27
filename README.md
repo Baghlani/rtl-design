@@ -19,7 +19,7 @@ own detector, across 18 machine-checkable defects.
 | Model | no skill | + rtl-design | |
 |---|---|---|---|
 | **Claude Sonnet 5** | 2.0 defects/page | **0.0** | −100% |
-| **Claude Haiku 4.5** | 3.0 defects/page | **0.8** | −73% |
+| **Claude Haiku 4.5** | 3.0 defects/page | **0.0** | −100% |
 
 What the unaided runs actually got wrong:
 
@@ -27,7 +27,7 @@ What the unaided runs actually got wrong:
 |---|---|---|
 | Physical CSS (`margin-left`, `left:`) instead of logical properties | 3/5 | 3/5 |
 | Phone/email input without `dir="ltr"` — caret jumps while typing | 2/5 | 3/5 |  <!-- rtl-ignore -->
-| ASCII separator between Persian digits (`۴.۵` instead of `۴٫۵`) | 2/5 | 3/5 |
+| ASCII separator between Persian digits (`۴.۵` instead of `۴٫۵`) | 2/5 | 3/5 |  <!-- rtl-ignore -->
 | `letter-spacing` on Persian, which tears the joined script | 2/5 | 2/5 |
 | Latin body line-height on Persian text | 1/5 | 3/5 |
 
@@ -37,7 +37,13 @@ The failures cluster in **CSS and form semantics**, the parts a model treats as 
 boilerplate rather than as language. Those are exactly the defects that survive review,
 because a screenshot looks fine and the bug only shows when a user types into a phone field.
 
-Method, caveats, all 20 generated pages and raw scores: [`bench/RESULTS.md`](bench/RESULTS.md).
+Haiku needed two rounds to get there, and that is the interesting part: with the skill as
+prose alone it reached 0.8: better, not perfect. The residue sat exactly in the rules nothing
+could check. Making those three machine-checkable and telling the agent to run the detector
+on its own output before finishing took the same model on the same prompts to zero. **A
+written rule helps; a checkable rule holds.**
+
+Method, caveats, all 25 generated pages and raw scores: [`bench/RESULTS.md`](bench/RESULTS.md).
 
 ## See every defect live
 
@@ -50,8 +56,8 @@ screenshot; every break happens in your browser.
 
 [`docs/pain-points.md`](docs/pain-points.md) is the contract: **21 defects**, each with the
 wrong output, the right output, why it matters, and an honest note on whether the bundled
-detector catches it automatically (9), whether it needs the agent's judgment (9), or whether
-it is still an open gap (3).
+detector catches it automatically (12), whether it needs the agent's judgment (8), or whether
+it is still an open gap (1).
 
 **Text & data** — Persian ی/ک vs Arabic ي/ك · Persian digits ۰–۹ and when Latin digits are  <!-- rtl-ignore -->
 correct · ZWNJ (نیم‌فاصله) · Jalali dates with Persian month names · which mixed-text
@@ -76,9 +82,11 @@ Audit existing code deterministically — no LLM, no API key, no packages:
 python3 skills/rtl-design/scripts/detect.py ./src --format text
 ```
 
-Nine rules, JSON for agents, text for humans, exit codes for CI, `rtl-ignore` markers for
-legitimate exceptions. It is a floor, not full coverage — the skill says so explicitly and
-routes the judgment pass to the reference files.
+Twelve rules, JSON for agents, text for humans, exit codes for CI, `rtl-ignore` markers for
+legitimate exceptions. The skill also tells the agent to run it on its own output before
+finishing, and Claude Code users can make that automatic with a hook
+([`references/hooks.md`](skills/rtl-design/references/hooks.md)). It is still a floor, not
+full coverage — the skill says so explicitly and routes the judgment pass to the references.
 
 ## Install
 
@@ -130,9 +138,8 @@ ship commercial licenses inside binaries that circulate freely on GitHub.
 ## Roadmap
 
 - **v1** — RTL core + Persian module, web + Flutter, detector, benchmark
-- **next** — close the three detector gaps (ASCII punctuation, Persian separators, Latin
-  line-height) and add a self-verification step, so the residual defects on smaller models go
-  to zero too
+- **next** — the last detector gap (ASCII `?`/`;` in Persian prose, which needs a low-noise
+  rule), Vue/Svelte template coverage, and a Flutter benchmark arm
 - **v2** — Arabic deep module (contributions from Arabic-speaking designers very welcome),
   Hebrew notes, expressive Persian typography (parked in `docs/research/display-fonts.md`)
 

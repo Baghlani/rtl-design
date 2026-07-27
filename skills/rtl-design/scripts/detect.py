@@ -48,7 +48,8 @@ SKIP_FILES = {
 }
 SKIP_SUFFIXES = (".min.js", ".min.css", ".map")
 
-RULE_IDS = {"R001", "R002", "R003", "R004", "R005", "R006", "R007", "R008", "R009"}
+RULE_IDS = {"R001", "R002", "R003", "R004", "R005", "R006", "R007", "R008",
+            "R009", "R010", "R011", "R012"}
 
 MAX_SNIPPET = 120
 MAX_LINE_LEN = 2000          # longer lines are minified/generated — skip them
@@ -92,6 +93,23 @@ RE_HTML_TAG = re.compile(r"<html\b[^>]*?>", re.IGNORECASE | re.DOTALL)
 RE_DIR_ATTR = re.compile(r"""\bdir\s*=""", re.IGNORECASE)
 # می / نمی followed by an ordinary space then a Persian letter → ZWNJ candidate
 RE_MI_SPACE = re.compile(r"(?<![؀-ۿ‌])(ن?می) (?=[؀-ۿ])")
+# ASCII . or , used as a separator between Persian digits
+RE_ASCII_SEP = re.compile(r"[۰-۹][.,][۰-۹]")
+# an <input> carrying inherently Latin data
+RE_INPUT_TAG = re.compile(r"<input\b[^>]*>", re.IGNORECASE)
+RE_LATIN_TYPE = re.compile(r"""\b(?:type|inputmode)\s*=\s*["'](tel|email|url)["']""", re.IGNORECASE)
+RE_NUMERIC_MODE = re.compile(r"""\binputmode\s*=\s*["']numeric["']""", re.IGNORECASE)
+RE_LATIN_HINT = re.compile(r"phone|mobile|tel|card|iban|sheba|otp|zip|postal|passport",
+                           re.IGNORECASE)
+RE_PERSIAN_FIELD = re.compile(r"[۰-۹]|تاریخ|تعداد|مبلغ|قیمت|نام|توضیح")
+RE_ATTR_TEXT = re.compile(r"""\b(?:name|id|placeholder|aria-label)\s*=\s*["']([^"']*)["']""",
+                          re.IGNORECASE)
+# selectors whose line-height governs running Persian text (headings legitimately sit at 1.4)
+RE_SELECTOR = re.compile(r"^\s*([^{}@/][^{}]*?)\s*\{")
+RE_BODY_SELECTOR = re.compile(r"(^|[\s,>+~])(body|html|p)\b|\.(body|text|content|paragraph|prose|desc)",
+                              re.IGNORECASE)
+RE_LINE_HEIGHT = re.compile(r"line-height\s*:\s*([0-9.]+)\s*(?:[;}!]|$)")
+MIN_PERSIAN_BODY_LEADING = 1.7
 
 LOGICAL_MAP = {
     "margin-left": "margin-inline-start", "margin-right": "margin-inline-end",
@@ -186,7 +204,8 @@ def check_file(path, sink):
     def add(rule, name, severity, lineno, line, suggestion):
         sink.add(rule, name, severity, path, lineno, line, suggestion)
 
-    in_style = False  # inside a <style> block of a markup file
+    in_style = False       # inside a <style> block of a markup file
+    selector = ""          # most recent CSS selector, for leading checks
 
     for i, line in enumerate(lines, 1):
         # Track <style> blocks so their lines get pure-CSS treatment (never JS/attrs).
@@ -285,6 +304,47 @@ def check_file(path, sink):
             add("R007", "hardcoded-ltr", "warning", i, line,
                 "dir=\"ltr\" in a Persian file — correct only for LTR islands (phone/email/code "
                 "inputs, code blocks); a bug if it wraps Persian content.")
+
+        # R010 — ASCII . or , separating Persian digits
+        m10 = RE_ASCII_SEP.search(line)
+        if m10:
+            add("R010", "ascii-separator", "warning", i, line,
+                "Persian uses its own separators: ٫ (U+066B) for decimals and ٬ (U+066C) "
+                "for thousands — «۲٫۵ مگابایت», «۲٬۵۰۰٬۰۰۰ تومان».")
+
+        # R011 — an input carrying Latin data without an explicit LTR direction
+        if ext in {".html", ".htm", ".vue", ".svelte", ".jsx", ".tsx", ".php"}:
+            for mi in RE_INPUT_TAG.finditer(line):
+                tag = mi.group(0)
+                latin = bool(RE_LATIN_TYPE.search(tag))
+                if not latin and RE_NUMERIC_MODE.search(tag):
+                    hints = " ".join(RE_ATTR_TEXT.findall(tag))
+                    latin = bool(RE_LATIN_HINT.search(hints)) and not RE_PERSIAN_FIELD.search(tag)
+                if latin and not RE_DIR_LTR.search(tag):
+                    add("R011", "input-direction", "warning", i, line,
+                        'Phone, email and URL fields carry Latin data: set dir="ltr" on the '
+                        'input (keep the label and container RTL). dir="auto" is not '
+                        "equivalent — it guesses per value and flips on an empty field.")
+                    break
+
+        # R012 — Latin leading on a selector that governs running Persian text
+        if ext in STYLE_EXTS and (ext in PURE_STYLE_EXTS or line_in_style):
+            msel = RE_SELECTOR.search(line)
+            if msel:
+                selector = msel.group(1)
+            if "}" in line and not msel:
+                selector = ""
+            mlh = RE_LINE_HEIGHT.search(line)
+            if mlh and RE_BODY_SELECTOR.search(selector or ""):
+                try:
+                    value = float(mlh.group(1))
+                except ValueError:
+                    value = None
+                if value is not None and 0 < value < MIN_PERSIAN_BODY_LEADING:
+                    add("R012", "latin-leading", "warning", i, line,
+                        f"line-height {value} is Latin-tuned. Persian stacks dots above and "
+                        "below the baseline: use 1.8–2.0 for body text (1.4 is fine for "
+                        "headings, which this selector is not).")
 
         # R008 — missing ZWNJ after می/نمی
         if RE_MI_SPACE.search(line):
