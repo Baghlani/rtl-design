@@ -143,6 +143,33 @@ though wrapping them anyway costs nothing and protects against future edits.
   tooltips, and put the value axis on the visual right. Bar/category charts may fully
   mirror; time series should not.
 
+### SVG text: `text-anchor` is logical, not physical
+
+The trap that eats chart labels. In an RTL text run `text-anchor` follows the *writing
+direction*, not the screen:
+
+| Value | LTR run | **RTL run** |
+|---|---|---|
+| `start` | anchor at the left edge, text runs right | anchor at the **right** edge, text runs **left** |
+| `end` | anchor at the right edge, text runs left | anchor at the **left** edge, text runs **right** |
+
+So a right-aligned Persian label is `text-anchor="start"` — writing `end` (the physical
+instinct) pins the text's left edge and sends the whole string off the right of the
+viewBox, where SVG silently clips it instead of scrolling. Symptom: labels truncated
+mid-word at the frame edge.
+
+Rules that keep this from recurring:
+
+- Set anchors by thinking *start/end of the sentence*, never left/right of the screen —
+  the same discipline as logical CSS.
+- SVG has no overflow scrollbar and no ellipsis. `overflow: visible` on the `<svg>` at
+  least makes the spill visible during development instead of silently cut.
+- Persian rotated with `transform="rotate(±90)"` renders poorly — the joined script
+  fights the baseline. Put a vertical axis title in an HTML caption above the chart
+  instead of inside the SVG.
+- Verify by measuring, not by eye: `element.getBBox()` against the viewBox catches an
+  overflowing label in a test.
+
 ## 7. React/Next specifics
 
 - One source of truth for direction: derive `dir` from locale in the root layout and read
