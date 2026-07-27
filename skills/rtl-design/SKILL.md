@@ -76,14 +76,33 @@ Exit 0 = clean, 1 = findings, 2 = usage error. `--format text` for humans. Outpu
 bounded (default 300 findings; `counts` always holds the full totals and `truncated`
 flags the cap) — on a huge violation count, fix by rule or directory using `--rules`.
 
-It catches the mechanical violations (Arabic ي/ك, wrong digits, physical CSS/Flutter
-props, letter-spacing on Persian, missing/hardcoded `dir`, missing ZWNJ after می).
+It catches the mechanical violations (Arabic ي/ك, wrong digits, ASCII separators between
+Persian digits, physical CSS/Flutter props, letter-spacing on Persian, Latin body leading,
+missing/hardcoded `dir`, Latin-data inputs without `dir="ltr"`, missing ZWNJ after می).
 Fix every `error`; review each `warning` in context (some have legit exceptions —
 the finding says which). Legit-by-design lines (e.g. digit/yeh normalization maps)
 get an inline `rtl-ignore` comment, or `rtl-ignore-next` on the line above. The
 detector is a floor, not coverage — always also review what no regex can see:
 gesture/drag math and nested direction islands (flutter.md §10, web.md §6), visual
 hierarchy, icon direction semantics, overflow behavior, recipe quality.
+
+## Before you finish — verify your own output
+
+Whenever you create or edit UI files under these rules, run the detector on what you
+wrote and fix every finding before reporting the work as done:
+
+```bash
+python3 scripts/detect.py <the files you touched> --format text
+```
+
+This is not optional polish. Writing the rules down gets most of the way; running the
+check is what closes the gap, because the defects that survive are precisely the ones
+that look right in a screenshot — a phone field that scrambles as the user types, an
+ASCII comma between Persian digits, Latin leading on Persian body text. Treat a
+non-empty result as unfinished work, not as advice.
+
+Claude Code users can make this automatic instead of remembered — see
+`references/hooks.md`.
 
 ## Coexistence with other design skills
 

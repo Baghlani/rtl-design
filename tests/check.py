@@ -91,6 +91,19 @@ check("multiline dart: reported at the constructor line",
 check("multiline dart: Directional twins not flagged",
       all("Directional" not in f["snippet"] for f in d["findings"]))
 
+# 5e. the three rules that closed the declared detector gaps
+rc, d = run(FIX / "new-rules.html")
+rules = Counter(f["rule"] for f in d["findings"])
+check("new rules: R010 x1, R011 x3, R012 x2",
+      rules == Counter({"R010": 1, "R011": 3, "R012": 2}), str(dict(rules)))
+lines = {f["rule"]: [x["line"] for x in d["findings"] if x["rule"] == f["rule"]]
+         for f in d["findings"]}
+check("R012 spares heading leading and correct body leading",
+      4 not in lines["R012"] and 6 not in lines["R012"], str(lines["R012"]))
+check("R010 spares correct Persian separators", 10 not in lines["R010"], str(lines["R010"]))
+check("R011 spares dir=ltr field and Persian numeric field",
+      13 not in lines["R011"] and 14 not in lines["R011"], str(lines["R011"]))
+
 # 6. unknown rule id → exit 2
 rc, _ = run(FIX / "clean.html", "--rules", "R999")
 check("unknown rule id: exit 2", rc == 2, f"rc={rc}")

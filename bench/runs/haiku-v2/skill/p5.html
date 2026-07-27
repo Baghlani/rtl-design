@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تنظیمات حساب کاربری</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.8;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+            gap: 2rem;
+            padding: 2rem 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .sidebar {
+            width: 250px;
+            flex-shrink: 0;
+        }
+
+        .sidebar-section {
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            padding-inline-start: 1rem;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-menu a {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: #333;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background-color 0.2s;
+        }
+
+        .sidebar-menu a:hover {
+            background-color: #e8e8e8;
+        }
+
+        .sidebar-menu a.active {
+            background-color: #007acc;
+            color: #fff;
+        }
+
+        .main-content {
+            flex: 1;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            margin-bottom: 0.25rem;
+            line-height: 1.4;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            line-height: 1.4;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            line-height: 1.8;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        textarea,
+        select {
+            width: 100%;
+            max-width: 400px;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-family: inherit;
+            line-height: 1.5;
+        }
+
+        input[type="email"],
+        input[type="tel"] {
+            direction: ltr;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #007acc;
+            box-shadow: 0 0 0 3px rgba(0, 122, 204, 0.1);
+        }
+
+        .form-help {
+            font-size: 0.875rem;
+            color: #666;
+            margin-top: 0.25rem;
+            line-height: 1.8;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .btn-primary {
+            background-color: #007acc;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background-color: #005fa3;
+        }
+
+        .btn-secondary {
+            background-color: #e0e0e0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background-color: #d0d0d0;
+        }
+
+        .notification-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .notification-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+
+        .notification-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .notification-info {
+            flex: 1;
+        }
+
+        .notification-label {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            display: block;
+            line-height: 1.8;
+        }
+
+        .notification-desc {
+            font-size: 0.875rem;
+            color: #666;
+            line-height: 1.8;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e0e0e0;
+            line-height: 1.8;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 500;
+            color: #666;
+        }
+
+        .info-value {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            line-height: 1.4;
+        }
+
+        .status-badge.warning {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-title">تنظیمات</div>
+                <ul class="sidebar-menu">
+                    <li><a href="#profile" class="active">اطلاعات شخصی</a></li>
+                    <li><a href="#notifications">اعلان‌ها</a></li>
+                    <li><a href="#security">امنیت</a></li>
+                    <li><a href="#billing">صورتحساب</a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <h1>تنظیمات حساب کاربری</h1>
+            <p class="subtitle">تنظیمات و اطلاعات حساب خود را مدیریت کنید</p>
+
+            <!-- Personal Info Section -->
+            <section class="form-section" id="profile">
+                <h2 class="section-title">اطلاعات شخصی</h2>
+
+                <div class="form-group">
+                    <label for="fullname">نام کامل</label>
+                    <input type="text" id="fullname" placeholder="نام و نام‌خانوادگی خود را وارد کنید" value="علی محمدی">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">آدرس ایمیل</label>
+                    <input type="email" id="email" placeholder="example@domain.com" value="ali.mohammadi@example.com" dir="ltr">
+                    <div class="form-help">ایمیل تأیید‌شده</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">شماره موبایل</label>
+                    <input type="tel" id="phone" placeholder="۰۹۱۲۳۴۵۶۷۸۹" value="09123456789" dir="ltr">
+                    <div class="form-help">برای تأیید‌شدگی و احراز‌هویت دو‌مرحله‌ای</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="bio">درباره من</label>
+                    <textarea id="bio" rows="4" placeholder="توضیحات خود را بنویسید"></textarea>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn-primary">ذخیره تغییرات</button>
+                    <button class="btn-secondary">لغو</button>
+                </div>
+            </section>
+
+            <!-- Notifications Section -->
+            <section class="form-section" id="notifications">
+                <h2 class="section-title">تنظیمات اعلان‌ها</h2>
+
+                <div class="notification-list">
+                    <div class="notification-item">
+                        <input type="checkbox" id="email-news" class="notification-checkbox" checked>
+                        <div class="notification-info">
+                            <label for="email-news" class="notification-label">ایمیل‌های اطلاعات‌رسانی</label>
+                            <div class="notification-desc">درباره ویژگی‌های جدید و به‌روزرسانی‌ها آگاه شوید</div>
+                        </div>
+                    </div>
+
+                    <div class="notification-item">
+                        <input type="checkbox" id="email-offers" class="notification-checkbox" checked>
+                        <div class="notification-info">
+                            <label for="email-offers" class="notification-label">پیشنهادها و تخفیف‌ها</label>
+                            <div class="notification-desc">ایمیل‌های اختصاصی درباره تخفیف و پیشنهادهای ویژه</div>
+                        </div>
+                    </div>
+
+                    <div class="notification-item">
+                        <input type="checkbox" id="push-notifications" class="notification-checkbox" checked>
+                        <div class="notification-info">
+                            <label for="push-notifications" class="notification-label">اعلان‌های فوری</label>
+                            <div class="notification-desc">اعلان‌های اضطراری و فعالیت‌های مهم حسابتان</div>
+                        </div>
+                    </div>
+
+                    <div class="notification-item">
+                        <input type="checkbox" id="sms-alerts" class="notification-checkbox">
+                        <div class="notification-info">
+                            <label for="sms-alerts" class="notification-label">پیامک‌های هشدار</label>
+                            <div class="notification-desc">ورود‌های غیرمعمول و فعالیت‌های مریب</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn-primary">ذخیره ترجیحات</button>
+                </div>
+            </section>
+
+            <!-- Security Section -->
+            <section class="form-section" id="security">
+                <h2 class="section-title">امنیت حساب</h2>
+
+                <div class="info-row">
+                    <span class="info-label">آخرین ورود:</span>
+                    <span class="info-value">۲۶ مرداد ۱۴۰۵ — ۱۴:۳۲</span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">دستگاه:</span>
+                    <span class="info-value">Chrome، macOS</span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">مکان:</span>
+                    <span class="info-value">تهران، ایران</span>
+                </div>
+
+                <div class="form-group" style="margin-top: 2rem;">
+                    <label for="password">تغییر رمز عبور</label>
+                    <input type="text" id="password" placeholder="رمز عبور فعلی" value="">
+                </div>
+
+                <div class="form-group">
+                    <label for="new-password">رمز عبور جدید</label>
+                    <input type="text" id="new-password" placeholder="رمز عبور جدید را وارد کنید" value="">
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm-password">تأیید رمز عبور</label>
+                    <input type="text" id="confirm-password" placeholder="رمز عبور را دوباره وارد کنید" value="">
+                </div>
+
+                <div class="button-group">
+                    <button class="btn-primary">بروزرسانی رمز عبور</button>
+                </div>
+
+                <h3 class="section-title" style="margin-top: 2rem;">تأیید دو‌مرحله‌ای</h3>
+                <div class="info-row">
+                    <span class="info-label">وضعیت:</span>
+                    <span class="status-badge">فعال‌شده</span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">روش‌های تأیید:</span>
+                    <span class="info-value">ایمیل، اپلیکیشن‌های احراز</span>
+                </div>
+            </section>
+
+            <!-- Billing Section -->
+            <section class="form-section" id="billing">
+                <h2 class="section-title">صورتحساب و اشتراک</h2>
+
+                <div class="info-row">
+                    <span class="info-label">نوع اشتراک:</span>
+                    <span class="info-value">پریمیوم</span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">مبلغ ماهانه:</span>
+                    <span class="info-value">۱۹۹٬۹۹۹ تومان</span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">تاریخ تمدید:</span>
+                    <span class="info-value">۵ مهرماه ۱۴۰۵</span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">وضعیت:</span>
+                    <span class="status-badge">فعال و معتبر</span>
+                </div>
+
+                <h3 class="section-title" style="margin-top: 2rem;">تاریخچه تراکنش‌ها</h3>
+                <div class="info-row">
+                    <span class="info-label">۲۶ مرداد ۱۴۰۵</span>
+                    <span class="info-value">۱۹۹٬۹۹۹ تومان</span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">۲۶ امرداد ۱۴۰۵</span>
+                    <span class="info-value">۱۹۹٬۹۹۹ تومان</span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">۲۶ سفند ۱۴۰۴</span>
+                    <span class="info-value">۱۹۹٬۹۹۹ تومان</span>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn-secondary">دریافت فاکتورها</button>
+                    <button class="btn-secondary">لغو اشتراک</button>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

@@ -27,12 +27,22 @@ Average defects per page, 18 checks, 5 pages per cell:
 | Model | no skill | + rtl-design | |
 |---|---|---|---|
 | **Sonnet 5** | 2.0 | **0.0** | −100% |
-| **Haiku 4.5** | 3.0 | **0.8** | −73% |
+| **Haiku 4.5** | 3.0 | **0.0** | −100% |
 
-**The cheaper the model, the more defects it makes — and the more the skill is worth.**
-Haiku produces half again as many defects as Sonnet unaided, and it is also the tier where
-the skill does not fully close the gap: a smaller model follows a long instruction set less
-completely. Reported rather than smoothed over.
+**The cheaper the model, the more defects it makes.** Haiku produces half again as many as
+Sonnet unaided.
+
+Getting Haiku to zero took two rounds, and the first one is worth recording. With the skill
+as prose alone it reached 0.8 defects per page — better, not perfect. The residue was
+concentrated in defects the detector could not yet see: ASCII separators between Persian
+digits and phone fields left without `dir="ltr"` (one used `dir="auto"`, which is not the
+same thing). A smaller model follows a long instruction set less completely, so the rules it
+skipped were exactly the ones nothing could check.
+
+Closing those detector gaps (R010–R012) and adding an explicit self-verification step to the
+skill — run the detector on your own output, fix every finding before reporting done — took
+the same model on the same five prompts to **0.0**. The lesson generalises: a written rule
+helps, a checkable rule holds.
 
 ### What the baselines got wrong
 
@@ -62,7 +72,7 @@ review, because the page looks right in a screenshot and only misbehaves when a 
 into a phone field or when the design is read at full size.
 
 Caveats stated plainly: n=5 per cell, two model tiers, web only, and three catalogued
-defects are not machine-checkable. Older model generations beyond Haiku 4.5 were not
+defects (#12 Flutter, #13 icon direction, #21 overflow) are not machine-checkable here. Older model generations beyond Haiku 4.5 were not
 tested — the harness can only select currently-served models. The scorer was tightened twice *against* our own result — once for
 Jalali date and quantity inputs wrongly counted as Latin fields, once for product model
 designations (`X1`) wrongly counted as Latin digits — which removed two baseline hits.
