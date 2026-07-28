@@ -33,6 +33,7 @@ exist without a row.
 | 14 | Drawer anchored `left: 0` with `translateX(-100%)` | `inset-inline-start: 0` + direction-aware transform | The mobile menu slides in from the wrong side of the screen | `auto` R004 |
 | 15 | Phone/email inputs inheriting RTL | `dir="ltr"` on the input, label and container stay RTL. `dir="auto"` is not equivalent — it guesses per value and flips on an empty field | The caret jumps and typed digits land out of order | `auto` R011 |
 | 16 | Drag/seek math as `dx / width` | Invert against `Directionality.of(context)` / the element's own direction | Sliders and swipes run backwards; nested LTR islands double-invert | `judgment` |
+| 22 | An SVG label anchored with `text-anchor="end"` to right-align it | `text-anchor="start"` — in an RTL run `start` **is** the right edge | The anchor is logical, not physical, so the physical instinct pins the wrong edge and pushes the label outside the viewBox, where SVG clips it with no scrollbar and no ellipsis. Labels truncate mid-word (web.md §6) | `judgment` |
 
 ## Type rendering
 
@@ -46,14 +47,18 @@ exist without a row.
 
 ## Coverage summary
 
-21 defects: **12 caught deterministically** by the bundled detector (no LLM, no API key),
-**8 handled by judgment** with explicit rules in the references, and **1 open detector gap**
+22 defects: **12 caught deterministically** by the bundled detector (no LLM, no API key),
+**9 handled by judgment** with explicit rules in the references, and **1 open detector gap**
 (#8 ASCII punctuation — `?` and `;` legitimately appear in code and Latin runs on the same
 line, so a low-noise rule needs more care).
 
 R010 (Persian separators), R011 (input direction) and R012 (Latin body leading) were added
 after the benchmark showed them as the residual defects a smaller model kept making: the
 rules it skipped were exactly the ones nothing could check. See `bench/RESULTS.md`.
+
+Row 22 stays `judgment` on purpose: flagging every `text-anchor="end"` in an RTL file would
+be noisy, since both values are legitimate depending on which edge you mean. Catching it
+needs geometry, not a regex — `element.getBBox()` against the viewBox in a test.
 
 ## Rules for using this document
 

@@ -54,9 +54,9 @@ screenshot; every break happens in your browser.
 
 ## What it covers
 
-[`docs/pain-points.md`](docs/pain-points.md) is the contract: **21 defects**, each with the
+[`docs/pain-points.md`](docs/pain-points.md) is the contract: **22 defects**, each with the
 wrong output, the right output, why it matters, and an honest note on whether the bundled
-detector catches it automatically (12), whether it needs the agent's judgment (8), or whether
+detector catches it automatically (12), whether it needs the agent's judgment (9), or whether
 it is still an open gap (1).
 
 **Text & data** — Persian ی/ک vs Arabic ي/ك · Persian digits ۰–۹ and when Latin digits are  <!-- rtl-ignore -->
